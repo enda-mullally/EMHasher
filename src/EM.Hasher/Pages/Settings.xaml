@@ -167,6 +167,13 @@
 
                     <controls:SettingsExpander.Items>
 
+                        <controls:SettingsCard MinHeight="36" Header="https://github.com/enda-mullally/EMHasher">
+                            <HyperlinkButton
+                                Padding="0"
+                                Content="GPL-3.0"
+                                NavigateUri="https://github.com/enda-mullally/EMHasher/blob/main/LICENSE" />
+                        </controls:SettingsCard>
+
                         <controls:SettingsCard MinHeight="36">
                             <controls:SettingsCard.Header>
                                 <TextBlock
@@ -176,7 +183,7 @@
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard Header="https://github.com/force-net/Crc32.NET">
+                        <controls:SettingsCard MinHeight="36" Header="https://github.com/force-net/Crc32.NET">
                             <HyperlinkButton
                                 Padding="0"
                                 Content="MIT License"

@@ -73,7 +73,7 @@
 
                     <HyperlinkButton
                         Height="34"
-                        NavigateUri="https://github.com/enda-mullally/EMHasher-Docs"
+                        NavigateUri="https://github.com/enda-mullally/EMHasher"
                         ToolTipService.ToolTip="EM Hasher Homepage">
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Margin="0,0,5,0" Symbol="World" />
@@ -81,6 +81,7 @@
                         </StackPanel>
                     </HyperlinkButton>
 
+                    <!--
                     <HyperlinkButton
                         Height="34"
                         Command="{x:Bind ViewModel.DoFeedbackCommand}"
@@ -90,6 +91,7 @@
                             <FontIcon Margin="0,0,0,0" Glyph="&#xED15;" />
                         </StackPanel>
                     </HyperlinkButton>
+                    -->
 
                 </StackPanel>
 

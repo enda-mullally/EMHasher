@@ -8,9 +8,9 @@
     xmlns:winex="using:WinUIEx"
     Title="EM Hasher"
     Width="900"
-    Height="800"
+    Height="810"
     MinWidth="900"
-    MinHeight="800"
+    MinHeight="810"
     Closed="MainWindow_Closed"
     mc:Ignorable="d">
 

@@ -91,6 +91,7 @@
     <Content Include="Images\StoreLogo.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
     <Content Include="Images\EMHasher40x40.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Square44x44Logo.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
