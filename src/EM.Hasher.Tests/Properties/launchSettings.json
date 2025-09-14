@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EM.Hasher.Tests (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "EM.Hasher.Tests (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

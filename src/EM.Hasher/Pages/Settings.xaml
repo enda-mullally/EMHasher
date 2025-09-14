@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="EM.Hasher.Pages.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:EM.Hasher.Pages"
+    xmlns:localConverters="using:EM.Hasher.Converters"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
+    xmlns:toolkitConverters="using:CommunityToolkit.WinUI.Converters"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    NavigationCacheMode="Required"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
+        <localConverters:FontSizeReductionConverter x:Key="FontSizeReducer" />
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
+
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="5,10,0,5" />
+            </Style.Setters>
+        </Style>
+
+    </Page.Resources>
+    <ScrollViewer>
+        <Grid>
+
+            <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
+                <win:StackPanel.ChildrenTransitions>
+                    <win:EntranceThemeTransition FromVerticalOffset="50" />
+                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+                </win:StackPanel.ChildrenTransitions>
+
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Settings" />
+
+                <controls:SettingsExpander
+                    Description="Select your preferred hasing algorithms"
+                    Header="Hashing Algorithms"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE8EF;}"
+                    IsExpanded="True">
+                    <controls:SettingsExpander.Items>
+
+                        <controls:SettingsCard Header="CRC-32">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard Header="MD5">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.IsMd5Enabled, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
+
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        x:Name="sha256HeaderTextBlock"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Text="SHA-256" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="{Binding ElementName=sha256HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                                        Foreground="{ThemeResource TextFillColorTertiary}"
+                                        Text="(Not available in trial version)"
+                                        Visibility="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                                </Grid>
+                            </controls:SettingsCard.Header>
+
+                            <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha256Enabled, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard>
+                            <controls:SettingsCard.Header>
+
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock
+                                        x:Name="sha512HeaderTextBlock"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Text="SHA-512" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="{Binding ElementName=sha512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                                        Foreground="{ThemeResource TextFillColorTertiary}"
+                                        Text="(Not available in trial version)"
+                                        Visibility="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                                </Grid>
+                            </controls:SettingsCard.Header>
+
+                            <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha512Enabled, Mode=TwoWay}" />
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard x:Name="hashSelectionError" Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                            <controls:SettingsCard.Description>
+                                <TextBlock Foreground="PaleVioletRed" Text="Please select at least one hash algorithm" />
+                            </controls:SettingsCard.Description>
+                        </controls:SettingsCard>
+
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Preferences" />
+
+                <controls:SettingsCard
+                    Description=""
+                    Header="Theme"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
+                    <ComboBox
+                        x:Name="themeSelector"
+                        IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}"
+                        SelectedIndex="{x:Bind ViewModel.ThemeSelectedIndex, Mode=TwoWay}">
+                        <ComboBoxItem>Windows default</ComboBoxItem>
+                        <ComboBoxItem>Dark</ComboBoxItem>
+                        <ComboBoxItem>Light</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsCard>
+
+                <controls:SettingsCard Description="" HeaderIcon="{ui:FontIcon Glyph=&#xE8E9;}">
+                    <controls:SettingsCard.Header>
+                        <CheckBox
+                            Content="Show hash values in Uppercase"
+                            IsChecked="{x:Bind ViewModel.IsUppercaseHashValues, Mode=TwoWay}"
+                            IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" />
+                    </controls:SettingsCard.Header>
+                </controls:SettingsCard>
+
+                <!--  'About' section RC tag hardcoded for now  -->
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+
+                <controls:SettingsExpander
+                    Description="{x:Bind sys:String.Format('Copyright © 2025 Enda Mullally. All rights reserved.{0}', ViewModel.TrialLicenseDescription), Mode=OneWay}"
+                    Header="EM Hasher"
+                    HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/EMHasher40x40.png}"
+                    IsExpanded="False">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+
+                    <controls:SettingsExpander.Items>
+
+                        <controls:SettingsCard MinHeight="36">
+                            <controls:SettingsCard.Header>
+                                <TextBlock
+                                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="Third party license(s):" />
+                            </controls:SettingsCard.Header>
+                        </controls:SettingsCard>
+
+                        <controls:SettingsCard Header="https://github.com/force-net/Crc32.NET">
+                            <HyperlinkButton
+                                Padding="0"
+                                Content="MIT License"
+                                NavigateUri="https://github.com/force-net/Crc32.NET/blob/develop/LICENSE" />
+                        </controls:SettingsCard>
+
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

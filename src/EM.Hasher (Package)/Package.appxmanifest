@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap rescap">
+
+  <Identity
+    Name="26772EndaMullally.EMHasher"
+    Publisher="CN=3828CB90-B2F7-46C6-8B9B-6DDEBE9CBF4F"
+    Version="1.1.62.0" />
+  
+  <!-- Above is [Major].[Minor].[Build].[Revision]  -->
+  <!-- Will display in app as v[Major].[Minor] Build([Build]) i.e "v1.1 (Build 28)" -->
+  <!-- I expect to increment the Build number indefinately, git checkin etc, Revision must be 0 ?   -->
+
+  <mp:PhoneIdentity PhoneProductId="56e4e4af-68c3-4bad-8faf-402997372ae6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>EM Hasher</DisplayName>
+    <PublisherDisplayName>Enda Mullally</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$">
+      <uap:VisualElements
+        DisplayName="EM Hasher"
+        Description="Finally, a modern hash-generating application built from the ground up for Windows 11. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your favorite hashing algorithms, including CRC32,MD5,SHA-256 and SHA-512."
+        BackgroundColor="transparent"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  ShortName="EM Hasher">
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Images\SplashScreen.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="emhasher">
+            <uap:Logo>Images\EMHasher40x40.png</uap:Logo>
+            <uap:DisplayName>EM Hasher</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+	
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<winex:WindowEx
+    x:Class="EM.Hasher.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winex="using:WinUIEx"
+    Title="EM Hasher"
+    Width="900"
+    Height="800"
+    MinWidth="900"
+    MinHeight="800"
+    Closed="MainWindow_Closed"
+    mc:Ignorable="d">
+
+    <!--  Shell.xaml page content will be injected here, see activator  -->
+
+</winex:WindowEx>

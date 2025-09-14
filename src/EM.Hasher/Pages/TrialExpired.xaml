@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="EM.Hasher.Pages.TrialExpired"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:EM.Hasher.Pages"
+    xmlns:localcontrols="using:EM.Hasher.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    Background="{ThemeResource SolidBackgroundFillColorBase}"
+    NavigationCacheMode="Required"
+    mc:Ignorable="d">
+
+    <Grid x:Name="RootGridExp" Background="{ThemeResource SolidBackgroundFillColorBase}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TitleBar
+            x:Name="uxTitleBarExp"
+            Title="EM Hasher"
+            Grid.Row="0"
+            Subtitle="">
+            <TitleBar.IconSource>
+                <ImageIconSource ImageSource="ms-appx:///Assets/EMHasher.ico" />
+            </TitleBar.IconSource>
+
+            <TitleBar.RightHeader>
+
+                <!--  Add Settings & About button to the Footer  -->
+
+                <StackPanel
+                    Margin="0,0,-5,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+
+                    <HyperlinkButton
+                        Height="34"
+                        NavigateUri="https://github.com/enda-mullally/EMHasher-Docs"
+                        ToolTipService.ToolTip="EM Hasher Homepage">
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Margin="0,0,5,0" Symbol="World" />
+                            <TextBlock Margin="5,0,5,0" Text="EM Hasher" />
+                        </StackPanel>
+                    </HyperlinkButton>
+
+                    <HyperlinkButton
+                        Height="34"
+                        Command="{x:Bind ViewModel.DoFeedbackCommand}"
+                        NavigateUri="{x:Bind ViewModel.FeedbackUri}"
+                        ToolTipService.ToolTip="Send Feedback">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Margin="0,0,0,0" Glyph="&#xED15;" />
+                        </StackPanel>
+                    </HyperlinkButton>
+
+                </StackPanel>
+
+            </TitleBar.RightHeader>
+
+        </TitleBar>
+
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+
+            <Image Height="100" Margin="0,0,0,40">
+                <Image.Source>
+                    <BitmapImage DecodePixelHeight="80" UriSource="ms-appx:///Assets/EMHasher80x80.png" />
+                </Image.Source>
+            </Image>
+
+            <TextBlock
+                Margin="100,0,100,40"
+                VerticalAlignment="Center"
+                HorizontalTextAlignment="Center"
+                Style="{StaticResource FlyoutPickerTitleTextBlockStyle}"
+                Text="Your trial of EM Hasher has ended.&#x0a;&#x0a;If you’ve just purchased the full version, please wait a few minutes and restart the app to complete activation."
+                TextWrapping="Wrap" />
+
+            <localcontrols:HandHoverGrid>
+                <Grid
+                    Margin="0,0,0,40"
+                    Padding="0"
+                    HorizontalAlignment="Center"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Tapped="HyperlinkButton_ClickAsync">
+                    <Image Height="100" Source="ms-appx:///Assets/StoreBadge.png" />
+                </Grid>
+            </localcontrols:HandHoverGrid>
+
+            <HyperlinkButton
+                Height="34"
+                HorizontalAlignment="Center"
+                Click="HyperlinkButton_ClickAsync"
+                ToolTipService.ToolTip="Purchase">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <SymbolIcon Margin="0,0,5,0" Symbol="Shop" />
+                    <TextBlock Margin="5,0,5,0" Text="Purchase" />
+                </StackPanel>
+            </HyperlinkButton>
+
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,66 @@
+name: .NET 9.0 Build (x64|ARM64) and Unit Tests (x64)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    #env:
+    #  Solution_Name: EM.Hasher.sln                                                 # Replace with your solution name, i.e. MyWpfApp.sln.
+    #  Test_Project_Path: src\EM.Hasher.Tests\EM.Hasher.Tests.csproj                # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+    #  Wap_Project_Directory: src\EM.Hasher (Package)                               # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+    #  Wap_Project_Path: src\EM.Hasher (Package)\EM.Hasher (Package).wapproj        # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Add VSTest to PATH
+      uses: darenm/Setup-VSTest@v1.2
+
+    - name: Build (x64)
+      working-directory: src/EM.Hasher
+      run: |
+           msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="x64" -p:PublishReadyToRun=false
+
+    - name: Build (ARM64)
+      working-directory: src/EM.Hasher
+      run: |
+           msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="ARM64" -p:PublishReadyToRun=false
+
+    # TODO Fix App Initialisation since upgrading to WinAppSDK 1.8
+    #
+    #- name: Build Unit Test Project (x64)
+    #  working-directory: src/EM.Hasher.Tests
+    #  run: |
+    #       msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false           
+    
+    #- name: Rub Unit tests (x64)
+    #  working-directory: src/EM.Hasher.Tests
+    #  run: vstest.console.exe /Platform:x64 bin/x64/Debug/net9.0-windows10.0.22621.0/EM.Hasher.Tests.dll --TestCaseFilter:"TestCategory!=UI"
+      
+    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Build Artifacts
+        retention-days: 2
+        path: src/EM.Hasher/bin

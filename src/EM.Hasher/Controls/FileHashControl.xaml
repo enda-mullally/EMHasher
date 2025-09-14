@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="EM.Hasher.Controls.FileHashControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:EM.Hasher.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkitConverters="using:CommunityToolkit.WinUI.Converters"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+        <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="43" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--
+        <FontIcon
+            Grid.Column="0"
+            Margin="3,0,0,0"
+            HorizontalAlignment="Left"
+            Glyph="&#xE94E;" />
+        -->
+        <!--
+        <Image
+            Grid.Column="0"
+            Height="16"
+            Margin="3,0,0,0"
+            HorizontalAlignment="Left"
+            Source="ms-appx:///Assets/EMHasher.ico" />
+        -->
+        <BitmapIcon
+            Grid.Column="0"
+            Height="16"
+            Margin="3,0,0,0"
+            HorizontalAlignment="Left"
+            UriSource="ms-appx:///Assets/EMHasher.ico" />
+
+        <StackPanel Grid.Column="1">
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,5"
+                Foreground="#8bb7f0"
+                Text="{x:Bind ViewModel.AlgorithmName, Mode=OneWay}" />
+
+            <!--  Note ConverterParameter=True below means we are inverting the usual bool to visibility logic, show this text block when not IsError  -->
+            <TextBlock
+                Grid.Row="1"
+                Height="Auto"
+                HorizontalAlignment="Left"
+                IsTextSelectionEnabled="{x:Bind ViewModel.IsCalculationComplete, Mode=OneWay}"
+                Text="{x:Bind ViewModel.DisplayText, Mode=OneWay}"
+                TextWrapping="Wrap"
+                Visibility="{x:Bind ViewModel.IsError, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
+                <!--<ToolTipService.ToolTip>
+                    <ToolTip
+                        HorizontalAlignment="Center"
+                        Background="{ThemeResource SystemAccentColorLight2}"
+                        Content="Copied!"
+                        IsOpen="{x:Bind ViewModel.IsTipOpen, Mode=OneWay}"
+                        Placement="Bottom"
+                        VerticalOffset="4" />
+                </ToolTipService.ToolTip>-->
+            </TextBlock>
+
+            <TextBlock
+                Grid.Row="2"
+                Height="Auto"
+                HorizontalAlignment="Left"
+                Foreground="PaleVioletRed"
+                Text="{x:Bind ViewModel.ErrorText, Mode=OneWay}"
+                TextWrapping="Wrap"
+                Visibility="{x:Bind ViewModel.IsError, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+
+            <ProgressBar
+                Grid.Row="3"
+                Width="200"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Left"
+                IsIndeterminate="True"
+                ShowError="False"
+                ShowPaused="False"
+                Visibility="{x:Bind ViewModel.CalculationInProgress, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
