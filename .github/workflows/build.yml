@@ -34,7 +34,7 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: Add VSTest to PATH
-      uses: darenm/Setup-VSTest@v1.2
+      uses: darenm/Setup-VSTest@v1.3
 
     - name: Build (x64)
       working-directory: src/EM.Hasher
