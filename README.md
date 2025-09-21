@@ -1,12 +1,14 @@
 <p align="center">
-  <img width="128" align="center" src="images/AppLogo80x80.png">
+  <img width="128" align="center" src="docs/images/AppLogo80x80.png">
 </p>
 <h1 align="center">
   EM Hasher
 </h1>
 <p align="center">
-  Quickly calculate CRC-32/MD5/SHA-256/SHA-512 checksums in Windows 11
+  Quickly calculate CRC-32/MD5/SHA-256/SHA-512 checksums in Windows 11.
 </p>
+
+<br />
 
 <p align="center">
   <a href="https://apps.microsoft.com/detail/9NZZHH7X25CG?referrer=appbadge&launch=true&cid=github&mode=full">
@@ -27,11 +29,11 @@ Hash verification and support for launching EM Hasher directly in Verify mode vi
 #### Screenshots
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="images/01_Main_Screen.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="images/02_Main_Screen_Results.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Results.png">
 </p>
 
 <br />
