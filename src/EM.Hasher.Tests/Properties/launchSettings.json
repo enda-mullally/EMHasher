@@ -1,7 +1,8 @@
 {
   "profiles": {
     "EM.Hasher.Tests (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "commandLineArgs": "--run"
     },
     "EM.Hasher.Tests (Unpackaged)": {
       "commandName": "Project"
