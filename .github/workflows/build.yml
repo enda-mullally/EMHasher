@@ -33,9 +33,6 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
-    #- name: Add VSTest to PATH
-    #  uses: darenm/Setup-VSTest@v1.3
-
     - name: Build (x64)
       working-directory: src/EM.Hasher
       run: |
@@ -83,14 +80,14 @@ jobs:
             Write-Warning "Package $packageName not found during cleanup."
         }
     #
-      
-    # Previous version via vstest
-    # run: vstest.console.exe /Platform:x64 bin/x64/Debug/net9.0-windows10.0.22621.0/EM.Hasher.Tests.dll --TestCaseFilter:"TestCategory!=UI"
-
+    
+    # The TestResults.txt should be located in the Appx folder after running the tests
     - name: Run unit tests (x64) - Display results
-      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
+      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0/AppX
       shell: cmd
-      run: type TestResults.txt
+      continue-on-error: true
+      run: |
+        type TestResults.txt
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
