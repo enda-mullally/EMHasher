@@ -2,7 +2,7 @@
   "profiles": {
     "EM.Hasher.Tests (Package)": {
       "commandName": "MsixPackage",
-      "commandLineArgs": "--run --logfolder \"D:/Test\""
+      "commandLineArgs": "--run --logfolder 'D:\\Test'"
     },
     "EM.Hasher.Tests (Unpackaged)": {
       "commandName": "Project"
