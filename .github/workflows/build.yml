@@ -68,7 +68,7 @@ jobs:
       continue-on-error: true
       run: |
         $packageName = "*EM.Hasher.Tests*"
-        $pkg = Get-AppxPackage | Where-Object { $_.InstallLocation -like $packageName }
+        $pkg = Get-AppxPackage -ErrorAction SilentlyContinue | Where-Object { $_.InstallLocation -like $packageName }
         if (-not $pkg) {
             Write-Error "Package $packageName not found. Did you run Add-AppxPackage?"
             exit 1
