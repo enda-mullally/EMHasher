@@ -51,18 +51,38 @@ jobs:
       run: |
            msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false           
     
-    - name: Run Unit tests (x64)
+    # The Unit test Appx must now be Registered in order to run the unit tests (post WinAppSDK 1.8)
+    - name: Register the EM.Hasher.Tests Appx
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
-      shell: cmd
+      shell: pwsh
+      run: |
+        Add-AppxPackage -Register AppxManifest.xml -ForceUpdateFromAnyVersion
+
+    - name: Run unit tests (x64)
+      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
+      shell: pwsh
       continue-on-error: true
       run: |
-        if exist TestResults.txt del TestResults.txt
-        EM.Hasher.Tests.exe --run
+        $packageName = "*EM.Hasher.Tests*"
+        $pkg = Get-AppxPackage | Where-Object { $_.InstallLocation -like $packageName }
+        if (-not $pkg) {
+            Write-Error "Package $packageName not found. Did you run Add-AppxPackage?"
+            exit 1
+        }
+        $familyName = $pkg.PackageFamilyName
+        Write-Host "Launching $familyName with --run"
+        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run"
+        if ($pkg) {
+            Write-Host "Uninstalling $familyName"
+            Remove-AppxPackage -Package $pkg.PackageFullName
+        } else {
+            Write-Warning "Package $packageName not found during cleanup."
+        }
       
-      # Previous version via vstest
-      # run: vstest.console.exe /Platform:x64 bin/x64/Debug/net9.0-windows10.0.22621.0/EM.Hasher.Tests.dll --TestCaseFilter:"TestCategory!=UI"
+    # Previous version via vstest
+    # run: vstest.console.exe /Platform:x64 bin/x64/Debug/net9.0-windows10.0.22621.0/EM.Hasher.Tests.dll --TestCaseFilter:"TestCategory!=UI"
 
-    - name: Run Unit tests (x64) - Results
+    - name: Run unit tests (x64) - Display results
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
       shell: cmd
       run: type TestResults.txt
