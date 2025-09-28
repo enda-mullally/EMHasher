@@ -46,12 +46,17 @@ jobs:
       run: |
            msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="ARM64" -p:PublishReadyToRun=false
 
-    - name: Build Unit Test Project (x64)
+    - name: Build unit tests project (x64)
       working-directory: src/EM.Hasher.Tests
       run: |
            msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false           
     
     # The Unit test Appx must now be Registered in order to run the unit tests (post WinAppSDK 1.8)
+    - name: Install the Windows App SDK Runtime 1.8
+      run: |
+        Invoke-WebRequest -Uri https://aka.ms/windowsappsdk/1.8/1.8.240829000/WindowsAppRuntimeInstall-x64.exe -OutFile winappsdk.exe
+        Start-Process .\winappsdk.exe -ArgumentList "/quiet /norestart" -Wait -NoNewWindow
+
     - name: Register the EM.Hasher.Tests Appx
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
       shell: pwsh
@@ -78,6 +83,7 @@ jobs:
         } else {
             Write-Warning "Package $packageName not found during cleanup."
         }
+    #
       
     # Previous version via vstest
     # run: vstest.console.exe /Platform:x64 bin/x64/Debug/net9.0-windows10.0.22621.0/EM.Hasher.Tests.dll --TestCaseFilter:"TestCategory!=UI"
