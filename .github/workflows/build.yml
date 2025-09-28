@@ -74,11 +74,14 @@ jobs:
         # Make the unit test results directory
         $currentDir = Get-Location
         Write-Host "Current Directory: $currentDir"
-        $resultsDir = "$currentDir/UnitTests"
+        $resultsDir = "$currentDir\UnitTests"
         Write-Host "Using test results dir: $resultsDir"
-        mkdir $resultsDir -ErrorAction SilentlyContinue | Out-Null
+        if (-not (Test-Path -Path $resultsDir)) {
+            New-Item -ItemType Directory -Path $resultsDir | Out-Null
+            Write-Host "Created directory: $resultsDir"
+        }
         #
-        Write-Host "Launching $familyName with --run"
+        Write-Host "Launching $familyName with --run --logfolder '$resultsDir'"
         Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run --logfolder '$resultsDir'"
         if ($pkg) {
             Write-Host "Uninstalling $familyName"
