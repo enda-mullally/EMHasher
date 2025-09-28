@@ -78,7 +78,10 @@ jobs:
         Write-Host "Using test results dir: $resultsDir"
         if (-not (Test-Path -Path $resultsDir)) {
             New-Item -ItemType Directory -Path $resultsDir | Out-Null
-            Write-Host "Created directory: $resultsDir"
+            Write-Host "Creating dir: $resultsDir"
+        }
+        if (Test-Path -Path $resultsDir) {
+            Write-Host "Results dir exists: $resultsDir"
         }
         #
         Write-Host "Launching $familyName with --run --logfolder '$resultsDir'"
@@ -107,4 +110,4 @@ jobs:
         retention-days: 1
         path: |
             src/EM.Hasher/bin
-            src/EM.Hasher.Tests/UnitTests
+            src/EM.Hasher.Tests
