@@ -52,10 +52,9 @@ jobs:
            msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false           
     
     # The Unit test Appx must now be Registered in order to run the unit tests (post WinAppSDK 1.8)
-    - name: Install the Windows App SDK Runtime 1.8
+    - name: Install the Windows App SDK Runtime (x64) via winget
       run: |
-        Invoke-WebRequest -Uri https://aka.ms/windowsappsdk/1.8/1.8.240829000/WindowsAppRuntimeInstall-x64.exe -OutFile winappsdk.exe
-        Start-Process .\winappsdk.exe -ArgumentList "/quiet /norestart" -Wait -NoNewWindow
+        winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
 
     - name: Register the EM.Hasher.Tests Appx
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
