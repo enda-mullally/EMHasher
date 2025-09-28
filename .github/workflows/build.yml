@@ -58,13 +58,13 @@ jobs:
 
     - name: Register the EM.Hasher.Tests Appx
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
-      shell: pwsh
+      shell: powershell
       run: |
         Add-AppxPackage -Register AppxManifest.xml -ForceUpdateFromAnyVersion
 
     - name: Run unit tests (x64)
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
-      shell: pwsh
+      shell: powershell
       continue-on-error: true
       run: |
         $packageName = "*EM.Hasher.Tests*"
