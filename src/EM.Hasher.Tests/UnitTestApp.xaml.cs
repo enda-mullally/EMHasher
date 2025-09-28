@@ -1,11 +1,12 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
+using Microsoft.VisualStudio.TestPlatform.TestExecutor;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -17,6 +18,9 @@ namespace EM.Hasher.Tests
     /// </summary>
     public partial class UnitTestApp : Application
     {
+        private const string LogFileName = "TestResults.txt";
+        private string _logFilePath = string.Empty;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -28,33 +32,63 @@ namespace EM.Hasher.Tests
 
         /// <summary>
         /// Invoked when the application is launched.
+        /// This is a little rudementry, but will do for now.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             var cmdArgs = Environment.GetCommandLineArgs();
+
             if (cmdArgs.Contains("--run"))
             {
+                // see if the folder location is provided in cmd args
+                bool folderLocationFlag = false;
+                foreach (var arg in cmdArgs)
+                {
+                    if (arg.StartsWith("--logfolder"))
+                    {
+                        folderLocationFlag = true; // assume next arg will be the folder location
+
+                        continue;
+                    }
+
+                    if (folderLocationFlag)
+                    {
+                        if (Directory.Exists(arg))
+                        {
+                            _logFilePath = arg;
+
+                            break;
+                        }
+                    }
+                }
+                //..
+
                 // Headless test runner path
                 m_window = new UnitTestAppWindow();
                 m_window.Activate();
                 UITestMethodAttribute.DispatcherQueue = m_window.DispatcherQueue;
 
                 int failures = await RunAllTestsAsync(); // your reflection-based runner
-                
+
+                if (failures > 0)
+                {
+                    Console.WriteLine($"{failures} tests failed. See TestResults.txt for details.");
+                }
+
                 Environment.Exit(failures);   // exit code = number of failures
 
                 return;
             }
 
-            Microsoft.VisualStudio.TestPlatform.TestExecutor.UnitTestClient.CreateDefaultUI();
+            UnitTestClient.CreateDefaultUI();
 
             m_window = new UnitTestAppWindow();
             m_window.Activate();
 
             UITestMethodAttribute.DispatcherQueue = m_window.DispatcherQueue;
 
-            Microsoft.VisualStudio.TestPlatform.TestExecutor.UnitTestClient.Run(Environment.CommandLine);
+            UnitTestClient.Run(Environment.CommandLine);
         }
 
         private Window? m_window;
@@ -84,9 +118,29 @@ namespace EM.Hasher.Tests
             }
         }
 
+        private string AppDataLogFile()
+        {
+            var logFile = string.IsNullOrEmpty(_logFilePath) ?
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "EM.Hasher.Tests",
+                    LogFileName)
+                : Path.Combine(_logFilePath, LogFileName);
+
+            var logDir = Path.GetDirectoryName(logFile);
+
+            if (!Directory.Exists(logDir))
+            {
+                Directory.CreateDirectory(logDir!);
+            }
+
+            return logFile;
+        }
+
         private async Task<int> RunAllTestsAsync()
         {
-            string logFile = Path.Combine(AppContext.BaseDirectory, "../TestResults.txt");
+            string logFile = AppDataLogFile();
+
             if (File.Exists(logFile))
             {
                 File.Delete(logFile);
@@ -125,7 +179,7 @@ namespace EM.Hasher.Tests
 
             File.AppendAllText(logFile, $"Tests complete. Failures: {failures}\n");
             System.Diagnostics.Debug.WriteLine($"Tests complete. Failures: {failures}");
-            
+
             return failures;
         }
     }

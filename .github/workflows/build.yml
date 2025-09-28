@@ -46,7 +46,7 @@ jobs:
     - name: Build unit tests project (x64)
       working-directory: src/EM.Hasher.Tests
       run: |
-           msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false           
+           msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
     
     # The Unit test Appx must now be Registered in order to run the unit tests (post WinAppSDK 1.8)
     - name: Install the Windows App SDK Runtime (x64) via winget
@@ -60,7 +60,7 @@ jobs:
         Add-AppxPackage -Register AppxManifest.xml -ForceUpdateFromAnyVersion
 
     - name: Run unit tests (x64)
-      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
+      working-directory: src/EM.Hasher.Tests
       shell: powershell
       continue-on-error: true
       run: |
@@ -71,8 +71,15 @@ jobs:
             exit 1
         }
         $familyName = $pkg.PackageFamilyName
+        # Make the unit test results directory
+        $currentDir = Get-Location
+        Write-Host "Current Directory: $currentDir"
+        $resultsDir = "$currentDir/UnitTests"
+        Write-Host "Using test results dir: $resultsDir"
+        mkdir $resultsDir -ErrorAction SilentlyContinue | Out-Null
+        #
         Write-Host "Launching $familyName with --run"
-        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run"
+        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run --logfolder '$resultsDir'"
         if ($pkg) {
             Write-Host "Uninstalling $familyName"
             Remove-AppxPackage -Package $pkg.PackageFullName
@@ -81,14 +88,12 @@ jobs:
         }
     #
     
-    # The TestResults.txt should be located in the Appx folder after running the tests
-    - name: Run unit tests (x64) - Display results
-      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
+    - name: Display unit test results
+      working-directory: src/EM.Hasher.Tests/UnitTests
       shell: cmd
       continue-on-error: true
       run: |
         if not exist TestResults.txt echo TestResults.txt not found
-        if not exist TestResults.txt dir
         if exist TestResults.txt type TestResults.txt
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
@@ -99,4 +104,4 @@ jobs:
         retention-days: 1
         path: |
             src/EM.Hasher/bin
-            src/EM.Hasher.Tests/bin
+            src/EM.Hasher.Tests/UnitTests
