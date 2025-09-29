@@ -87,9 +87,7 @@ jobs:
         #
         Write-Host "Launching $packageFamilyName with --run --logfolder `"$resultsDir`""
         Start-Process "shell:AppsFolder\$packageFamilyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
-        Write-Host "Waiting for test results..."
-        Wait-Process "EM.Hasher.Tests" -Verbose
-        Write-Host "App closed, continuing..."
+        Start-Sleep -Seconds 30        
         if ($pkg) {
             Write-Host "Uninstalling $packageFamilyName"
             Remove-AppxPackage -Package $pkg.PackageFullName
