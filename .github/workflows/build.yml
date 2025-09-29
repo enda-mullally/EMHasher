@@ -85,7 +85,7 @@ jobs:
         }
         #
         Write-Host "Launching $familyName with --run --logfolder `"$resultsDir`""
-        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run", "--logfolder", "`"$resultsDir`""
+        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
         if ($pkg) {
             Write-Host "Uninstalling $familyName"
             Remove-AppxPackage -Package $pkg.PackageFullName
