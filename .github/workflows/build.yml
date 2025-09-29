@@ -100,7 +100,6 @@ jobs:
     - name: Display unit test results
       working-directory: src/EM.Hasher.Tests/UnitTests
       shell: cmd
-      continue-on-error: true
       run: |
         if not exist TestResults.txt echo TestResults.txt not found
         if exist TestResults.txt type TestResults.txt
