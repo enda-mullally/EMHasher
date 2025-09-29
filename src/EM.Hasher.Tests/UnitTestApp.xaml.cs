@@ -19,6 +19,8 @@ namespace EM.Hasher.Tests
     public partial class UnitTestApp : Application
     {
         private const string LogFileName = "TestResults.txt";
+        private const string FailedFileName = "FailedTests.txt";
+
         private string _logFilePath = string.Empty;
 
         /// <summary>
@@ -73,7 +75,8 @@ namespace EM.Hasher.Tests
 
                 if (failures > 0)
                 {
-                    Console.WriteLine($"{failures} tests failed. See TestResults.txt for details.");
+                    File.WriteAllText(AppDataLogFile(FailedFileName), $"{failures} tests failed. See {LogFileName} for details.");
+                    System.Diagnostics.Debug.WriteLine($"{failures} tests failed. See TestResults.txt for details.");
                 }
 
                 Environment.Exit(failures);   // exit code = number of failures
@@ -118,14 +121,14 @@ namespace EM.Hasher.Tests
             }
         }
 
-        private string AppDataLogFile()
+        private string AppDataLogFile(string fileName)
         {
             var logFile = string.IsNullOrEmpty(_logFilePath) ?
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "EM.Hasher.Tests",
-                    LogFileName)
-                : Path.Combine(_logFilePath, LogFileName);
+                    fileName)
+                : Path.Combine(_logFilePath, fileName);
 
             var logDir = Path.GetDirectoryName(logFile);
 
@@ -139,7 +142,7 @@ namespace EM.Hasher.Tests
 
         private async Task<int> RunAllTestsAsync()
         {
-            string logFile = AppDataLogFile();
+            string logFile = AppDataLogFile(LogFileName);
 
             if (File.Exists(logFile))
             {
@@ -165,14 +168,12 @@ namespace EM.Hasher.Tests
                         await RunTestMethodAsync(method, instance!);
                         File.AppendAllText(logFile, $"[PASS] {testClass.Name}.{method.Name}\n");
                         System.Diagnostics.Debug.WriteLine($"[PASS] {testClass.Name}.{method.Name}");
-                        //Console.WriteLine($"[PASS] {testClass.Name}.{method.Name}");
                     }
                     catch (Exception ex)
                     {
                         failures++;
                         File.AppendAllText(logFile, $"[FAIL] {testClass.Name}.{method.Name} - {ex.InnerException?.Message ?? ex.Message}\n");
                         System.Diagnostics.Debug.WriteLine($"[FAIL] {testClass.Name}.{method.Name} - {ex.InnerException?.Message ?? ex.Message}");
-                        //Console.WriteLine($"[FAIL] {testClass.Name}.{method.Name} - {ex.InnerException?.Message ?? ex.Message}");
                     }
                 }
             }

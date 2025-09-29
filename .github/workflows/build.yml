@@ -87,7 +87,8 @@ jobs:
         #
         Write-Host "Launching $packageFamilyName with --run --logfolder `"$resultsDir`""
         Start-Process "shell:AppsFolder\$packageFamilyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
-        Start-Sleep -Seconds 30        
+        Write-Host "Waiting for results..."
+        Start-Sleep -Seconds 30
         if ($pkg) {
             Write-Host "Uninstalling $packageFamilyName"
             Remove-AppxPackage -Package $pkg.PackageFullName
@@ -103,6 +104,13 @@ jobs:
       run: |
         if not exist TestResults.txt echo TestResults.txt not found
         if exist TestResults.txt type TestResults.txt
+        if exist FailedTests.txt (
+            echo.
+            echo Failed Tests!
+            exit 1
+        ) else (
+            echo All tests passed.
+        )
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
@@ -112,4 +120,4 @@ jobs:
         retention-days: 1
         path: |
             src/EM.Hasher/bin
-            src/EM.Hasher.Tests
+            src/EM.Hasher.Tests/UnitTests
