@@ -32,8 +32,8 @@
 	<PackageReference Include="Crc32.NET" Version="1.2.0" />
 	<PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
-	<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250907003" />
+	<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6584" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="9.0.9" />
     <PackageReference Include="WinUIEx" Version="2.8.0" />
   </ItemGroup>
