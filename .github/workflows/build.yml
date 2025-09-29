@@ -106,7 +106,7 @@ jobs:
         if exist TestResults.txt type TestResults.txt
         if exist FailedTests.txt (
             echo.
-            echo Failed Tests!
+            echo Failed tests! See above.
             exit 1
         ) else (
             echo All tests passed.
