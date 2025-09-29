@@ -101,11 +101,15 @@ jobs:
       working-directory: src/EM.Hasher.Tests/UnitTests
       shell: cmd
       run: |
-        if not exist TestResults.txt echo TestResults.txt not found
+        if not exist TestResults.txt (
+            echo.
+            echo TestResults.txt not found. Failed to run unit tests.
+            exit 1
+        )
         if exist TestResults.txt type TestResults.txt
         if exist FailedTests.txt (
             echo.
-            echo Failed tests! See above.
+            echo Failed unit tests! See above.
             exit 1
         ) else (
             echo All tests passed.
