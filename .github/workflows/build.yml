@@ -66,11 +66,12 @@ jobs:
       run: |
         $packageName = "*EM.Hasher.Tests*"
         $pkg = Get-AppxPackage -ErrorAction SilentlyContinue | Where-Object { $_.InstallLocation -like $packageName }
-        if (-not $pkg) {
+        Write-Host "Found package: $pkg"
+        (-not $pkg) {
             Write-Error "Package $packageName not found. Did you run Add-AppxPackage?"
             exit 1
         }
-        $familyName = $pkg.PackageFamilyName
+        $packageFamilyName = $pkg.PackageFamilyName
         # Make the unit test results directory
         $currentDir = Get-Location
         Write-Host "Current Directory: $currentDir"
@@ -84,10 +85,13 @@ jobs:
             Write-Host "Results dir exists: $resultsDir"
         }
         #
-        Write-Host "Launching $familyName with --run --logfolder `"$resultsDir`""
-        Start-Process "shell:AppsFolder\$familyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
+        Write-Host "Launching $packageFamilyName with --run --logfolder `"$resultsDir`""
+        Start-Process "shell:AppsFolder\$packageFamilyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
+        Write-Host "Waiting for test results..."
+        Wait-Process -Name $pkg.Name -Verbose
+        Write-Host "App closed, continuing..."
         if ($pkg) {
-            Write-Host "Uninstalling $familyName"
+            Write-Host "Uninstalling $packageFamilyName"
             Remove-AppxPackage -Package $pkg.PackageFullName
         } else {
             Write-Warning "Package $packageName not found during cleanup."
