@@ -41,7 +41,7 @@ Hash verification and support for launching EM Hasher directly in Verify mode vi
 ## Release history
 
 ### 08/May/2025
-v1.1.47 - First release. Enjoy! - Native (AOT) compiled app, targeting X64 and ARM64.
+v1.1.47 - First public release. Native (AOT) compiled app, targeting X64 and ARM64.
 
 ### 13/May/2025
 v1.1.48 - Performance release! Managed to squeeze out a 50% perf improvement in some cases.
