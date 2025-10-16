@@ -74,4 +74,4 @@ v1.1.59 - Added third party license notices -> About section.
 v1.1.62 - Upgraded to WinAppSDK 1.8 and added improved CopyButton control (copy hash value).
 
 ### 06/Oct/2025 ###
-v1.1.63 - Upgraded to WinAppSDK 1.8.2 and updated UI.
+v1.1.63 - Upgraded to WinAppSDK 1.8.1 and updated UI.
