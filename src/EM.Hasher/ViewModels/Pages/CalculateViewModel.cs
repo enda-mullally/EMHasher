@@ -17,7 +17,9 @@
  */
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.File;
@@ -26,6 +28,8 @@ using EM.Hasher.ViewModels.Controls;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.IO;
 
 namespace EM.Hasher.ViewModels.Pages;
 
@@ -33,6 +37,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 {
     private readonly IFileDetailsProvider _fileDetailsProvider;
     public ObservableCollection<FileHashControlViewModel> FileHashControlViewModels { get; } = [];
+    private string _selectedFileName = string.Empty;
 
     public CalculateViewModel(
         IFileDetailsProvider fileDetailsProvider,
@@ -64,14 +69,16 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 return;
             }
 
+            _selectedFileName = selectedFileName;
+
             WeakReferenceMessenger.Default.Send(
                 new HomeFileSelectedMessage(true));
 
             WeakReferenceMessenger.Default.Send(
-                new CalculateAllFileHashRequestMessage(selectedFileName, false));
+                new CalculateAllFileHashRequestMessage(_selectedFileName, false));
 
             var fileDetailsModel = await
-                _fileDetailsProvider.GetFileDetailsAsync(selectedFileName);
+                _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
 
             if (fileDetailsModel != null)
             {
@@ -105,5 +112,33 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     {
         WeakReferenceMessenger.Default.Send(
             new SetAppSubTitleMessage(appSubTitle));
+    }
+
+    [RelayCommand]
+    private async Task OpenFileLocationAsync()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(_selectedFileName))
+            {
+                return;
+            }
+
+            await App.MainWindow!.DispatcherQueue.ExtEnqueueAsync(async () =>
+            {
+                var folderPath = Path.GetDirectoryName(_selectedFileName);
+                if (folderPath != null && Directory.Exists(folderPath))
+                {
+                    await Task.Run(() =>
+                    {
+                        // Open file explorer and select the file
+                        Process.Start("explorer.exe", $"/e, /select,\"{_selectedFileName}\"");
+                    });
+                }
+            });
+        }
+        finally
+        {
+        }
     }
 }

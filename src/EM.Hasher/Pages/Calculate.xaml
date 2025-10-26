@@ -54,13 +54,29 @@
 
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="File Information" />
 
-                <controls:SettingsCard ContentAlignment="Left">
-                    <localcontrols:FileInformationControl
-                        x:Name="uxFileControl"
-                        FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
-                        FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
-                        FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
-                        FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}" />
+                <controls:SettingsCard Margin="0,0,0,4">
+                    <controls:SettingsCard.Header>
+                        <localcontrols:FileInformationControl
+                            x:Name="uxFileControl"
+                            FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
+                            FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
+                            FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
+                            FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}" />
+                    </controls:SettingsCard.Header>
+                    <localcontrols:HandHoverGrid>
+                        <localcontrols:IconButton
+                            Width="40"
+                            Height="40"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
+                            ToolTipService.ToolTip="Open file location">
+                            <localcontrols:IconButton.Icon>
+                                <FontIcon Glyph="&#xE8E5;" />
+                                <!--  Open file icon  -->
+                            </localcontrols:IconButton.Icon>
+                        </localcontrols:IconButton>
+                    </localcontrols:HandHoverGrid>
                 </controls:SettingsCard>
 
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Information" />
@@ -74,6 +90,8 @@
                                 </controls:SettingsCard.Header>
                                 <localcontrols:HandHoverGrid>
                                     <localcontrols:CopyButton
+                                        Width="40"
+                                        Height="40"
                                         Command="{x:Bind CopyHashCommand, Mode=OneWay}"
                                         ToolTipService.ToolTip="Copy hash to clipboard"
                                         Visibility="{x:Bind IsCalculationComplete, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />

@@ -9,7 +9,7 @@
     Style="{StaticResource DefaultButtonStyle}"
     mc:Ignorable="d">
 
-    <StackPanel Padding="0,5,0,5" Orientation="Horizontal">
+    <StackPanel Padding="0,0,0,0" Orientation="Horizontal">
         <Viewbox Height="16" Child="{x:Bind Icon}" />
     </StackPanel>
 </Button>
