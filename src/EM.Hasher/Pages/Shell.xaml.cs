@@ -235,7 +235,7 @@ namespace EM.Hasher.Pages
                 buttonHoverBackgroundColor = ColorHelper.GetColorFromHex("#09000000");
             }
 
-            //res["WindowCaptionForeground"] = buttonForegroundColor;
+            res["WindowCaptionForeground"] = buttonForegroundColor;
 
             window.AppWindow.TitleBar.ButtonForegroundColor = buttonForegroundColor;
             window.AppWindow.TitleBar.ButtonHoverForegroundColor = buttonHoverForegroundColor;

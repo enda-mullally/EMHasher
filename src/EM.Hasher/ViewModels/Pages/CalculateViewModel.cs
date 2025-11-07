@@ -119,8 +119,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(_selectedFileName))
+            if (string.IsNullOrWhiteSpace(_selectedFileName) || !File.Exists(_selectedFileName))
             {
+                // TODO: Show error tip/popup if the file no longer exists 
                 return;
             }
 
