@@ -24,7 +24,7 @@ namespace EM.Hasher.Converters
 {
     public partial class DropColorBooleanConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, string languiage)
+        public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is bool boolValue)
             {
