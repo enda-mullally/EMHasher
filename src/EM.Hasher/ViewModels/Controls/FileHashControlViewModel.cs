@@ -112,8 +112,8 @@ public partial class FileHashControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsError { get; private set; } = false;
 
-    //[ObservableProperty]
-    //public partial bool IsTipOpen { get; private set; } = false;
+    [ObservableProperty]
+    public partial bool IsTipOpen { get; private set; } = false;
 
     private async Task<bool> StartHashCalculationAsync()
     {
@@ -181,9 +181,9 @@ public partial class FileHashControlViewModel : ObservableObject
                 hashValuePackage.SetText(DisplayText!);
                 Clipboard.SetContent(hashValuePackage);
 
-                //IsTipOpen = true;
-                //await Task.Delay(2000); // Display for 2 seconds
-                //IsTipOpen = false;
+                IsTipOpen = true;
+                await Task.Delay(2000); // Display for 2 seconds
+                IsTipOpen = false;
             }
         }
         finally

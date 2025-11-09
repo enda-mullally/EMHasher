@@ -66,15 +66,16 @@
                 Text="{x:Bind ViewModel.DisplayText, Mode=OneWay}"
                 TextWrapping="Wrap"
                 Visibility="{x:Bind ViewModel.IsError, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
-                <!--<ToolTipService.ToolTip>
+                <ToolTipService.ToolTip>
                     <ToolTip
                         HorizontalAlignment="Center"
-                        Background="{ThemeResource SystemAccentColorLight2}"
+                        Background="{ThemeResource SystemAccentColor}"
                         Content="Copied!"
+                        Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"
                         IsOpen="{x:Bind ViewModel.IsTipOpen, Mode=OneWay}"
                         Placement="Bottom"
                         VerticalOffset="4" />
-                </ToolTipService.ToolTip>-->
+                </ToolTipService.ToolTip>
             </TextBlock>
 
             <TextBlock
