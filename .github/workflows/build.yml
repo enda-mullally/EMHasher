@@ -7,18 +7,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
-    #env:
-    #  Solution_Name: EM.Hasher.sln                                                 # Replace with your solution name, i.e. MyWpfApp.sln.
-    #  Test_Project_Path: src\EM.Hasher.Tests\EM.Hasher.Tests.csproj                # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-    #  Wap_Project_Directory: src\EM.Hasher (Package)                               # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-    #  Wap_Project_Path: src\EM.Hasher (Package)\EM.Hasher (Package).wapproj        # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
-
+    runs-on: windows-latest
+    env:
+      TargetMinWinVersion: net9.0-windows10.0.22621.0
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v5
@@ -54,7 +47,7 @@ jobs:
         winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
 
     - name: Register the EM.Hasher.Tests Appx
-      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/net9.0-windows10.0.22621.0
+      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetMinWinVersion}}
       shell: powershell
       run: |
         Add-AppxPackage -Register AppxManifest.xml -ForceUpdateFromAnyVersion
