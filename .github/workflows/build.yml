@@ -1,4 +1,4 @@
-name: .NET 9.0 Build (x64|ARM64) and Unit Tests (x64)
+name: .NET 10.0 Build (x64|ARM64) and Unit Tests (x64)
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      TargetMinWinVersion: net9.0-windows10.0.22621.0
+      TargetMinWinVersion: net10.0-windows10.0.22621.0
     
     steps:
     - name: Checkout
@@ -18,10 +18,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install .NET 9
+    - name: Install .NET 10
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 10.0.x
         
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
