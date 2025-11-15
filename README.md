@@ -75,3 +75,6 @@ v1.1.62 - Upgraded to WinAppSDK 1.8 and added improved CopyButton control (copy 
 
 ### 06/Oct/2025 ###
 v1.1.63 - Upgraded to WinAppSDK 1.8.1 and updated UI.
+
+### 15/Nov/2025 ###
+v1.1.64 - Upgraded packages + .NET 10 upgrade & Added 'Show file location' button to the File Information tab
