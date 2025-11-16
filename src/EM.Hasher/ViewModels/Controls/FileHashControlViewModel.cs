@@ -47,7 +47,7 @@ public partial class FileHashControlViewModel : ObservableObject
             if (!m.OnlyCalculateIfNeeded)
             {
                 // New file is selected, restart hash calculation.
-                IsCalculationComplete = false;
+                IsCalculationComplete = ShowVirusTotalSearch = false;
                 _fileName = m.FileName;
                 _ = StartHashCalculationAsync();
             }
@@ -96,6 +96,9 @@ public partial class FileHashControlViewModel : ObservableObject
 
     [ObservableProperty]
     public partial bool IsCalculationComplete { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial bool ShowVirusTotalSearch { get; private set; } = false;
 
     [ObservableProperty]
     public partial bool CalculationInProgress { get; private set; } = false;
@@ -147,6 +150,8 @@ public partial class FileHashControlViewModel : ObservableObject
                         : _hashValue.ToLowerInvariant();
 
             IsCalculationComplete = result = true;
+
+            ShowVirusTotalSearch = AlgorithmName == "SHA-256";
         }
         catch (Exception ex)
         {
@@ -184,6 +189,29 @@ public partial class FileHashControlViewModel : ObservableObject
                 IsTipOpen = true;
                 await Task.Delay(2000); // Display for 2 seconds
                 IsTipOpen = false;
+            }
+        }
+        finally
+        {
+        }
+    }
+
+    [RelayCommand]
+    private async Task SearchHash()
+    {
+        try
+        {
+            // Open the default web browser and search the hash value on VirusTotal
+            if (string.IsNullOrEmpty(DisplayText))
+            {
+                return;
+            }
+
+            if (IsCalculationComplete && !IsError)
+            {
+                string virusTotalUrl = $"https://www.virustotal.com/gui/search/{DisplayText}";
+                var uri = new Uri(virusTotalUrl);
+                await Windows.System.Launcher.LaunchUriAsync(uri);
             }
         }
         finally
