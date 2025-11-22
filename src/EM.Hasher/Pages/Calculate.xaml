@@ -44,7 +44,7 @@
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
 
     </Page.Resources>
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"> <!-- disabled -->
         <Grid>
             <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
                 <win:StackPanel.ChildrenTransitions>
@@ -88,14 +88,32 @@
                                 <controls:SettingsCard.Header>
                                     <localcontrols:FileHashControl ViewModel="{x:Bind Mode=OneWay}" />
                                 </controls:SettingsCard.Header>
-                                <localcontrols:HandHoverGrid>
-                                    <localcontrols:CopyButton
-                                        Width="40"
-                                        Height="40"
-                                        Command="{x:Bind CopyHashCommand, Mode=OneWay}"
-                                        ToolTipService.ToolTip="Copy hash to clipboard"
-                                        Visibility="{x:Bind IsCalculationComplete, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
-                                </localcontrols:HandHoverGrid>
+                                <StackPanel Orientation="Horizontal">
+                                    <localcontrols:HandHoverGrid>
+                                        <localcontrols:IconButton
+                                            Visibility="{x:Bind ShowVirusTotalSearch, Converter={StaticResource BoolToVisibility}, Mode=OneWay}"
+                                            Margin="0,0,6,0"
+                                            Width="40"
+                                            Height="40"
+                                            Command="{x:Bind SearchHashCommand, Mode=OneWay}"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            ToolTipService.ToolTip="Search this hash on VirusTotal">
+                                            <localcontrols:IconButton.Icon>
+                                                <FontIcon Glyph="&#xE721;" />
+                                                <!--  Search icon  -->
+                                            </localcontrols:IconButton.Icon>
+                                        </localcontrols:IconButton>
+                                    </localcontrols:HandHoverGrid>
+                                    <localcontrols:HandHoverGrid>
+                                        <localcontrols:CopyButton
+                                            Width="40"
+                                            Height="40"
+                                            Command="{x:Bind CopyHashCommand, Mode=OneWay}"
+                                            ToolTipService.ToolTip="Copy hash to clipboard"
+                                            Visibility="{x:Bind IsCalculationComplete, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                                    </localcontrols:HandHoverGrid>
+                                </StackPanel>
                             </controls:SettingsCard>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
