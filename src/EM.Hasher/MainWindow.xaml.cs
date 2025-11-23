@@ -45,9 +45,6 @@ namespace EM.Hasher
 
         private static string FindAssetsFolder()
         {
-            // The assets folder is normally located in the same directory as the executable.
-            // However this packaged and deployed locally app may have a different structure, we may need
-            // traverse to the parent folder to see the correct assets folder.
             string assetsFolder = Path.Combine(AppContext.BaseDirectory, "Assets");
             if (Directory.Exists(assetsFolder))
             {
