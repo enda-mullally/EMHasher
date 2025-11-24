@@ -78,3 +78,6 @@ v1.1.63 - Upgraded to WinAppSDK 1.8.1 and updated UI.
 
 ### 15/Nov/2025 ###
 v1.1.64 - Upgraded packages + .NET 10 upgrade & Added 'Show file location' button to the File Information tab
+
+### 24/Nov/2025 ###
+v1.1.65 - Added a 'Search this hash on VirusTotal' button to the SHA-256 calculation tab. Note: Only the hash value itself is searched.
