@@ -18,7 +18,6 @@
 
 using EM.Hasher.Models;
 using Humanizer;
-using Humanizer.Bytes;
 using System.IO;
 using System.Threading.Tasks;
 
