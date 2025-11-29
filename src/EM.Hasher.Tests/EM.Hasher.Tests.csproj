@@ -56,6 +56,14 @@
   <ItemGroup>
     <ProjectReference Include="..\EM.Hasher\EM.Hasher.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="TestFiles\TestFile.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="TestFiles\ZeroByteFile.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <!-- 
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
