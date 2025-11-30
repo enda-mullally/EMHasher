@@ -2,7 +2,7 @@ using EM.Hasher.Services.Application;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Services.Settings
+namespace EM.Hasher.Tests.Services.Application
 {
     [TestClass]
     public class AppVersionTests

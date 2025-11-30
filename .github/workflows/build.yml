@@ -1,9 +1,14 @@
-name: .NET 10.0 Build (x64|ARM64) and Unit Tests (x64)
+name: .NET 10.0 Build (x64|ARM64) and Unit Tests
 
 on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+        fullbuild:
+          type: boolean
+          description: Perform a full build
+          default: false
 
 jobs:
   build:
@@ -22,38 +27,42 @@ jobs:
       with:
         dotnet-version: 10.0.x
         
-    - name: Setup MSBuild.exe
+    - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
-    - name: Build (x64)
+    - name: Build EM Hasher (x64)
       working-directory: src/EM.Hasher
       run: |
            msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="x64" -p:PublishReadyToRun=false
 
-    - name: Build (ARM64)
+    - name: Build EM Hasher (ARM64)
       working-directory: src/EM.Hasher
       run: |
            msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="ARM64" -p:PublishReadyToRun=false
 
-    - name: Build unit tests project (x64)
+    - name: Build Unit Tests Project (x64)
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests
       run: |
            msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
     
-    # The Unit test Appx must now be Registered in order to run the unit tests (post WinAppSDK 1.8)
+    # The Unit test Appx must now be Registered in order to run unit tests (post WinAppSDK 1.8)
     - name: Install the Windows App SDK Runtime (x64) via winget
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: |
         winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
         # Force AppX subsystem to refresh registration cache
         Get-AppxPackage *WindowsAppRuntime*
 
     - name: Register the EM.Hasher.Tests Appx
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetMinWinVersion}}
       shell: powershell
       run: |
         powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-AppxPackage -Register (Resolve-Path .\AppxManifest.xml) -ForceUpdateFromAnyVersion"
 
-    - name: Run unit tests (x64)
+    - name: Run Unit Tests via Appx --run
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests
       shell: powershell
       continue-on-error: true
@@ -78,7 +87,6 @@ jobs:
         if (Test-Path -Path $resultsDir) {
             Write-Host "Results dir exists: $resultsDir"
         }
-        #
         Write-Host "Launching $packageFamilyName with --run --logfolder `"$resultsDir`""
         Start-Process "shell:AppsFolder\$packageFamilyName!App" -ArgumentList "--run", "--logfolder", "$resultsDir"
         Write-Host "Waiting for results..."
@@ -89,9 +97,9 @@ jobs:
         } else {
             Write-Warning "Package $packageName not found during cleanup."
         }
-    #
-    
-    - name: Display unit test results
+        
+    - name: Display Unit Test Results
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests/UnitTests
       shell: cmd
       run: |
@@ -109,8 +117,8 @@ jobs:
             echo All tests passed.
         )
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
+    - name: Upload Build Artifacts
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       uses: actions/upload-artifact@v5
       with:
         name: Build Artifacts
