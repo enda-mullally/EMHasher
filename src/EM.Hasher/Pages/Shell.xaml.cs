@@ -92,69 +92,6 @@ namespace EM.Hasher.Pages
             ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
         }
 
-        // TODO
-        public void HandleActivation(AppActivationArguments activationArgs)
-        {
-            //if (activationArgs.Kind == ExtendedActivationKind.Protocol)
-            //{
-            //    var protocolArgs = activationArgs.Data as ProtocolActivatedEventArgs;
-            //    if (protocolArgs != null)
-            //    {
-            //        string uri = protocolArgs.Uri.AbsoluteUri;
-            //        System.Diagnostics.Debug.WriteLine($"Protocol URI handled in MainWindow: {uri}");
-
-            //        // Update the UI or handle the URI logic here
-            //        System.Diagnostics.Debug.WriteLine($"Activated with URI: {uri}");
-
-            //        //uxtxtActivated.Text = $"Activated with URI: {uri}";
-
-            //        //--
-
-            //        // Create the Uri object
-            //        var protocolUri = new Uri(uri);
-
-            //        // Access the command from the host (e.g., "calculate")
-            //        string command = protocolUri.Host; // Extracts the host, which is the command part here
-
-            //        // Access query parameters (file and hash)
-            //        var query = protocolUri.Query;
-            //        var queryParams = new WwwFormUrlDecoder(query);
-            //        string file = queryParams.GetFirstValueByName("file");
-            //        string hash = queryParams.GetFirstValueByName("hash");
-
-            //        // Output the values
-            //        System.Diagnostics.Debug.WriteLine($"Command: {command}");
-            //        System.Diagnostics.Debug.WriteLine($"File: {file}");
-            //        System.Diagnostics.Debug.WriteLine($"Hash: {hash}");
-
-            //        // Handle the command (e.g., open the file)
-            //        //if (command == "calculate")
-            //        {
-            //            // Process the 'open' command, use 'file' and 'hash'
-            //            //uxtxtParsedQuery.Text = $"calculating file: {file} with hash: {hash}, command: {command}";
-            //        }
-
-            //        // uri filename encoding concerns ...
-
-            //        //public string EncodeFilePath(string filePath)
-            //        //{
-            //        //    // Encode the file path for URL query parameters
-            //        //    return Uri.EscapeDataString(filePath);
-            //        //}
-
-            //        // .. to encode, needed from Shell launcher...
-            //        //string filePath = "d:/my folder/test file.txt";
-            //        //string encodedFilePath = Uri.EscapeDataString(filePath);
-
-            //        //Console.WriteLine(encodedFilePath);
-
-            //        // NEEDED HERE, to decode filename path correctly
-            //        //string decodedFilePath = Uri.UnescapeDataString(encodedFilePath);
-            //        //Console.WriteLine(decodedFilePath); // Outputs: d:/my folder/test file.txt
-            //    }
-            //}
-        }
-
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected)

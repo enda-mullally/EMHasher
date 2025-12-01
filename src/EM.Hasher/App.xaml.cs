@@ -77,7 +77,7 @@ namespace EM.Hasher
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             try
             {
