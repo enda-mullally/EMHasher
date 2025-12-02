@@ -41,7 +41,7 @@ namespace EM.Hasher.Services
 
                 return;
             }
-                    
+
             var sourceExists = AppSourceExists(appSourceName);
             var sn = sourceExists ? appSourceName : "Application";
 
@@ -54,14 +54,14 @@ namespace EM.Hasher.Services
             {
                 _logPrefix = string.Empty;
                 _eventLog = new EventLog($"{logName}");
-            }            
+            }
 
             _eventLog.Source = sn;
         }
 
         private static bool AppSourceExists(string sourceName)
         {
-            string initMessage = "EM Hasher App Init";
+            var initMessage = "EM Hasher App Init";
 
             try
             {

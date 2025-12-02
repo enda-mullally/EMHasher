@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.Models;
 using System.Threading.Tasks;
+using EM.Hasher.Models;
 
 namespace EM.Hasher.Services.License
 {

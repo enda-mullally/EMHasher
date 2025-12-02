@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Linq;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Helpers;
 using EM.Hasher.Messages.UI;
@@ -25,9 +27,6 @@ using EM.Hasher.ViewModels.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.Windows.AppLifecycle;
-using System;
-using System.Linq;
 
 namespace EM.Hasher.Pages
 {
@@ -52,7 +51,7 @@ namespace EM.Hasher.Pages
 
             App.MainWindow!.SetTitleBar(uxTitleBar);
 
-            this.InitializeComponent();
+            InitializeComponent();
 
             uxTitleBar.ActualThemeChanged += UxTitleBar_ActualThemeChanged;
             uxTitleBar.Loaded += UxTitleBar_Loaded;
@@ -61,7 +60,7 @@ namespace EM.Hasher.Pages
 
             // I need to use code behind to manually set the binding for the settings item
             // which can't be done via x:bind
-            navigationView.LayoutUpdated += this.OnNavigationViewLayoutUpdated!;
+            navigationView.LayoutUpdated += OnNavigationViewLayoutUpdated!;
         }
 
         private void OnNavigationViewLayoutUpdated(object sender, object e)
@@ -69,11 +68,11 @@ namespace EM.Hasher.Pages
             if (navigationView.SettingsItem is NavigationViewItem settingsItem)
             {
                 // Do this only once
-                navigationView.LayoutUpdated -= this.OnNavigationViewLayoutUpdated!;
+                navigationView.LayoutUpdated -= OnNavigationViewLayoutUpdated!;
 
                 var binding = new Binding
                 {
-                    Source = this.UiStateViewModel,
+                    Source = UiStateViewModel,
                     Path = new PropertyPath("IsSettingsTabEnabled"),
                     Mode = BindingMode.OneWay
                 };
@@ -107,7 +106,7 @@ namespace EM.Hasher.Pages
                 var selectedItem = args.SelectedItem as NavigationViewItem;
                 if (selectedItem != null)
                 {
-                    string selectedItemTag = ((string)selectedItem.Tag);
+                    var selectedItemTag = ((string)selectedItem.Tag);
                     sender.Header = selectedItem.Content;
 
                     // Use a switch statement to avoid reflection
@@ -159,7 +158,7 @@ namespace EM.Hasher.Pages
             Windows.UI.Color buttonHoverForegroundColor;
             Windows.UI.Color buttonHoverBackgroundColor;
 
-            if (this.ActualTheme == ElementTheme.Dark)
+            if (ActualTheme == ElementTheme.Dark)
             {
                 buttonForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
                 buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");

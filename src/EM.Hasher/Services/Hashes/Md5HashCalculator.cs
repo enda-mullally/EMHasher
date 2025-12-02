@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 
 using System;
 using System.IO;
@@ -35,7 +35,7 @@ namespace EM.Hasher.Services.Hashes
                 FileShare.Read,
                 IHashCalculator.BufferSize,
                 useAsync: true);
-            
+
             using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
             var hashBytes = await md5.ComputeHashAsync(bufferedStream);

@@ -23,12 +23,12 @@ namespace EM.Hasher.Tests.Models
                 IsTrial = true,
                 Data = "TestData"
             };
-                        
+
             // Assert
             sut.ExpirationDate.Should().Be(testDate);
             sut.IsActive.Should().BeTrue();
             sut.IsTrial.Should().BeTrue();
-            sut.ToString().Should().Be("IsActive=True, IsTrial=True, ExpirationDate=" + testDate.ToString()+", Data=TestData");
+            sut.ToString().Should().Be("IsActive=True, IsTrial=True, ExpirationDate=" + testDate.ToString() + ", Data=TestData");
         }
     }
 }

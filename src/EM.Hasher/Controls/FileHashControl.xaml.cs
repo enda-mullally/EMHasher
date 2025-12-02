@@ -39,7 +39,7 @@ namespace EM.Hasher.Controls
 
         public FileHashControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

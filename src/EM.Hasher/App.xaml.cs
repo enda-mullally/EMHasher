@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using EM.Hasher.DI;
 using EM.Hasher.Helpers;
 using EM.Hasher.Pages;
@@ -24,7 +25,6 @@ using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
-using System;
 using WinUIEx;
 
 namespace EM.Hasher
@@ -48,9 +48,15 @@ namespace EM.Hasher
             return service;
         }
 
-        public static WindowEx? MainWindow { get; private set; }
+        public static WindowEx? MainWindow
+        {
+            get; private set;
+        }
 
-        public static UIElement? AppTitlebar { get; set; }
+        public static UIElement? AppTitlebar
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -58,10 +64,10 @@ namespace EM.Hasher
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             var eventLog = GetService<IEventLogWriter>();
-            
+
             UnhandledException += App_UnhandledException;
         }
 
@@ -101,11 +107,11 @@ namespace EM.Hasher
                     {
                         settingsProvider.IsTrialMode = true;
                     }
-                    
+
                     var shell = App.GetService<Shell>();
 
                     MainWindow.Content = shell;
-                }                
+                }
 
                 // Apply the saved theme
                 var theme = settingsProvider.SelectedTheme switch

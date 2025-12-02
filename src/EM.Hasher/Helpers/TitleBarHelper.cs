@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI;
-using Microsoft.UI.Xaml;
 using System;
 using System.Runtime.InteropServices;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 
@@ -88,7 +88,7 @@ internal class TitleBarHelper
 
             App.MainWindow!.AppWindow.TitleBar.BackgroundColor = Colors.Transparent;
 
-            nint hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow!);
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow!);
             if (hwnd == GetActiveWindow())
             {
                 SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);

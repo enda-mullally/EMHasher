@@ -5,10 +5,10 @@
 // https://github.com/CommunityToolkit/WindowsCommunityToolkit
 // Modified to work with AOT & trimming by Enda Mullally 2025
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EM.Hasher.Controls;
 
@@ -30,8 +30,8 @@ public sealed partial class CopyButton : Button
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ControlTemplate))]
     public CopyButton()
     {
-        this.DefaultStyleKey = typeof(CopyButton);
-        this.Content = new FontIcon
+        DefaultStyleKey = typeof(CopyButton);
+        Content = new FontIcon
         {
             Glyph = "\uE8C8", // Automatically set a copy glyph
             FontFamily = new("Segoe MDL2 Assets"),

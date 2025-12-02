@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.IO;
 using CommunityToolkit.Mvvm.Messaging;
-using EM.Hasher.Messages.UI;
 using EM.Hasher.Controls;
+using EM.Hasher.Messages.UI;
 using EM.Hasher.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.IO;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 
@@ -40,7 +40,7 @@ namespace EM.Hasher.Pages
         {
             ViewModel = App.GetService<HomeViewModel>();
 
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void HandleDragOverAsync(DragEventArgs e, DragOperationDeferral deferral)
@@ -87,7 +87,7 @@ namespace EM.Hasher.Pages
             }
 
             e.AcceptedOperation = DataPackageOperation.Copy;
-            
+
             // Hide default drag visuals
             e.DragUIOverride.IsGlyphVisible = false;
             e.DragUIOverride.Caption = "";                     // <-- Clear the caption
@@ -143,8 +143,8 @@ namespace EM.Hasher.Pages
 
         public bool IsDropGreen
         {
-            get { return (bool)GetValue(IsDropGreenProperty); }
-            set { SetValue(IsDropGreenProperty, value); }
+            get => (bool)GetValue(IsDropGreenProperty);
+            set => SetValue(IsDropGreenProperty, value);
         }
 
         public static readonly DependencyProperty IsDropGreenProperty =

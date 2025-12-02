@@ -16,18 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
-using EM.Hasher.Services.Navigation;
-using EM.Hasher.Pages;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.WinUI;
+using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
-using CommunityToolkit.Mvvm.Messaging;
+using EM.Hasher.Pages;
+using EM.Hasher.Services.Navigation;
 using Microsoft.Windows.Storage.Pickers;
-using EM.Hasher.Helpers;
 
 namespace EM.Hasher.ViewModels;
 
@@ -50,7 +50,10 @@ public partial class HomeViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public partial string? SelectedFile { get; private set; }
+    public partial string? SelectedFile
+    {
+        get; private set;
+    }
 
     [ObservableProperty]
     public partial bool IsDropFileError { get; private set; } = false;
@@ -102,7 +105,7 @@ public partial class HomeViewModel : ObservableObject
 
     private void SelectNewFile(string fileName)
     {
-        bool itsNew = string.IsNullOrWhiteSpace(SelectedFile) || !fileName.Equals(SelectedFile, StringComparison.InvariantCultureIgnoreCase);
+        var itsNew = string.IsNullOrWhiteSpace(SelectedFile) || !fileName.Equals(SelectedFile, StringComparison.InvariantCultureIgnoreCase);
         if (itsNew)
         {
             SelectedFile = fileName;

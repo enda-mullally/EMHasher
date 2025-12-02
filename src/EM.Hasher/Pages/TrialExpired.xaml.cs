@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using EM.Hasher.Helpers;
 using EM.Hasher.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using System;
 
 namespace EM.Hasher.Pages
 {
@@ -32,13 +32,13 @@ namespace EM.Hasher.Pages
         public ShellViewModel ViewModel
         {
             get;
-        } 
+        }
 
         public TrialExpired()
         {
             ViewModel = App.GetService<ShellViewModel>();
 
-            this.InitializeComponent();
+            InitializeComponent();
 
             App.MainWindow!.SetTitleBar(uxTitleBarExp);
 
@@ -74,7 +74,7 @@ namespace EM.Hasher.Pages
             Windows.UI.Color buttonHoverForegroundColor;
             Windows.UI.Color buttonHoverBackgroundColor;
 
-            if (this.ActualTheme == ElementTheme.Dark)
+            if (ActualTheme == ElementTheme.Dark)
             {
                 buttonForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
                 buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");

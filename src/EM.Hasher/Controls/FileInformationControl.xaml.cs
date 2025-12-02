@@ -25,13 +25,13 @@ namespace EM.Hasher.Controls
     {
         public FileInformationControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public string FileName
         {
-            get { return (string)GetValue(FileNameProperty); }
-            set { SetValue(FileNameProperty, ForceHardWrap(value)); }
+            get => (string)GetValue(FileNameProperty);
+            set => SetValue(FileNameProperty, ForceHardWrap(value));
         }
 
         public static readonly DependencyProperty FileNameProperty =
@@ -39,8 +39,8 @@ namespace EM.Hasher.Controls
 
         public string FileSize
         {
-            get { return (string)GetValue(FileSizeProperty); }
-            set { SetValue(FileSizeProperty, value); }
+            get => (string)GetValue(FileSizeProperty);
+            set => SetValue(FileSizeProperty, value);
         }
 
         public static readonly DependencyProperty FileSizeProperty =
@@ -48,8 +48,8 @@ namespace EM.Hasher.Controls
 
         public string FileCreated
         {
-            get { return (string)GetValue(FileCreatedProperty); }
-            set { SetValue(FileCreatedProperty, value); }
+            get => (string)GetValue(FileCreatedProperty);
+            set => SetValue(FileCreatedProperty, value);
         }
 
         public static readonly DependencyProperty FileCreatedProperty =
@@ -57,8 +57,8 @@ namespace EM.Hasher.Controls
 
         public string FileModified
         {
-            get { return (string)GetValue(FileModifiedProperty); }
-            set { SetValue(FileModifiedProperty, value); }
+            get => (string)GetValue(FileModifiedProperty);
+            set => SetValue(FileModifiedProperty, value);
         }
 
         public static readonly DependencyProperty FileModifiedProperty =

@@ -37,14 +37,14 @@ namespace EM.Hasher.Tests
         /// This is a little rudementry, but will do for now.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             var cmdArgs = Environment.GetCommandLineArgs();
 
             if (cmdArgs.Contains("--run"))
             {
                 // see if the folder location is provided in cmd args
-                bool folderLocationFlag = false;
+                var folderLocationFlag = false;
                 foreach (var arg in cmdArgs)
                 {
                     if (arg.StartsWith("--logfolder"))
@@ -71,7 +71,7 @@ namespace EM.Hasher.Tests
                 m_window.Activate();
                 UITestMethodAttribute.DispatcherQueue = m_window.DispatcherQueue;
 
-                int failures = await RunAllTestsAsync(); // your reflection-based runner
+                var failures = await RunAllTestsAsync(); // your reflection-based runner
 
                 if (failures > 0)
                 {
@@ -142,14 +142,14 @@ namespace EM.Hasher.Tests
 
         private async Task<int> RunAllTestsAsync()
         {
-            string logFile = AppDataLogFile(LogFileName);
+            var logFile = AppDataLogFile(LogFileName);
 
             if (File.Exists(logFile))
             {
                 File.Delete(logFile);
             }
 
-            int failures = 0;
+            var failures = 0;
             var assembly = typeof(UnitTestApp).Assembly;
 
             var testClasses = assembly.GetTypes()

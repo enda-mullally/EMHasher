@@ -32,21 +32,21 @@ namespace EM.Hasher.Services.Settings
 
         public bool IsCrc32Enabled
         {
-            set { _localSettings.Values[nameof(IsCrc32Enabled)] = value; }
-            get { return (bool)(_localSettings.Values[nameof(IsCrc32Enabled)] ?? false); }
+            set => _localSettings.Values[nameof(IsCrc32Enabled)] = value;
+            get => (bool)(_localSettings.Values[nameof(IsCrc32Enabled)] ?? false);
         }
 
         public bool IsMd5Enabled
         {
-            set { _localSettings.Values[nameof(IsMd5Enabled)] = value; }
-            get { return (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true); }
+            set => _localSettings.Values[nameof(IsMd5Enabled)] = value;
+            get => (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true);
         }
 
         public bool IsSha256Enabled
         {
-            set { _localSettings.Values[nameof(IsSha256Enabled)] = value; }
+            set => _localSettings.Values[nameof(IsSha256Enabled)] = value;
             get
-            { 
+            {
                 if (_isTrialMode)
                 {
                     return false; // In trial mode, SHA-256 is disabled
@@ -58,7 +58,7 @@ namespace EM.Hasher.Services.Settings
 
         public bool IsSha512Enabled
         {
-            set { _localSettings.Values[nameof(IsSha512Enabled)] = value; }
+            set => _localSettings.Values[nameof(IsSha512Enabled)] = value;
             get
             {
                 if (_isTrialMode)
@@ -72,26 +72,20 @@ namespace EM.Hasher.Services.Settings
 
         public int SelectedTheme
         {
-            set { _localSettings.Values[nameof(SelectedTheme)] = (int)value; }
-            get { return (int)(_localSettings.Values[nameof(SelectedTheme)] ?? 0); }
+            set => _localSettings.Values[nameof(SelectedTheme)] = (int)value;
+            get => (int)(_localSettings.Values[nameof(SelectedTheme)] ?? 0);
         }
 
         public bool IsUppercaseHashValues
         {
-            set { _localSettings.Values[nameof(IsUppercaseHashValues)] = value; }
-            get { return (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? true); }
+            set => _localSettings.Values[nameof(IsUppercaseHashValues)] = value;
+            get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? true);
         }
 
         public bool IsTrialMode
         {
-            get
-            { 
-                return _isTrialMode;
-            }
-            set
-            {
-                _isTrialMode = value;
-            }
+            get => _isTrialMode;
+            set => _isTrialMode = value;
         }
     }
 }
