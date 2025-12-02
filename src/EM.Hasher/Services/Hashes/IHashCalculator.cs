@@ -22,7 +22,7 @@ namespace EM.Hasher.Services.Hashes
 {
     public interface IHashCalculator
     {
-        public static readonly int BufferSize = 8 * 1024 * 1024; // 8MB buffer size
+        static readonly int BufferSize = 8 * 1024 * 1024; // 8MB buffer size
 
         Task<string> CalculateHashAsync(string fileName);
 

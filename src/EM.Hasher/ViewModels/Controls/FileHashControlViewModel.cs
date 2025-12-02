@@ -37,11 +37,15 @@ public partial class FileHashControlViewModel : ObservableObject
     private bool _settingsIsUppercaseHashValues;
     private bool _settingsIsEnabled;
 
-    public FileHashControlViewModel(IHashCalculator hashCalculator, bool isUppercaseHashValues, bool settingsIsEnabled)
+    public FileHashControlViewModel(
+        IHashCalculator hashCalculator,
+        bool isUppercaseHashValues,
+        bool settingsIsEnabled)
     {
         _hashCalculator = hashCalculator;
 
         AlgorithmName = _hashCalculator.GetAlgorithmName();
+
         WeakReferenceMessenger.Default.Register<CalculateAllFileHashRequestMessage>(this, (r, m) =>
         {
             if (!m.OnlyCalculateIfNeeded)

@@ -28,7 +28,10 @@ namespace EM.Hasher.Services
         private readonly bool _loggingEnabled;
         private readonly string _logPrefix;
 
-        public EventLogWriter(string logName, string appSourceName, string loggingEnvVarName)
+        public EventLogWriter(
+            string logName,
+            string appSourceName,
+            string loggingEnvVarName)
         {
             _loggingEnabled =
                 Environment.GetEnvironmentVariable(loggingEnvVarName) != null &&
