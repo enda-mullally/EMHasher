@@ -22,13 +22,22 @@ namespace EM.Hasher.Models
 {
     public class StoreAppLicenseModel
     {
-        public bool IsActive {  get; init; }
+        public bool IsActive
+        {
+            get; init;
+        }
 
-        public bool IsTrial { get; init; }
+        public bool IsTrial
+        {
+            get; init;
+        }
 
         public string Data { get; init; } = "";
 
-        public DateTimeOffset ExpirationDate { get; init; }
+        public DateTimeOffset ExpirationDate
+        {
+            get; init;
+        }
 
         public override string ToString()
         {

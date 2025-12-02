@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI.Xaml.Data;
 using System;
+using Microsoft.UI.Xaml.Data;
 
 namespace EM.Hasher.Converters
 {
@@ -25,7 +25,7 @@ namespace EM.Hasher.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is double fontSize && parameter is string param && double.TryParse(param, out double offset))
+            if (value is double fontSize && parameter is string param && double.TryParse(param, out var offset))
             {
                 return fontSize + offset; // use negative offset like "-2" to reduce font size
             }

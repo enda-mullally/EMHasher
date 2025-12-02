@@ -16,7 +16,7 @@ namespace EM.Hasher.Tests.Converters
 
             // Act
             var result = sut.Convert(true, typeof(bool), null!, string.Empty);
-            
+
             // Assert
             result.Should().Be(Colors.Green);
         }

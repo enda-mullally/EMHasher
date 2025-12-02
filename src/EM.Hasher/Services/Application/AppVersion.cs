@@ -1,5 +1,5 @@
-﻿using EM.Hasher.Helpers;
-using System.Reflection;
+﻿using System.Reflection;
+using EM.Hasher.Helpers;
 using Windows.ApplicationModel;
 
 namespace EM.Hasher.Services.Application
@@ -12,7 +12,7 @@ namespace EM.Hasher.Services.Application
 
             if (RuntimeHelper.IsMSIX)
             {
-                PackageVersion packageVersion = Package.Current.Id.Version;
+                var packageVersion = Package.Current.Id.Version;
 
                 version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
             }

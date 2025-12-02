@@ -32,7 +32,7 @@ namespace EM.Hasher.Pages
         {
             ViewModel = App.GetService<SettingsViewModel>();
 
-            this.InitializeComponent();            
+            InitializeComponent();
         }
     }
 }

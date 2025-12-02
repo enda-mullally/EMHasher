@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Helpers;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Application;
-using System;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace EM.Hasher.ViewModels;
 
@@ -36,7 +36,10 @@ public partial class ShellViewModel : ObservableObject
     public partial string? AppSubTitle { get; private set; } = string.Empty;
 
     [ObservableProperty]
-    public partial Uri? FeedbackUri { get; private set; }
+    public partial Uri? FeedbackUri
+    {
+        get; private set;
+    }
 
     public ShellViewModel(IAppVersion appVersion)
     {

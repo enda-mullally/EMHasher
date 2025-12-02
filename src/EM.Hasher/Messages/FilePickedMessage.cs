@@ -20,8 +20,14 @@ namespace EM.Hasher.Messages
 {
     public class FilePickedMessage
     {
-        public required string FileName { get; init; }
+        public required string FileName
+        {
+            get; init;
+        }
 
-        public required bool ItsNew { get; init; }
+        public required bool ItsNew
+        {
+            get; init;
+        }
     }
 }

@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages.UI;
@@ -23,9 +26,6 @@ using EM.Hasher.Services.Application;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
 using Microsoft.UI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using WinUIEx;
 
 namespace EM.Hasher.ViewModels.Pages;
@@ -40,29 +40,50 @@ public partial class SettingsViewModel : ObservableObject
     private bool _initialized = false;
 
     [ObservableProperty]
-    public partial string? VersionDescription { get; private set; }
+    public partial string? VersionDescription
+    {
+        get; private set;
+    }
 
     [ObservableProperty]
-    public partial string? TrialLicenseDescription { get; private set; }
+    public partial string? TrialLicenseDescription
+    {
+        get; private set;
+    }
 
     [ObservableProperty]
-    public partial bool IsUppercaseHashValues { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
-    public partial bool IsCrc32Enabled { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
-    public partial bool IsMd5Enabled { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
-    public partial bool IsSha256Enabled { get; set; }
+    public partial bool IsUppercaseHashValues
+    {
+        get; set;
+    }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
-    public partial bool IsSha512Enabled { get; set; }
+    public partial bool IsCrc32Enabled
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsMd5Enabled
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsSha256Enabled
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsSha512Enabled
+    {
+        get; set;
+    }
 
     public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha256Enabled && !IsSha512Enabled;
 
@@ -95,13 +116,16 @@ public partial class SettingsViewModel : ObservableObject
         VersionDescription = _appVersion.GetVersionDescription();
 
         _ = GetTrialLicenseDescriptionAsync();
-        
+
         _initialized = true;
     }
 
     [ObservableProperty]
-    public partial int ThemeSelectedIndex { get; set; }
-    
+    public partial int ThemeSelectedIndex
+    {
+        get; set;
+    }
+
     private async Task GetTrialLicenseDescriptionAsync()
     {
         var licenseModel = await _cachedStoreAppLicense.GetCachedStoreAppLicenseAsync();

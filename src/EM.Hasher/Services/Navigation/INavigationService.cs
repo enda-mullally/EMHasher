@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI.Xaml.Controls;
 using System;
+using Microsoft.UI.Xaml.Controls;
 
 namespace EM.Hasher.Services.Navigation
 {
@@ -27,7 +27,7 @@ namespace EM.Hasher.Services.Navigation
 
         void Navigate(Type viewType, object? parameter = null);
 
-        void Navigate<TView>(object? parameter= null);
+        void Navigate<TView>(object? parameter = null);
 
         void GoBack();
     }

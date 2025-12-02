@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
 using System;
 using System.IO;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Windows.ApplicationModel;
 using WinUIEx;
 
@@ -35,7 +35,7 @@ namespace EM.Hasher
             AppWindow.TitleBar.ButtonBackgroundColor = Microsoft.UI.Colors.Transparent;
             AppWindow.TitleBar.ButtonInactiveBackgroundColor = Microsoft.UI.Colors.Transparent;
             AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
-            
+
             var assetsFolderIconPath = Path.Combine(FindAssetsFolder(), "EMHasher.ico");
             AppWindow.SetIcon(assetsFolderIconPath);
             AppWindow.SetTaskbarIcon(assetsFolderIconPath);
@@ -45,7 +45,7 @@ namespace EM.Hasher
 
         private static string FindAssetsFolder()
         {
-            string assetsFolder = Path.Combine(AppContext.BaseDirectory, "Assets");
+            var assetsFolder = Path.Combine(AppContext.BaseDirectory, "Assets");
             if (Directory.Exists(assetsFolder))
             {
                 return assetsFolder;

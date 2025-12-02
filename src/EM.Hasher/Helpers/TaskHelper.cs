@@ -36,7 +36,7 @@ namespace EM.Hasher.Helpers
 
                 return await task;  // Very important in order to propagate exceptions
             }
-            
+
             return default;
         }
     }

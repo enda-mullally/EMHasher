@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.Models;
-using Humanizer;
 using System.IO;
 using System.Threading.Tasks;
+using EM.Hasher.Models;
+using Humanizer;
 
 namespace EM.Hasher.Services.File
 {

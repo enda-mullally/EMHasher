@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -25,11 +30,6 @@ using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.ViewModels.Controls;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.IO;
 
 namespace EM.Hasher.ViewModels.Pages;
 

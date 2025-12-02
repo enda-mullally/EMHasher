@@ -16,74 +16,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.Helpers;
-using EM.Hasher.Models;
 using System;
 using System.Threading.Tasks;
+using EM.Hasher.Helpers;
+using EM.Hasher.Models;
 
 namespace EM.Hasher.Services.License
 {
     public class CachedStoreAppLicenseProvider(/*IEventLogWriter eventLog*/) : ICachedStoreAppLicense
     {
-//        private readonly IEventLogWriter _eventLog = eventLog;
+        //        private readonly IEventLogWriter _eventLog = eventLog;
 
         private StoreAppLicenseModel? _cachedLicense;
 
         public async Task<StoreAppLicenseModel?> GetCachedStoreAppLicenseAsync()
         {
-            if (_cachedLicense == null)
-            {
-                _cachedLicense = await GetStoreAppLicenseAsync()
-                    .TimeoutAfter(TimeSpan.FromSeconds(5));
-            }
+            _cachedLicense ??= await GetStoreAppLicenseAsync()
+                .TimeoutAfter(TimeSpan.FromSeconds(5));
 
             return _cachedLicense;
         }
 
         private async Task<StoreAppLicenseModel> GetStoreAppLicenseAsync()
         {
-/*
-#if RELEASE
-            try
-            {
-                _eventLog.WriteInfo("Checking store license");
+            /*
+            #if RELEASE
+                        try
+                        {
+                            _eventLog.WriteInfo("Checking store license");
 
-                Windows.Services.Store.StoreContext context = Windows.Services.Store.StoreContext.GetDefault();
-                Windows.Services.Store.StoreAppLicense appLicense = await context.GetAppLicenseAsync();
+                            Windows.Services.Store.StoreContext context = Windows.Services.Store.StoreContext.GetDefault();
+                            Windows.Services.Store.StoreAppLicense appLicense = await context.GetAppLicenseAsync();
 
-                _eventLog.WriteInfo("Checking store license complete");
+                            _eventLog.WriteInfo("Checking store license complete");
 
-                var result = new StoreAppLicenseModel()
-                {
-                    IsActive = appLicense.IsActive,
-                    IsTrial = appLicense.IsTrial,
-                    ExpirationDate = appLicense.ExpirationDate,
-                    Data= appLicense.ExtendedJsonData
-                };
+                            var result = new StoreAppLicenseModel()
+                            {
+                                IsActive = appLicense.IsActive,
+                                IsTrial = appLicense.IsTrial,
+                                ExpirationDate = appLicense.ExpirationDate,
+                                Data= appLicense.ExtendedJsonData
+                            };
 
-                _eventLog.WriteInfo("License details: " + result.ToString());
+                            _eventLog.WriteInfo("License details: " + result.ToString());
 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _eventLog.WriteInfo("Store license check failed or timed out" + ex.Message);
+                            return result;
+                        }
+                        catch (Exception ex)
+                        {
+                            _eventLog.WriteInfo("Store license check failed or timed out" + ex.Message);
 
-                // Some sort of error occurred,
-                // default to trial license expired page.
-                var result = new StoreAppLicenseModel()
-                {
-                    IsActive = false,
-                    IsTrial = true,
-                    ExpirationDate = new DateTimeOffset(DateTime.Now.AddDays(-5))
-                };
+                            // Some sort of error occurred,
+                            // default to trial license expired page.
+                            var result = new StoreAppLicenseModel()
+                            {
+                                IsActive = false,
+                                IsTrial = true,
+                                ExpirationDate = new DateTimeOffset(DateTime.Now.AddDays(-5))
+                            };
 
-                _eventLog.WriteInfo("License details: " + result.ToString());
+                            _eventLog.WriteInfo("License details: " + result.ToString());
 
-                return result;
-            }
-#else
-*/
+                            return result;
+                        }
+            #else
+            */
             //_eventLog.WriteInfo("Debug license");
 
             // Note: As of version 1.1.58 the app is now free and unrestricted.
@@ -97,9 +94,9 @@ namespace EM.Hasher.Services.License
                     // only applies when in trial mode
                     ExpirationDate = DateTime.MinValue
                 });
-/*
-#endif
-*/
+            /*
+            #endif
+            */
         }
     }
 }

@@ -26,7 +26,7 @@ namespace EM.Hasher.Controls
     {
         public HandHoverGrid()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private InputCursor InputCursor
@@ -35,20 +35,23 @@ namespace EM.Hasher.Controls
             set => ProtectedCursor = value;
         }
 
-        private InputCursor? OriginalInputCursor { get; set; }
+        private InputCursor? OriginalInputCursor
+        {
+            get; set;
+        }
 
         private new void PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            OriginalInputCursor = this.InputCursor ?? InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+            OriginalInputCursor = InputCursor ?? InputSystemCursor.Create(InputSystemCursorShape.Arrow);
 
-            this.InputCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
+            InputCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
         }
 
         private new void PointerExited(object sender, PointerRoutedEventArgs e)
         {
             if (OriginalInputCursor != null)
             {
-                this.InputCursor = OriginalInputCursor;
+                InputCursor = OriginalInputCursor;
             }
         }
     }

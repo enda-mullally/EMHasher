@@ -25,13 +25,13 @@ public sealed partial class IconButton : Button
 {
     public IconButton()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 
     public UIElement Icon
     {
-        get { return (UIElement)GetValue(IconProperty); }
-        set { SetValue(IconProperty, value); }
+        get => (UIElement)GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
     }
 
     public static readonly DependencyProperty IconProperty =

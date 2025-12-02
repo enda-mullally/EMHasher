@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using Microsoft.UI.Xaml.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EM.Hasher.ViewModels.UI
 {
@@ -41,7 +41,7 @@ namespace EM.Hasher.ViewModels.UI
             WeakReferenceMessenger.Default.Register<HomeFileSelectedMessage>(this, (r, m) =>
             {
                 HomeFileIsSelected = m.IsFileSelected;
-            });           
+            });
             WeakReferenceMessenger.Default.Register<CalculateFileHashStartOrEndMessage>(this, (r, m) =>
             {
                 _calculationNameInProgress[m.AlgorithmName] = m.IsStart;

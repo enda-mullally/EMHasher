@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Collections.Generic;
 using EM.Hasher.Pages;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Application;
@@ -25,12 +27,10 @@ using EM.Hasher.Services.License;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels;
+using EM.Hasher.ViewModels.Controls;
 using EM.Hasher.ViewModels.Pages;
 using EM.Hasher.ViewModels.UI;
-using EM.Hasher.ViewModels.Controls;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 
 namespace EM.Hasher.DI
 {

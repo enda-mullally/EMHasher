@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Hashes;
-using System;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace EM.Hasher.ViewModels.Controls;
@@ -37,8 +37,8 @@ public partial class FileHashControlViewModel : ObservableObject
     private bool _settingsIsUppercaseHashValues;
     private bool _settingsIsEnabled;
 
-   public FileHashControlViewModel(IHashCalculator hashCalculator, bool isUppercaseHashValues, bool settingsIsEnabled)
-   {
+    public FileHashControlViewModel(IHashCalculator hashCalculator, bool isUppercaseHashValues, bool settingsIsEnabled)
+    {
         _hashCalculator = hashCalculator;
 
         AlgorithmName = _hashCalculator.GetAlgorithmName();
@@ -68,7 +68,7 @@ public partial class FileHashControlViewModel : ObservableObject
             _settingsIsUppercaseHashValues = m.IsUppercaseHashValues;
 
             IsEnabled = _settingsIsEnabled = m.HashAlgorithmsEnabled[AlgorithmName!];
-            
+
             if (!string.IsNullOrEmpty(_hashValue) && DisplayText!.Equals(_hashValue, System.StringComparison.InvariantCultureIgnoreCase))
             {
                 DisplayText = _settingsIsUppercaseHashValues
@@ -125,7 +125,7 @@ public partial class FileHashControlViewModel : ObservableObject
             return false;
         }
 
-        bool result = false;
+        var result = false;
 
         try
         {
@@ -134,7 +134,7 @@ public partial class FileHashControlViewModel : ObservableObject
             CalculationInProgress = true;
 
             WeakReferenceMessenger.Default.Send(
-                new CalculateFileHashStartOrEndMessage(this.AlgorithmName!, isStart: true));
+                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
 
             await Task.Delay(100);
 
@@ -163,7 +163,7 @@ public partial class FileHashControlViewModel : ObservableObject
             CalculationInProgress = false;
 
             WeakReferenceMessenger.Default.Send(
-                new CalculateFileHashStartOrEndMessage(this.AlgorithmName!, isStart: false));
+                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: false));
         }
 
         return result;
@@ -209,7 +209,7 @@ public partial class FileHashControlViewModel : ObservableObject
 
             if (IsCalculationComplete && !IsError)
             {
-                string virusTotalUrl = $"https://www.virustotal.com/gui/search/{DisplayText}";
+                var virusTotalUrl = $"https://www.virustotal.com/gui/search/{DisplayText}";
                 var uri = new Uri(virusTotalUrl);
                 await Windows.System.Launcher.LaunchUriAsync(uri);
             }

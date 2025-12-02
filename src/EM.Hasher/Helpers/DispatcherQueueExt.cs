@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI.Dispatching;
 using System;
 using System.Threading.Tasks;
+using Microsoft.UI.Dispatching;
 
 namespace EM.Hasher.Helpers
 {

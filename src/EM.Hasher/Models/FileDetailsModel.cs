@@ -20,15 +20,30 @@ namespace EM.Hasher.Models
 {
     public class FileDetailsModel
     {
-        public required string FileName {  get; init; }
+        public required string FileName
+        {
+            get; init;
+        }
 
-        public required string FullFileName { get; init; }
+        public required string FullFileName
+        {
+            get; init;
+        }
 
-        public required string FileSize { get; init; }
+        public required string FileSize
+        {
+            get; init;
+        }
 
-        public required string FileCreated { get; init; }
+        public required string FileCreated
+        {
+            get; init;
+        }
 
-        public required string FileModified { get; init; }
+        public required string FileModified
+        {
+            get; init;
+        }
 
         public override string ToString()
         {

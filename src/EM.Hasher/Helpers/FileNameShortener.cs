@@ -25,17 +25,17 @@ namespace EM.Hasher.Helpers
         public static string ShortenFilename(string filename, int maxLength)
         {
             if (filename.Length <= maxLength)
-            { 
+            {
                 return filename;
             }
-            string extension = Path.GetExtension(filename);
-            string filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
+            var extension = Path.GetExtension(filename);
+            var filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
 
-            int keepLength = maxLength - extension.Length - 3; // 3 for "..."
-            int firstPartLength = keepLength / 2;
-            int lastPartLength = keepLength - firstPartLength;
+            var keepLength = maxLength - extension.Length - 3; // 3 for "..."
+            var firstPartLength = keepLength / 2;
+            var lastPartLength = keepLength - firstPartLength;
 
-            string shortened = filenameWithoutExtension.Substring(0, firstPartLength)
+            var shortened = filenameWithoutExtension.Substring(0, firstPartLength)
                               + "..."
                               + filenameWithoutExtension.Substring(filenameWithoutExtension.Length - lastPartLength)
                               + extension;

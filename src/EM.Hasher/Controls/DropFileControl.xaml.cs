@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Windows.UI;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI;
+using Windows.UI;
 
 namespace EM.Hasher.Controls
 {
@@ -27,13 +27,13 @@ namespace EM.Hasher.Controls
     {
         public DropFileControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public Color DashColor
         {
-            get { return (Color)GetValue(DashColorProperty); }
-            set { SetValue(DashColorProperty, value); }
+            get => (Color)GetValue(DashColorProperty);
+            set => SetValue(DashColorProperty, value);
         }
 
         public static readonly DependencyProperty DashColorProperty =

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Force.Crc32;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Force.Crc32;
 
 namespace EM.Hasher.Services.Hashes
 {
@@ -35,7 +35,7 @@ namespace EM.Hasher.Services.Hashes
                 FileShare.Read,
                 IHashCalculator.BufferSize,
                 useAsync: true);
-            
+
             using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
             var hashBytes = await crc32.ComputeHashAsync(bufferedStream);

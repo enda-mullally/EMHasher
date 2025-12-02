@@ -33,8 +33,8 @@ namespace EM.Hasher.Pages
         public Calculate()
         {
             ViewModel = App.GetService<CalculateViewModel>();
-            
-            this.InitializeComponent();
+
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
