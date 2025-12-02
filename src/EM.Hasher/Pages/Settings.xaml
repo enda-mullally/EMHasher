@@ -169,25 +169,54 @@
 
                         <controls:SettingsCard MinHeight="36" Header="https://github.com/enda-mullally/EMHasher">
                             <HyperlinkButton
+                                Margin="0,0,7,0"
                                 Padding="0"
                                 Content="GPL-3.0"
                                 NavigateUri="https://github.com/enda-mullally/EMHasher/blob/main/LICENSE" />
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard MinHeight="36">
+                        <controls:SettingsCard MinHeight="30">
                             <controls:SettingsCard.Header>
-                                <TextBlock
-                                    Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}"
-                                    Style="{StaticResource CaptionTextBlockStyle}"
-                                    Text="Third party license(s):" />
+                                <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="Third party license(s):" />
                             </controls:SettingsCard.Header>
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard MinHeight="36" Header="https://github.com/force-net/Crc32.NET">
-                            <HyperlinkButton
-                                Padding="0"
-                                Content="MIT License"
-                                NavigateUri="https://github.com/force-net/Crc32.NET/blob/develop/LICENSE" />
+                        <controls:SettingsCard MinHeight="36">
+                            <controls:SettingsCard.Header>
+                                <controls:WrapPanel>
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        Content="Crc32.NET"
+                                        NavigateUri="https://github.com/force-net/Crc32.NET/blob/develop/LICENSE" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        Content="Humanizer"
+                                        NavigateUri="https://github.com/Humanizr/Humanizer/blob/main/license.txt" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        Content="The MVVM Toolkit (.NET Community Toolkit)"
+                                        NavigateUri="https://github.com/CommunityToolkit/dotnet/blob/main/License.md" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        Content="The Windows Community Toolkit"
+                                        NavigateUri="https://github.com/CommunityToolkit/Windows/blob/main/License.md" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
+                                        Content="WinUIEx"
+                                        NavigateUri="https://github.com/dotMorten/WinUIEx/blob/main/LICENSE" />
+
+                                </controls:WrapPanel>
+                            </controls:SettingsCard.Header>
                         </controls:SettingsCard>
 
                     </controls:SettingsExpander.Items>

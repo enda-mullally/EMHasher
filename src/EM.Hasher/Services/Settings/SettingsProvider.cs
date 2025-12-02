@@ -79,9 +79,11 @@ namespace EM.Hasher.Services.Settings
         public bool IsUppercaseHashValues
         {
             set => _localSettings.Values[nameof(IsUppercaseHashValues)] = value;
-            get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? true);
+            get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? false);
         }
 
+        // Note: This property is not persisted; it's set at runtime based on license status.
+        // Note: No longer used as the app is now open source/free. Keeping for reference.
         public bool IsTrialMode
         {
             get => _isTrialMode;

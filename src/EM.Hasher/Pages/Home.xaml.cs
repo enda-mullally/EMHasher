@@ -53,9 +53,9 @@ namespace EM.Hasher.Pages
                 }
 
                 var items = await e.DataView.GetStorageItemsAsync();
+
                 if (items != null && items.Count == 1 && items[0] is StorageFile)
                 {
-                    System.Diagnostics.Debug.WriteLine("DragOver: " + items[0].Name + " Operation = Copy");
                     e.AcceptedOperation = DataPackageOperation.Copy;
                     IsDropGreen = true;
 
@@ -64,7 +64,6 @@ namespace EM.Hasher.Pages
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("DragOver: Operation = None");
                     e.AcceptedOperation = DataPackageOperation.None;
                     IsDropGreen = false;
 
@@ -103,6 +102,7 @@ namespace EM.Hasher.Pages
             else
             {
                 e.AcceptedOperation = DataPackageOperation.None;
+
                 IsDropGreen = false;
             }
         }
@@ -120,6 +120,7 @@ namespace EM.Hasher.Pages
                         if (File.Exists(file.Path)) // ensure it's a classic file and not a link or shortcut from the start menu etc.
                         {
                             IsDropGreen = false;
+
                             await ViewModel.HandleDroppedFile(file.Path);
                         }
                         else

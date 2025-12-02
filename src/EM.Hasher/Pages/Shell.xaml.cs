@@ -67,7 +67,7 @@ namespace EM.Hasher.Pages
         {
             if (navigationView.SettingsItem is NavigationViewItem settingsItem)
             {
-                // Do this only once
+                // Workaround - Do this only once
                 navigationView.LayoutUpdated -= OnNavigationViewLayoutUpdated!;
 
                 var binding = new Binding
@@ -110,7 +110,7 @@ namespace EM.Hasher.Pages
                     sender.Header = selectedItem.Content;
 
                     // Use a switch statement to avoid reflection
-                    Type? pageType = selectedItemTag switch
+                    var pageType = selectedItemTag switch
                     {
                         "Home" => typeof(Pages.Home),
                         "Calculate" => typeof(Pages.Calculate),
@@ -181,7 +181,7 @@ namespace EM.Hasher.Pages
         private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
         {
             // Ensure correct menu item is selected based on navigation
-            foreach (NavigationViewItem item in navigationView.MenuItems.Cast<NavigationViewItem>())
+            foreach (var item in navigationView.MenuItems.Cast<NavigationViewItem>())
             {
                 if (item.Tag as string == e.SourcePageType.Name) // Match by tag
                 {

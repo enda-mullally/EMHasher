@@ -36,8 +36,8 @@ public partial class SettingsViewModel : ObservableObject
     private readonly ISettingsProvider _settingsProvider;
     private readonly IAppVersion _appVersion;
     private readonly WindowEx _currentWindow = null!;
-    private Dictionary<string, bool> _hashAlgorithmsEnabled = [];
-    private bool _initialized = false;
+    private readonly Dictionary<string, bool> _hashAlgorithmsEnabled = [];
+    private readonly bool _initialized = false;
 
     [ObservableProperty]
     public partial string? VersionDescription
