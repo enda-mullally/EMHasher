@@ -56,7 +56,7 @@ namespace EM.Hasher.Pages
             ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
         }
 
-        public async void HyperlinkButton_ClickAsync(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        public async void HyperlinkButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             await Windows.System.Launcher.LaunchUriAsync(
                 new Uri("ms-windows-store://pdp/?productid=9NZZHH7X25CG"));

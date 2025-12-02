@@ -38,10 +38,12 @@ namespace EM.Hasher.ViewModels.UI
             {
                 SettingsSelectionIsValid = m.IsSettingsSelectionValid;
             });
+
             WeakReferenceMessenger.Default.Register<HomeFileSelectedMessage>(this, (r, m) =>
             {
                 HomeFileIsSelected = m.IsFileSelected;
             });
+
             WeakReferenceMessenger.Default.Register<CalculateFileHashStartOrEndMessage>(this, (r, m) =>
             {
                 _calculationNameInProgress[m.AlgorithmName] = m.IsStart;

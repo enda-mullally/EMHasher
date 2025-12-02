@@ -78,7 +78,7 @@ namespace EM.Hasher.Pages
             }
         }
 
-        private void uxDropFileControl_DragOver(object sender, Microsoft.UI.Xaml.DragEventArgs e)
+        private void uxDropFileControl_DragOver(object sender, DragEventArgs e)
         {
             if (sender == null || e == null)
             {
@@ -107,7 +107,7 @@ namespace EM.Hasher.Pages
             }
         }
 
-        private async void uxDropFileControl_Drop(object sender, Microsoft.UI.Xaml.DragEventArgs e)
+        private async void uxDropFileControl_Drop(object sender, DragEventArgs e)
         {
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
