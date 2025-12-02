@@ -36,10 +36,10 @@ namespace EM.Hasher.Services.File
                     return new FileDetailsModel()
                     {
                         FullFileName = fileName,
-                        FileCreated = selectedFileInfo.CreationTime.ToString("f") + " (" + selectedFileInfo.CreationTime.Humanize() + ")",
-                        FileModified = selectedFileInfo.LastWriteTime.ToString("f") + " (" + selectedFileInfo.LastWriteTime.Humanize() + ")",
+                        FileCreated = selectedFileInfo.CreationTime.ToString("f") + "  (" + selectedFileInfo.CreationTime.Humanize() + ")",
+                        FileModified = selectedFileInfo.LastWriteTime.ToString("f") + "  (" + selectedFileInfo.LastWriteTime.Humanize() + ")",
                         FileName = selectedFileInfo.Name,
-                        FileSize = ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")
+                        FileSize = $"{ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")}  ({selectedFileInfo.Length.ToString("N0")}{(selectedFileInfo.Length == 1 ? " byte)" : " bytes)")}"
                     };
                 }
 

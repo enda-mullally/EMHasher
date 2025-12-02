@@ -39,7 +39,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="EM Hasher"
-        Description="Finally, a modern hash-generating application built from the ground up for Windows 11. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your favorite hashing algorithms, including CRC32,MD5,SHA-256 and SHA-512."
+        Description="EM Hasher is a simple, modern hash-generating application built from the ground up for Windows 11. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your favorite hashing algorithms, including CRC32,MD5,SHA-256 and SHA-512."
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
@@ -47,14 +47,6 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
-      <Extensions>
-        <uap:Extension Category="windows.protocol">
-          <uap:Protocol Name="emhasher">
-            <uap:Logo>Images\EMHasher40x40.png</uap:Logo>
-            <uap:DisplayName>EM Hasher</uap:DisplayName>
-          </uap:Protocol>
-        </uap:Extension>
-      </Extensions>
     </Application>
 	
   </Applications>
