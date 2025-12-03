@@ -81,3 +81,7 @@ v1.1.64 - Upgraded packages + .NET 10 upgrade & Added 'Show file location' butto
 
 ### 24/Nov/2025 ###
 v1.1.65 - Added a 'Search this hash on VirusTotal' button to the SHA-256 calculation tab. Note: Only the hash value itself is searched.
+
+### 03/Dec/2025 ###
+v1.1.66 - UI - Improved file size information - now displaying full byte size of the selected file.
+          UI - About - Updated and added third party license links (notices).
