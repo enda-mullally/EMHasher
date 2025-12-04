@@ -53,6 +53,7 @@ public partial class FileHashControlViewModel : ObservableObject
                 // New file is selected, restart hash calculation.
                 IsCalculationComplete = ShowVirusTotalSearch = false;
                 _fileName = m.FileName;
+
                 _ = StartHashCalculationAsync();
             }
             else
@@ -73,7 +74,7 @@ public partial class FileHashControlViewModel : ObservableObject
 
             IsEnabled = _settingsIsEnabled = m.HashAlgorithmsEnabled[AlgorithmName!];
 
-            if (!string.IsNullOrEmpty(_hashValue) && DisplayText!.Equals(_hashValue, System.StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(_hashValue) && DisplayText!.Equals(_hashValue, StringComparison.InvariantCultureIgnoreCase))
             {
                 DisplayText = _settingsIsUppercaseHashValues
                     ? _hashValue.ToUpperInvariant()
@@ -192,11 +193,11 @@ public partial class FileHashControlViewModel : ObservableObject
 
                 IsTipOpen = true;
                 await Task.Delay(2000); // Display for 2 seconds
-                IsTipOpen = false;
             }
         }
         finally
         {
+            IsTipOpen = false;
         }
     }
 

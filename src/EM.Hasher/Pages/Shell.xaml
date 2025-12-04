@@ -16,10 +16,6 @@
     NavigationCacheMode="Required"
     mc:Ignorable="d">
     <Page.Resources>
-        <!--
-        <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
-        -->
-
         <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
 
         <!--  Spacing between cards  -->

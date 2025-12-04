@@ -62,7 +62,6 @@
 
                         <controls:SettingsCard>
                             <controls:SettingsCard.Header>
-
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="70" />
@@ -91,7 +90,6 @@
 
                         <controls:SettingsCard>
                             <controls:SettingsCard.Header>
-
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="70" />
@@ -118,7 +116,7 @@
                             <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha512Enabled, Mode=TwoWay}" />
                         </controls:SettingsCard>
 
-                        <controls:SettingsCard x:Name="hashSelectionError" Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                        <controls:SettingsCard Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                             <controls:SettingsCard.Description>
                                 <TextBlock Foreground="PaleVioletRed" Text="Please select at least one hash algorithm" />
                             </controls:SettingsCard.Description>
@@ -133,10 +131,7 @@
                     Description=""
                     Header="Theme"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
-                    <ComboBox
-                        x:Name="themeSelector"
-                        IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}"
-                        SelectedIndex="{x:Bind ViewModel.ThemeSelectedIndex, Mode=TwoWay}">
+                    <ComboBox IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" SelectedIndex="{x:Bind ViewModel.ThemeSelectedIndex, Mode=TwoWay}">
                         <ComboBoxItem>Windows default</ComboBoxItem>
                         <ComboBoxItem>Dark</ComboBoxItem>
                         <ComboBoxItem>Light</ComboBoxItem>

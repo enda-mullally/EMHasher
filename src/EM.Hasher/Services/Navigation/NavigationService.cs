@@ -25,10 +25,7 @@ namespace EM.Hasher.Services.Navigation
     {
         private Frame? _frame;
 
-        public void Initialize(Frame frame)
-        {
-            _frame = frame;
-        }
+        public void Initialize(Frame frame) => _frame = frame;
 
         public void Navigate(Type viewType, object? parameter = null)
         {

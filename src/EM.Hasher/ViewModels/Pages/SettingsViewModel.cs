@@ -140,7 +140,8 @@ public partial class SettingsViewModel : ObservableObject
         else
         {
             // I've seen this happen on accounts which have just redeemed a code to download the app,
-            // don't worry, it's licensed, as windows handles this, but the store api hasn't updated the license yet
+            // don't worry, it's licensed, as windows handles this, but the store api hasn't updated
+            // the license yet
             TrialLicenseDescription = string.Empty;
         }
     }

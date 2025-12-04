@@ -23,7 +23,6 @@ namespace EM.Hasher.Services
 {
     public class EventLogWriter : IEventLogWriter
     {
-        // This needs to be replaced with NLog. See MyDemo. The best.
         private readonly EventLog? _eventLog;
         private readonly bool _loggingEnabled;
         private readonly string _logPrefix;

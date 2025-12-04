@@ -47,17 +47,6 @@
                             <TextBlock Margin="5,0,5,0" Text="EM Hasher" />
                         </StackPanel>
                     </HyperlinkButton>
-
-                    <HyperlinkButton
-                        Height="34"
-                        Command="{x:Bind ViewModel.DoFeedbackCommand}"
-                        NavigateUri="{x:Bind ViewModel.FeedbackUri}"
-                        ToolTipService.ToolTip="Send Feedback">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon Margin="0,0,0,0" Glyph="&#xED15;" />
-                        </StackPanel>
-                    </HyperlinkButton>
-
                 </StackPanel>
 
             </TitleBar.RightHeader>

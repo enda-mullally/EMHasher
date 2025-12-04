@@ -87,6 +87,7 @@ public partial class HomeViewModel : ObservableObject
                 picker.ViewMode = PickerViewMode.List;  // Set view mode to List instead of Thumbnail
 
                 var file = await picker.PickSingleFileAsync();
+
                 if (file != null)
                 {
                     var selectedFile = file.Path;
@@ -105,7 +106,9 @@ public partial class HomeViewModel : ObservableObject
 
     private void SelectNewFile(string fileName)
     {
-        var itsNew = string.IsNullOrWhiteSpace(SelectedFile) || !fileName.Equals(SelectedFile, StringComparison.InvariantCultureIgnoreCase);
+        var itsNew = string.IsNullOrWhiteSpace(SelectedFile) ||
+                     !fileName.Equals(SelectedFile, StringComparison.InvariantCultureIgnoreCase);
+
         if (itsNew)
         {
             SelectedFile = fileName;
@@ -113,6 +116,10 @@ public partial class HomeViewModel : ObservableObject
 
         // will only trigger re-calculation if a different file is selected
         _navigationService.Navigate<Calculate>(
-                        new FilePickedMessage() { FileName = fileName, ItsNew = itsNew });
+            new FilePickedMessage()
+            {
+                FileName = fileName,
+                ItsNew = itsNew
+            });
     }
 }

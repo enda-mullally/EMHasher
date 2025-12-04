@@ -75,7 +75,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 new HomeFileSelectedMessage(true));
 
             WeakReferenceMessenger.Default.Send(
-                new CalculateAllFileHashRequestMessage(_selectedFileName, false));
+                new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false)); // a new file is selected, so force recalculation
 
             var fileDetailsModel = await
                 _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
