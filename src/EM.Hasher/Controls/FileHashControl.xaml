@@ -72,6 +72,7 @@
                         Background="{ThemeResource SystemAccentColor}"
                         Content="Copied!"
                         Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"
+                        IsEnabled="{x:Bind ViewModel.IsTipOpen, Mode=OneWay}"
                         IsOpen="{x:Bind ViewModel.IsTipOpen, Mode=OneWay}"
                         Placement="Bottom"
                         VerticalOffset="4" />
