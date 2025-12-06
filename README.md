@@ -85,3 +85,6 @@ v1.1.65 - Added a 'Search this hash on VirusTotal' button to the SHA-256 calcula
 ### 03/Dec/2025 ###
 v1.1.66 - UI - Improved file size information - now displaying full byte size of the selected file.
           UI - About - Updated and added third party license links (notices).
+		  
+### 06/Dec/2025 ###
+v1.1.67 - UI - Small tooltip fix.
