@@ -11,7 +11,7 @@
 <br />
 
 <p align="center">
-  <a href="https://apps.microsoft.com/detail/9NZZHH7X25CG?referrer=appbadge&launch=true&cid=github&mode=full">
+  <a href="https://apps.microsoft.com/detail/9NZZHH7X25CG?referrer=appbadge&launch=true&cid=github&mode=mini">
 	  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="400"/>
   </a>
 </p>
