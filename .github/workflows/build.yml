@@ -33,18 +33,18 @@ jobs:
     - name: Build EM Hasher (x64)
       working-directory: src/EM.Hasher
       run: |
-           msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="x64" -p:PublishReadyToRun=false
+        msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="x64" -p:PublishReadyToRun=false
 
     - name: Build EM Hasher (ARM64)
       working-directory: src/EM.Hasher
       run: |
-           msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="ARM64" -p:PublishReadyToRun=false
+        msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="ARM64" -p:PublishReadyToRun=false
 
     - name: Build Unit Tests Project (x64)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests
       run: |
-           msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
+        msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
     
     # The Unit test Appx must now be Registered in order to run unit tests (post WinAppSDK 1.8)
     - name: Install the Windows App SDK Runtime (x64) via winget
