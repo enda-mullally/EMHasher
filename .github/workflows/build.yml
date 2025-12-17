@@ -51,9 +51,12 @@ jobs:
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: |
         winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
-        # Force AppX subsystem to refresh registration cache
-        Get-AppxPackage *WindowsAppRuntime*
 
+    - name: Show installed Windows App SDK Runtime version
+      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      run: |
+        Get-AppxPackage -Name "Microsoft.WindowsAppRuntime.1.8" | Where-Object { $_.Architecture -eq "x64" }
+        
     - name: Register the EM.Hasher.Tests Appx
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetMinWinVersion}}
