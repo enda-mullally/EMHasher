@@ -18,15 +18,14 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
+using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.ViewModels.Controls;
@@ -36,14 +35,18 @@ namespace EM.Hasher.ViewModels.Pages;
 public partial class CalculateViewModel : ObservableObject, INavigationAware
 {
     private readonly IFileDetailsProvider _fileDetailsProvider;
-    public ObservableCollection<FileHashControlViewModel> FileHashControlViewModels { get; } = [];
+    private readonly IExplorerFileSelectorService _explorerFileSelectorService;
     private string _selectedFileName = string.Empty;
+
+    public ObservableCollection<FileHashControlViewModel> FileHashControlViewModels { get; init; } = [];
 
     public CalculateViewModel(
         IFileDetailsProvider fileDetailsProvider,
+        IExplorerFileSelectorService explorerFileSelectorService,
         IList<FileHashControlViewModel> fileHashControlViewModels)
     {
         _fileDetailsProvider = fileDetailsProvider;
+        _explorerFileSelectorService = explorerFileSelectorService;
 
         FileHashControlViewModels = new ObservableCollection<FileHashControlViewModel>(fileHashControlViewModels);
     }
@@ -125,18 +128,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 return;
             }
 
-            await App.MainWindow!.DispatcherQueue.ExtEnqueueAsync(async () =>
-            {
-                var folderPath = Path.GetDirectoryName(_selectedFileName);
-                if (folderPath != null && Directory.Exists(folderPath))
-                {
-                    await Task.Run(() =>
-                    {
-                        // Open file explorer and select the file
-                        Process.Start("explorer.exe", $"/e, /select,\"{_selectedFileName}\"");
-                    });
-                }
-            });
+            await _explorerFileSelectorService.OpenFileLocationAsync(_selectedFileName);
         }
         finally
         {
