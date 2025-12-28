@@ -18,6 +18,9 @@
         <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
         <localConverters:FontSizeReductionConverter x:Key="FontSizeReducer" />
+        <localConverters:AppThemeSettingConverter x:Key="AppThemeSetting" />
+        <localConverters:CasingSettingConverter x:Key="CasingSetting" />
+
         <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
 
         <!--  Spacing between cards  -->
@@ -128,23 +131,30 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Preferences" />
 
                 <controls:SettingsCard
-                    Description=""
-                    Header="Theme"
+                    Description="Select which app theme to display"
+                    Header="App theme"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE790;}">
-                    <ComboBox IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" SelectedIndex="{x:Bind ViewModel.ThemeSelectedIndex, Mode=TwoWay}">
-                        <ComboBoxItem>Windows default</ComboBoxItem>
-                        <ComboBoxItem>Dark</ComboBoxItem>
+                    <ComboBox IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" SelectedIndex="{x:Bind ViewModel.ThemeSelectedIndex, Converter={StaticResource AppThemeSetting}, Mode=TwoWay}">
+                        <ComboBoxItem>Use system setting</ComboBoxItem>
                         <ComboBoxItem>Light</ComboBoxItem>
+                        <ComboBoxItem>Dark</ComboBoxItem>
                     </ComboBox>
                 </controls:SettingsCard>
 
-                <controls:SettingsCard Description="" HeaderIcon="{ui:FontIcon Glyph=&#xE8E9;}">
-                    <controls:SettingsCard.Header>
-                        <CheckBox
-                            Content="Show hash values in Uppercase"
-                            IsChecked="{x:Bind ViewModel.IsUppercaseHashValues, Mode=TwoWay}"
-                            IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" />
-                    </controls:SettingsCard.Header>
+                <controls:SettingsCard Header="Hash value case" HeaderIcon="{ui:FontIcon Glyph=&#xE8E9;}">
+                    <controls:SettingsCard.Description>
+                        <TextBlock>
+                            <Run Text="Show hash values in" />
+                            <Run Text="{Binding ElementName=uxcboHashValueCase, Path=SelectedItem.Content}" />
+                        </TextBlock>
+                    </controls:SettingsCard.Description>
+                    <ComboBox
+                        x:Name="uxcboHashValueCase"
+                        IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}"
+                        SelectedIndex="{x:Bind ViewModel.IsUppercaseHashValues, Converter={StaticResource CasingSetting}, Mode=TwoWay}">
+                        <ComboBoxItem>Uppercase</ComboBoxItem>
+                        <ComboBoxItem>Lowercase</ComboBoxItem>
+                    </ComboBox>
                 </controls:SettingsCard>
 
                 <!--  'About' section RC tag hardcoded for now  -->

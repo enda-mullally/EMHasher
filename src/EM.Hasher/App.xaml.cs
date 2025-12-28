@@ -74,8 +74,7 @@ namespace EM.Hasher
         private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             // TODO: Log and handle exceptions as appropriate.
-            // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
-
+            // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception
             e.Handled = true;
         }
 
@@ -83,7 +82,7 @@ namespace EM.Hasher
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             try
             {
@@ -116,9 +115,9 @@ namespace EM.Hasher
                 // Apply the saved theme
                 var theme = settingsProvider.SelectedTheme switch
                 {
-                    1 => ElementTheme.Dark,
-                    2 => ElementTheme.Light,
-                    _ => ElementTheme.Default
+                    (int)Enums.AppThemeSetting.Dark => ElementTheme.Dark,
+                    (int)Enums.AppThemeSetting.Light => ElementTheme.Light,
+                     _ => ElementTheme.Default
                 };
 
                 ((FrameworkElement)MainWindow.Content!).RequestedTheme = theme;
