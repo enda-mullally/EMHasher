@@ -160,9 +160,10 @@
                 <!--  'About' section RC tag hardcoded for now  -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
 
+                <!--  String resource key 'SettingsAboutAppDisplayName.Header' will map to Header below, very subtle  -->
                 <controls:SettingsExpander
+                    x:Uid="SettingsAboutAppDisplayName"
                     Description="{x:Bind sys:String.Format('Copyright © 2025 Enda Mullally. All rights reserved.{0}', ViewModel.TrialLicenseDescription), Mode=OneWay}"
-                    Header="EM Hasher"
                     HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/EMHasher40x40.png}"
                     IsExpanded="False">
                     <TextBlock
