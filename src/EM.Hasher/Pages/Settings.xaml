@@ -163,7 +163,7 @@
                 <!--  String resource key 'SettingsAboutAppDisplayName.Header' will map to Header below, very subtle  -->
                 <controls:SettingsExpander
                     x:Uid="SettingsAboutAppDisplayName"
-                    Description="{x:Bind sys:String.Format('Copyright © 2025 Enda Mullally. All rights reserved.{0}', ViewModel.TrialLicenseDescription), Mode=OneWay}"
+                    Description="{x:Bind sys:String.Format('Copyright © 2025-2026 Enda Mullally. All rights reserved.{0}', ViewModel.TrialLicenseDescription), Mode=OneWay}"
                     HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/EMHasher40x40.png}"
                     IsExpanded="False">
                     <TextBlock
