@@ -16,14 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Helpers;
 using EM.Hasher.Messages.UI;
-using EM.Hasher.Services.Application;
 
 namespace EM.Hasher.ViewModels;
 
