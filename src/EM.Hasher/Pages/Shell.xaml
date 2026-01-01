@@ -54,9 +54,21 @@
             Title="EM Hasher"
             Grid.Row="0"
             Subtitle="{x:Bind ViewModel.AppSubTitle, Mode=OneWay}">
+            <!--
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="ms-appx:///Assets/EMHasher.ico" />
             </TitleBar.IconSource>
+            -->
+            <!--
+                This is a workaround for https://github.com/microsoft/microsoft-ui-xaml/issues/10374,
+                once fixed we should just be using IconSource, as above
+            -->
+            <TitleBar.LeftHeader>
+                <ImageIcon
+                    Height="16"
+                    Margin="16,0,0,0"
+                    Source="ms-appx:///Assets/EMHasher.ico" />
+            </TitleBar.LeftHeader>
 
             <TitleBar.RightHeader>
 
