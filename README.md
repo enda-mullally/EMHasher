@@ -88,3 +88,7 @@ v1.1.66 - UI - Improved file size information - now displaying full byte size of
 		  
 ### 06/Dec/2025 ###
 v1.1.67 - UI - Small tooltip fix.
+
+### 02/Jan/2026 ###
+v1.1.68 - UI - Improved look of Settings page UI - Fixed rendering issue when app is resized on snap. App package size fixed.
+
