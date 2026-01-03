@@ -18,7 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using EM.Hasher.Pages;
+using EM.Hasher.Views;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Application;
 using EM.Hasher.Services.Explorer;
@@ -29,7 +29,6 @@ using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels;
 using EM.Hasher.ViewModels.Controls;
-using EM.Hasher.ViewModels.Pages;
 using EM.Hasher.ViewModels.UI;
 using Microsoft.Extensions.DependencyInjection;
 

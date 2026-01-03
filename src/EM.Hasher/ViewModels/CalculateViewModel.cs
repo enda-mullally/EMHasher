@@ -30,7 +30,7 @@ using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.ViewModels.Controls;
 
-namespace EM.Hasher.ViewModels.Pages;
+namespace EM.Hasher.ViewModels;
 
 public partial class CalculateViewModel : ObservableObject, INavigationAware
 {

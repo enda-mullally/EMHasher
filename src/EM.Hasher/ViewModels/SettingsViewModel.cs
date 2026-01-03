@@ -28,7 +28,7 @@ using EM.Hasher.Services.Settings;
 using Microsoft.UI.Xaml;
 using WinUIEx;
 
-namespace EM.Hasher.ViewModels.Pages;
+namespace EM.Hasher.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {

@@ -16,23 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.ViewModels.Pages;
+using EM.Hasher.Services.Navigation;
+using EM.Hasher.ViewModels;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
-namespace EM.Hasher.Pages
+namespace EM.Hasher.Views;
+
+public sealed partial class Calculate : Page
 {
-    public sealed partial class Settings : Page
+    public CalculateViewModel? ViewModel
     {
-        public SettingsViewModel ViewModel
-        {
-            get;
-        }
+        get;
+    }
 
-        public Settings()
-        {
-            ViewModel = App.GetService<SettingsViewModel>();
+    public Calculate()
+    {
+        ViewModel = App.GetService<CalculateViewModel>();
 
-            InitializeComponent();
+        InitializeComponent();
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (ViewModel is INavigationAware aware)
+        {
+            aware.OnNavigatedToAsync(e.Parameter);
         }
     }
 }

@@ -19,7 +19,7 @@
 using System;
 using EM.Hasher.DI;
 using EM.Hasher.Helpers;
-using EM.Hasher.Pages;
+using EM.Hasher.Views;
 using EM.Hasher.Services;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;

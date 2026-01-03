@@ -14,8 +14,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\Ported\CopyButton.xaml" />
-    <None Remove="Pages\Home.xaml" />
-    <None Remove="Pages\Settings.xaml" />
+    <None Remove="Views\Home.xaml" />
+    <None Remove="Views\Settings.xaml" />
     <None Remove="Controls\DropFileControl.xaml" />
     <None Remove="Controls\FileInformationControl.xaml" />
     <None Remove="Controls\HandHoverGrid.xaml" />

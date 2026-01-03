@@ -27,7 +27,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 
-namespace EM.Hasher.Pages
+namespace EM.Hasher.Views
 {
     public sealed partial class Shell : Page
     {
@@ -98,7 +98,7 @@ namespace EM.Hasher.Pages
                 WeakReferenceMessenger.Default.Send(
                     new DropFileErrorMessage(false, string.Empty));
 
-                contentFrame.Navigate(typeof(Pages.Settings));
+                contentFrame.Navigate(typeof(Views.Settings));
             }
             else
             {
@@ -111,8 +111,8 @@ namespace EM.Hasher.Pages
                     // Use a switch statement to avoid reflection
                     var pageType = selectedItemTag switch
                     {
-                        "Home" => typeof(Pages.Home),
-                        "Calculate" => typeof(Pages.Calculate),
+                        "Home" => typeof(Views.Home),
+                        "Calculate" => typeof(Views.Calculate),
                         _ => null
                     };
 

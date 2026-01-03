@@ -25,8 +25,8 @@ using CommunityToolkit.WinUI;
 using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
-using EM.Hasher.Pages;
 using EM.Hasher.Services.Navigation;
+using EM.Hasher.Views;
 using Microsoft.Windows.Storage.Pickers;
 
 namespace EM.Hasher.ViewModels;
