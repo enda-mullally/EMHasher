@@ -65,7 +65,7 @@
             -->
             <TitleBar.LeftHeader>
                 <ImageIcon
-                    Height="16"
+                    Height="20"
                     Margin="16,0,0,0"
                     Source="ms-appx:///Assets/EMHasher.ico" />
             </TitleBar.LeftHeader>
