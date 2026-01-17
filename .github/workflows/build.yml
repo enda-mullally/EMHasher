@@ -50,6 +50,7 @@ jobs:
     - name: Install the Windows App SDK Runtime (x64) via winget
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: |
+        winget search --id Microsoft.WindowsAppRuntime.1.8 --versions
         winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
 
     - name: Show installed Windows App SDK Runtime version
