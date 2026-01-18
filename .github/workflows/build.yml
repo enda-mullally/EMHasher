@@ -46,11 +46,21 @@ jobs:
       run: |
         msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
     
+    #
     # The Unit test Appx must now be Registered in order to run unit tests (post WinAppSDK 1.8)
-    - name: Install the Windows App SDK Runtime (x64) via winget
+    #
+
+    #- name: Install the Windows App SDK Runtime (x64) via winget
+    #  if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+    #  run: |
+    #    winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
+
+    - name: Install the Windows App SDK Runtime (x64) via local script (TEST)
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      working-directory: scripts
+      shell: powershell
       run: |
-        winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
+        .\Install-WindowsAppSDKRuntime.ps1 -Experimental $false
 
     - name: Show installed Windows App SDK Runtime version
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
