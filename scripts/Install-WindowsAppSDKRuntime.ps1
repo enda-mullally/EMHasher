@@ -62,6 +62,50 @@ function Get-SystemArchitecture {
     return $result
 }
 
+function Download-Package {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$PackageUrl,
+        [Parameter(Mandatory=$true)]
+        [string]$OutputPath
+    )
+
+    # Skip download if file already exists
+    if (Test-Path -Path $OutputPath) {
+        Write-Host "`nPackage already downloaded."
+        return $OutputPath
+    }
+
+    Write-Host "`nDownloading the package from $PackageUrl..."
+    
+    # Use WebClient with progress reporting for better compatibility
+    $webClient = New-Object System.Net.WebClient
+    try {
+        # Add progress event handler
+        $lastProgress = 0
+        $progressHandler = {
+            param($sender, $e)
+            $percent = $e.ProgressPercentage
+            if ($percent -ge ($script:lastProgress + 5) -or $percent -eq 100) {
+                $received = [math]::Round($e.BytesReceived / 1MB, 2)
+                $total = [math]::Round($e.TotalBytesToReceive / 1MB, 2)
+                Write-Host "Progress: $percent% ($received MB / $total MB)" -NoNewline
+                Write-Host "`r" -NoNewline
+                $script:lastProgress = $percent
+            }
+        }
+        $webClient.Add_DownloadProgressChanged($progressHandler)
+        
+        $webClient.DownloadFile($PackageUrl, $OutputPath)
+        Write-Host "`nDownload complete."
+    }
+    finally {
+        $webClient.Dispose()
+    }
+
+    return $OutputPath
+}
+
 # START OF SCRIPT EXECUTION #
 
 $experimental = if ($experimental) { [bool]::Parse($experimental) } else { $false }
@@ -79,15 +123,9 @@ try
     # Detect system architecture
     $architecture = (Get-SystemArchitecture)
 
-    # Download the package to the temporary directory but only if it doesn't already exist
+    # Download the package to the temporary directory
     $packagePath = Join-Path -Path $env:TEMP -ChildPath "WindowsAppSDKRuntime.nupkg.zip"
-    if (-not (Test-Path -Path $packagePath)) {
-        Write-Host "`nDownloading the package from $($latestVersion.PackageContentUrl)..."
-        $packageUrl = $latestVersion.PackageContentUrl
-        Invoke-WebRequest -Uri $packageUrl -OutFile $packagePath
-    } else {
-        Write-Host "`nPackage already downloaded."
-    }
+    $packagePath = Download-Package -PackageUrl $latestVersion.PackageContentUrl -OutputPath $packagePath
 
     # Extract the package contents if the directory doesn't already exist
     $extractedPath = Join-Path -Path $env:TEMP -ChildPath "WindowsAppSDKRuntime"
@@ -108,13 +146,12 @@ try
     $package = Get-AppxPackage -Name "Microsoft.WindowsAppRuntime*" | Where-Object { $_.Architecture -eq $architecture } | Where-Object { $_.Version -eq $version }
     if ($package) {
         # Exit the script early with a success message, not this is a github action so we need to exit with a success code
-        Write-Host "`nThe latest package is already installed. Exiting..."
+        Write-Host "`nThe latest package is already installed. Exiting."
         Exit 0
     }
 
     # Install the .msix packages
     # The .msix files will be located in the extracted path under tools/MSIX/win10-$architecture
-    
     $msixFiles = Get-ChildItem -Path (Join-Path -Path $extractedPath -ChildPath "tools/MSIX/win10-$architecture") -Filter *.msix
     if (-not $msixFiles) {
         Write-Error "Unable to find the .msix packages."

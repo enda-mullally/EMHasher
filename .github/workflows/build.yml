@@ -50,12 +50,7 @@ jobs:
     # The Unit test Appx must now be Registered in order to run unit tests (post WinAppSDK 1.8)
     #
 
-    #- name: Install the Windows App SDK Runtime (x64) via winget
-    #  if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
-    #  run: |
-    #    winget install --id Microsoft.WindowsAppRuntime.1.8 --accept-package-agreements --accept-source-agreements
-
-    - name: Install the Windows App SDK Runtime (x64) via local script (TEST)
+    - name: Install the Windows App SDK Runtime (x64) via local script
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       working-directory: scripts
       shell: powershell
