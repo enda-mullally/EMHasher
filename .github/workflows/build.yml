@@ -50,12 +50,9 @@ jobs:
     # The Unit test Appx must now be Registered in order to run unit tests (post WinAppSDK 1.8)
     #
 
-    - name: Install the Windows App SDK Runtime (x64) via local script
+    - name: Install the Windows App SDK Runtime - Action
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
-      working-directory: scripts
-      shell: powershell
-      run: |
-        .\Install-WindowsAppSDKRuntime.ps1 -Experimental $false
+      uses: enda-mullally/Install-WindowsAppSDKRuntime@v1
 
     - name: Show installed Windows App SDK Runtime version
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
