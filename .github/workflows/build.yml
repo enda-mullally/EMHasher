@@ -52,7 +52,7 @@ jobs:
 
     - name: Install the Windows App SDK Runtime - Action
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
-      uses: enda-mullally/Install-WindowsAppSDKRuntime@v1
+      uses: enda-mullally/Install-WindowsAppSDKRuntime@v1.1
 
     - name: Show installed Windows App SDK Runtime version
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
