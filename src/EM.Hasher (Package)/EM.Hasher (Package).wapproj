@@ -54,7 +54,6 @@
     <AppxPackageDir>D:\_AppDeploy\EMHasher\</AppxPackageDir>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <EntryPointProjectUniqueName>..\EM.Hasher\EM.Hasher.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>D52CF3B42644A39A78D835057EBAD6B2FA267A0B</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AppxBundle>Always</AppxBundle>
