@@ -1,3 +1,7 @@
+![GitHub CI](https://img.shields.io/github/actions/workflow/status/enda-mullally/EMHasher/build.yml)
+[![License](https://img.shields.io/github/license/enda-mullally/EMHasher)](/LICENSE)
+![License](https://img.shields.io/github/v/release/enda-mullally/EMHasher)
+#
 <p align="center">
   <img width="80" align="center" src="docs/images/AppLogo80x80.png">
 </p>
