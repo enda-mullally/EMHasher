@@ -1,3 +1,7 @@
+![GitHub CI](https://github.com/enda-mullally/EMHasher/actions/workflows/build.yml/badge.svg)
+[![License](https://img.shields.io/github/license/enda-mullally/EMHasher)](/LICENSE)
+![License](https://img.shields.io/github/v/release/enda-mullally/EMHasher)
+#
 <p align="center">
   <img width="80" align="center" src="docs/images/AppLogo80x80.png">
 </p>
@@ -12,7 +16,7 @@
 
 <p align="center">
   <a href="https://apps.microsoft.com/detail/9NZZHH7X25CG?referrer=appbadge&launch=true&cid=github&mode=mini">
-	  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="400"/>
+	  <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="300"/>
   </a>
 </p>
 
