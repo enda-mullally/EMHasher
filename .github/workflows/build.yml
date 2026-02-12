@@ -1,4 +1,4 @@
-name: .NET 10.0 Build (x64|ARM64) and Unit Tests
+name: '.NET 10.0 Build (x64|ARM64) and Unit Tests'
 
 on:
   push:
