@@ -79,6 +79,14 @@
                     </localcontrols:HandHoverGrid>
                 </controls:SettingsCard>
 
+                <!-- TODO: SIGNED INFO -->
+                <controls:SettingsCard Margin="0,0,0,4">
+                    <controls:SettingsCard.Header>
+                        <localcontrols:SignedFileInformationControl />
+                    </controls:SettingsCard.Header>
+                </controls:SettingsCard>
+                <!-- TODO -->
+
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Information" />
 
                 <ItemsControl ItemsSource="{x:Bind ViewModel.FileHashControlViewModels, Mode=OneWay}">
