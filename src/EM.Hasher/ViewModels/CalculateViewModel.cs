@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ namespace EM.Hasher.ViewModels;
 public partial class CalculateViewModel : ObservableObject, INavigationAware
 {
     private readonly IFileDetailsProvider _fileDetailsProvider;
+    private readonly IFileSigningInfoProvider _fileSigningInfoProvider;
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
     private string _selectedFileName = string.Empty;
 
@@ -42,10 +43,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     public CalculateViewModel(
         IFileDetailsProvider fileDetailsProvider,
+        IFileSigningInfoProvider fileSigningInfoProvider,
         IExplorerFileSelectorService explorerFileSelectorService,
         IList<FileHashControlViewModel> fileHashControlViewModels)
     {
         _fileDetailsProvider = fileDetailsProvider;
+        _fileSigningInfoProvider = fileSigningInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
 
         FileHashControlViewModels = new ObservableCollection<FileHashControlViewModel>(fileHashControlViewModels);
@@ -62,6 +65,15 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     public partial string? FileModified { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    private string _signer = string.Empty;
+
+    [ObservableProperty]
+    private string _issuer = string.Empty;
+
+    [ObservableProperty]
+    private bool _isSigned;
 
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
@@ -92,6 +104,11 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 FileCreated = fileDetailsModel.FileCreated;
                 FileModified = fileDetailsModel.FileModified;
             }
+
+            var signingInfo = await _fileSigningInfoProvider.GetSigningInfoAsync(_selectedFileName);
+            IsSigned = signingInfo.IsSigned;
+            Signer = signingInfo.IsSigned ? signingInfo.Signer : "Not signed";
+            Issuer = signingInfo.IsSigned ? signingInfo.Issuer : "—";
         }
         finally
         {

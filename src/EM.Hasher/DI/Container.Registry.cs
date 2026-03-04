@@ -1,4 +1,4 @@
-﻿/*
+/*
  * EM Hasher
  * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
  *
@@ -57,6 +57,7 @@ namespace EM.Hasher.DI
             // Services
             _container.AddTransient<IAppVersion, AppVersion>();
             _container.AddTransient<IFileDetailsProvider, FileDetailsProvider>();
+            _container.AddTransient<IFileSigningInfoProvider, FileSigningInfoProvider>();
             _container.AddTransient<IExplorerFileSelectorService, ExplorerFileSelectorService>();
 
             _container.AddSingleton(CreateFileHashControlViewModels);
