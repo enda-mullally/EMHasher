@@ -32,7 +32,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="80" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -48,7 +48,6 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="0,0,0,3"
-                IsTextSelectionEnabled="True"
                 Text="{x:Bind Signer, Mode=OneWay}"
                 TextWrapping="Wrap" />
 
