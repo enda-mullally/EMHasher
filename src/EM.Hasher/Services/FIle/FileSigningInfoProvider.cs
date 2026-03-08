@@ -16,75 +16,100 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.IO;
 using System.Security.Cryptography.Pkcs;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using EM.Hasher.Models;
+using EM.Hasher.Services.Parsers;
 
 namespace EM.Hasher.Services.File
 {
-    public class FileSigningInfoProvider : IFileSigningInfoProvider
+    public class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFileSigningInfoProvider
     {
         private const int ImageDirEntrySecurity = 4;
         private const int WinCertTypePkcsSignedData = 2;
         private const int DataDirectorySize = 128; // 16 entries * 8 bytes
         private const int DataDirectoryEntrySize = 8;
+        private readonly IKeyValueDnParser _dnParser = dnParser;
 
         public async Task<FileSigningInfo> GetSigningInfoAsync(string filePath)
         {
-            return await Task.Run(() => GetSigningInfoCore(filePath)).ConfigureAwait(false);
+            return await Task.Run(() =>
+            {
+                return GetSigningInfoCore(filePath);
+            });
         }
 
-        private static FileSigningInfo GetSigningInfoCore(string filePath)
+        private FileSigningInfo GetSigningInfoCore(string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
             {
-                return new FileSigningInfo { IsSigned = false };
+                return new FileSigningInfo
+                {
+                    IsSigned = false
+                };
             }
 
             try
             {
                 using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                if (!TryGetCertificateTableOffset(fs, out long certTableFileOffset, out int certTableSize))
+
+                if (!TryGetCertificateTableOffset(fs, out var certTableFileOffset, out var certTableSize))
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
                 if (certTableSize < 8)
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
                 fs.Seek(certTableFileOffset, SeekOrigin.Begin);
                 using var reader = new BinaryReader(fs);
 
-                int dwLength = reader.ReadInt32();
+                var dwLength = reader.ReadInt32();
                 if (dwLength < 8 || dwLength > certTableSize)
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
                 _ = reader.ReadInt16(); // wRevision
-                short wCertificateType = reader.ReadInt16();
+                var wCertificateType = reader.ReadInt16();
                 if (wCertificateType != WinCertTypePkcsSignedData)
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
-                int pkcs7Length = dwLength - 8;
-                byte[] pkcs7Blob = reader.ReadBytes(pkcs7Length);
+                var pkcs7Length = dwLength - 8;
+                var pkcs7Blob = reader.ReadBytes(pkcs7Length);
                 if (pkcs7Blob.Length != pkcs7Length)
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
                 return GetSignerAndIssuerFromPkcs7(pkcs7Blob);
             }
             catch
             {
-                return new FileSigningInfo { IsSigned = false };
+                return new FileSigningInfo
+                {
+                    IsSigned = false
+                };
             }
         }
 
@@ -99,7 +124,7 @@ namespace EM.Hasher.Services.File
             }
 
             fs.Seek(0x3C, SeekOrigin.Begin);
-            int eLfanew = ReadInt32Le(fs);
+            var eLfanew = ReadInt32Le(fs);
             if (eLfanew < 0 || eLfanew > fs.Length - 24)
             {
                 return false;
@@ -113,7 +138,7 @@ namespace EM.Hasher.Services.File
 
             // COFF header: SizeOfOptionalHeader at offset 16
             fs.Seek(eLfanew + 4 + 16, SeekOrigin.Begin);
-            ushort sizeOfOptionalHeader = ReadUInt16Le(fs);
+            var sizeOfOptionalHeader = ReadUInt16Le(fs);
             if (sizeOfOptionalHeader < DataDirectorySize)
             {
                 return false;
@@ -121,15 +146,15 @@ namespace EM.Hasher.Services.File
 
             // Data Directory entry 4 (Security) is at end of optional header - 128 + 4*8
             long dataDirStart = eLfanew + 4 + 20 + sizeOfOptionalHeader - DataDirectorySize;
-            long securityEntryOffset = dataDirStart + (ImageDirEntrySecurity * DataDirectoryEntrySize);
+            var securityEntryOffset = dataDirStart + (ImageDirEntrySecurity * DataDirectoryEntrySize);
             if (securityEntryOffset + 8 > fs.Length)
             {
                 return false;
             }
 
             fs.Seek(securityEntryOffset, SeekOrigin.Begin);
-            uint virtualAddress = ReadUInt32Le(fs);
-            int size = (int)ReadUInt32Le(fs);
+            var virtualAddress = ReadUInt32Le(fs);
+            var size = (int)ReadUInt32Le(fs);
 
             if (virtualAddress == 0 || size == 0 || virtualAddress > int.MaxValue)
             {
@@ -141,7 +166,7 @@ namespace EM.Hasher.Services.File
             return true;
         }
 
-        private static FileSigningInfo GetSignerAndIssuerFromPkcs7(byte[] pkcs7Blob)
+        private FileSigningInfo GetSignerAndIssuerFromPkcs7(byte[] pkcs7Blob)
         {
             try
             {
@@ -150,18 +175,31 @@ namespace EM.Hasher.Services.File
 
                 if (signedCms.SignerInfos.Count == 0)
                 {
-                    return new FileSigningInfo { IsSigned = false };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
                 }
 
-                SignerInfo signerInfo = signedCms.SignerInfos[0];
-                X509Certificate2? signerCert = signerInfo.Certificate;
+                var signerInfo = signedCms.SignerInfos[0];
+                var signerCert = signerInfo.Certificate;
                 if (signerCert == null)
                 {
-                    return new FileSigningInfo { IsSigned = true, Signer = string.Empty, Issuer = string.Empty };
+                    return new FileSigningInfo
+                    {
+                        IsSigned = true
+                    };
                 }
 
-                string signer = signerCert.Subject;
-                string issuer = signerCert.Issuer;
+                var signer = _dnParser
+                    .Load(signerCert.Subject)
+                    .GetValue("CN")
+                    .Trim('"');
+
+                var issuer = _dnParser
+                    .Load(signerCert.Issuer)
+                    .GetValue("CN")
+                    .Trim('"');
 
                 return new FileSigningInfo
                 {
@@ -172,17 +210,25 @@ namespace EM.Hasher.Services.File
             }
             catch
             {
-                return new FileSigningInfo { IsSigned = false };
+                return new FileSigningInfo
+                {
+                    IsSigned = false
+                };
             }
         }
 
         private static int ReadInt32Le(Stream s)
         {
-            int b1 = s.ReadByte();
-            int b2 = s.ReadByte();
-            int b3 = s.ReadByte();
-            int b4 = s.ReadByte();
-            if (b4 < 0) return 0;
+            var b1 = s.ReadByte();
+            var b2 = s.ReadByte();
+            var b3 = s.ReadByte();
+            var b4 = s.ReadByte();
+
+            if (b4 < 0)
+            {
+                return 0;
+            }
+
             return b1 | (b2 << 8) | (b3 << 16) | (b4 << 24);
         }
 
@@ -193,9 +239,14 @@ namespace EM.Hasher.Services.File
 
         private static ushort ReadUInt16Le(Stream s)
         {
-            int b1 = s.ReadByte();
-            int b2 = s.ReadByte();
-            if (b2 < 0) return 0;
+            var b1 = s.ReadByte();
+            var b2 = s.ReadByte();
+            
+            if (b2 < 0)
+            {
+                return 0;
+            }
+
             return (ushort)(b1 | (b2 << 8));
         }
     }

@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using EM.Hasher.Views;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Application;
 using EM.Hasher.Services.Explorer;
@@ -26,10 +25,12 @@ using EM.Hasher.Services.File;
 using EM.Hasher.Services.Hashes;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Navigation;
+using EM.Hasher.Services.Parsers;
 using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels;
 using EM.Hasher.ViewModels.Controls;
 using EM.Hasher.ViewModels.UI;
+using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EM.Hasher.DI
@@ -59,6 +60,7 @@ namespace EM.Hasher.DI
             _container.AddTransient<IFileDetailsProvider, FileDetailsProvider>();
             _container.AddTransient<IFileSigningInfoProvider, FileSigningInfoProvider>();
             _container.AddTransient<IExplorerFileSelectorService, ExplorerFileSelectorService>();
+            _container.AddTransient<IKeyValueDnParser, KeyValueDnParser>();
 
             _container.AddSingleton(CreateFileHashControlViewModels);
             _container.AddSingleton<IEventLogWriter, EventLogWriter>(CreateEventLogWriter);

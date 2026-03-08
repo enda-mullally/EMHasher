@@ -52,7 +52,7 @@
                 Text="{x:Bind Signer, Mode=OneWay}"
                 TextWrapping="Wrap" />
 
-            <!--  Row 1: Size  -->
+            <!--  Row 1: Issuer  -->
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"

@@ -67,13 +67,13 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial string? FileModified { get; private set; } = string.Empty;
 
     [ObservableProperty]
-    private string _signer = string.Empty;
+    public partial string? Signer { get; private set; } = string.Empty;
 
     [ObservableProperty]
-    private string _issuer = string.Empty;
+    public partial string? Issuer { get; private set; } = string.Empty;
 
     [ObservableProperty]
-    private bool _isSigned;
+    public partial bool IsSigned { get; private set; } = false;
 
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
