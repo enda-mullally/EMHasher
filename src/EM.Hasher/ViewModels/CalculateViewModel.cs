@@ -115,13 +115,13 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 if (signingInfo != null)
                 {
                     IsSigned = signingInfo.IsSigned;
-                    Signer = signingInfo.IsSigned ? signingInfo.Signer : "Not signed";
-                    Issuer = signingInfo.IsSigned ? signingInfo.Issuer : "—";
+                    Signer = signingInfo.Signer;
+                    Issuer = signingInfo.Issuer;
                 }
             }
             catch (Exception)
             {
-                //
+                // ignore
             }
         }
         finally
