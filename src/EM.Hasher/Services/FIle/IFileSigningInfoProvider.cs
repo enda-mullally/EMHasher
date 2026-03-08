@@ -23,6 +23,6 @@ namespace EM.Hasher.Services.File
 {
     public interface IFileSigningInfoProvider
     {
-        Task<FileSigningInfo> GetSigningInfoAsync(string filePath);
+        Task<FileSigningInfo> GetSigningInfoAsync(string fileName);
     }
 }

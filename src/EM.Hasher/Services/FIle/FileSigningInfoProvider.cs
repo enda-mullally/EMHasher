@@ -32,17 +32,17 @@ namespace EM.Hasher.Services.File
         private const int DataDirectoryEntrySize = 8;
         private readonly IKeyValueDnParser _dnParser = dnParser;
 
-        public async Task<FileSigningInfo> GetSigningInfoAsync(string filePath)
+        public async Task<FileSigningInfo> GetSigningInfoAsync(string fileName)
         {
             return await Task.Run(() =>
             {
-                return GetSigningInfoCore(filePath);
+                return GetSigningInfoCore(fileName);
             });
         }
 
-        private FileSigningInfo GetSigningInfoCore(string filePath)
+        private FileSigningInfo GetSigningInfoCore(string fileName)
         {
-            if (string.IsNullOrWhiteSpace(filePath) || !System.IO.File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(fileName) || !System.IO.File.Exists(fileName))
             {
                 return new FileSigningInfo
                 {
@@ -52,7 +52,7 @@ namespace EM.Hasher.Services.File
 
             try
             {
-                using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                 if (!TryGetCertificateTableOffset(fs, out var certTableFileOffset, out var certTableSize))
                 {
@@ -103,6 +103,57 @@ namespace EM.Hasher.Services.File
                 }
 
                 return GetSignerAndIssuerFromPkcs7(pkcs7Blob);
+            }
+            catch
+            {
+                return new FileSigningInfo
+                {
+                    IsSigned = false
+                };
+            }
+        }
+
+        private FileSigningInfo GetSignerAndIssuerFromPkcs7(byte[] pkcs7Blob)
+        {
+            try
+            {
+                var signedCms = new SignedCms();
+                signedCms.Decode(pkcs7Blob);
+
+                if (signedCms.SignerInfos.Count == 0)
+                {
+                    return new FileSigningInfo
+                    {
+                        IsSigned = false
+                    };
+                }
+
+                var signerInfo = signedCms.SignerInfos[0];
+                var signerCert = signerInfo.Certificate;
+                if (signerCert == null)
+                {
+                    return new FileSigningInfo
+                    {
+                        IsSigned = true
+                    };
+                }
+
+                var signer = _dnParser
+                    .Load(signerCert.Subject)
+                    .GetValue("CN")
+                    .Trim('"');
+
+                var issuer = _dnParser
+                    .Load(signerCert.Issuer)
+                    .GetValue("CN")
+                    .Trim('"');
+
+                return new FileSigningInfo
+                {
+                    IsSigned = true,
+                    Signer = signer ?? string.Empty,
+                    Issuer = issuer ?? string.Empty
+                };
             }
             catch
             {
@@ -164,57 +215,6 @@ namespace EM.Hasher.Services.File
             certTableFileOffset = virtualAddress;
             certTableSize = size;
             return true;
-        }
-
-        private FileSigningInfo GetSignerAndIssuerFromPkcs7(byte[] pkcs7Blob)
-        {
-            try
-            {
-                var signedCms = new SignedCms();
-                signedCms.Decode(pkcs7Blob);
-
-                if (signedCms.SignerInfos.Count == 0)
-                {
-                    return new FileSigningInfo
-                    {
-                        IsSigned = false
-                    };
-                }
-
-                var signerInfo = signedCms.SignerInfos[0];
-                var signerCert = signerInfo.Certificate;
-                if (signerCert == null)
-                {
-                    return new FileSigningInfo
-                    {
-                        IsSigned = true
-                    };
-                }
-
-                var signer = _dnParser
-                    .Load(signerCert.Subject)
-                    .GetValue("CN")
-                    .Trim('"');
-
-                var issuer = _dnParser
-                    .Load(signerCert.Issuer)
-                    .GetValue("CN")
-                    .Trim('"');
-
-                return new FileSigningInfo
-                {
-                    IsSigned = true,
-                    Signer = signer ?? string.Empty,
-                    Issuer = issuer ?? string.Empty
-                };
-            }
-            catch
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
         }
 
         private static int ReadInt32Le(Stream s)

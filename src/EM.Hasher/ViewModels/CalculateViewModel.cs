@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -92,23 +93,36 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
             WeakReferenceMessenger.Default.Send(
                 new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false)); // a new file is selected, so force recalculation
 
-            var fileDetailsModel = await
-                _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+            var fileDetailsTask = _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+            var signingInfoTask = _fileSigningInfoProvider.GetSigningInfoAsync(_selectedFileName);
 
-            if (fileDetailsModel != null)
+            try
             {
-                UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+                await Task.WhenAll(fileDetailsTask, signingInfoTask);
 
-                FileName = fileDetailsModel.FileName;
-                FileSize = fileDetailsModel.FileSize;
-                FileCreated = fileDetailsModel.FileCreated;
-                FileModified = fileDetailsModel.FileModified;
+                var fileDetailsModel = await fileDetailsTask;
+                if (fileDetailsModel != null)
+                {
+                    UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+
+                    FileName = fileDetailsModel.FileName;
+                    FileSize = fileDetailsModel.FileSize;
+                    FileCreated = fileDetailsModel.FileCreated;
+                    FileModified = fileDetailsModel.FileModified;
+                }
+
+                var signingInfo = await signingInfoTask;
+                if (signingInfo != null)
+                {
+                    IsSigned = signingInfo.IsSigned;
+                    Signer = signingInfo.IsSigned ? signingInfo.Signer : "Not signed";
+                    Issuer = signingInfo.IsSigned ? signingInfo.Issuer : "—";
+                }
             }
-
-            var signingInfo = await _fileSigningInfoProvider.GetSigningInfoAsync(_selectedFileName);
-            IsSigned = signingInfo.IsSigned;
-            Signer = signingInfo.IsSigned ? signingInfo.Signer : "Not signed";
-            Issuer = signingInfo.IsSigned ? signingInfo.Issuer : "—";
+            catch (Exception)
+            {
+                //
+            }
         }
         finally
         {
