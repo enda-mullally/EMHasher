@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,30 +20,15 @@ namespace EM.Hasher.Models
 {
     public class FileDetailsModel
     {
-        public required string FileName
-        {
-            get; init;
-        }
+        public string FileName { get; init; } = string.Empty;
 
-        public required string FullFileName
-        {
-            get; init;
-        }
+        public string FullFileName { get; init; } = string.Empty;
 
-        public required string FileSize
-        {
-            get; init;
-        }
+        public string FileSize { get; init; } = string.Empty;
 
-        public required string FileCreated
-        {
-            get; init;
-        }
+        public string FileCreated { get; init; } = string.Empty;
 
-        public required string FileModified
-        {
-            get; init;
-        }
+        public string FileModified { get; init; } = string.Empty;
 
         public override string ToString()
         {

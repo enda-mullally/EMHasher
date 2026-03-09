@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace EM.Hasher.Models
 {
-    public class StoreAppLicenseModel
+    public class FileSigningInfo
     {
-        public bool IsActive { get; init; }
-
-        public bool IsTrial { get; init; }
-
-        public string Data { get; init; } = string.Empty;
-
-        public DateTimeOffset ExpirationDate { get; init; }
-
-        public override string ToString()
+        public bool IsSigned
         {
-            return $"IsActive={IsActive}, IsTrial={IsTrial}, ExpirationDate={ExpirationDate}, Data={Data}";
+            get; init;
         }
+
+        public string Signer { get; init; } = string.Empty;
+
+        public string Issuer { get; init; } =  string.Empty;
     }
 }

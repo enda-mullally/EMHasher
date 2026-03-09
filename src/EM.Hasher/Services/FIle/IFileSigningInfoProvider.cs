@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
+using System.Threading.Tasks;
+using EM.Hasher.Models;
 
-namespace EM.Hasher.Models
+namespace EM.Hasher.Services.File
 {
-    public class StoreAppLicenseModel
+    public interface IFileSigningInfoProvider
     {
-        public bool IsActive { get; init; }
-
-        public bool IsTrial { get; init; }
-
-        public string Data { get; init; } = string.Empty;
-
-        public DateTimeOffset ExpirationDate { get; init; }
-
-        public override string ToString()
-        {
-            return $"IsActive={IsActive}, IsTrial={IsTrial}, ExpirationDate={ExpirationDate}, Data={Data}";
-        }
+        Task<FileSigningInfo> GetSigningInfoAsync(string fileName);
     }
 }

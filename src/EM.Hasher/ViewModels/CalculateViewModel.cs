@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -35,6 +36,7 @@ namespace EM.Hasher.ViewModels;
 public partial class CalculateViewModel : ObservableObject, INavigationAware
 {
     private readonly IFileDetailsProvider _fileDetailsProvider;
+    private readonly IFileSigningInfoProvider _fileSigningInfoProvider;
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
     private string _selectedFileName = string.Empty;
 
@@ -42,10 +44,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     public CalculateViewModel(
         IFileDetailsProvider fileDetailsProvider,
+        IFileSigningInfoProvider fileSigningInfoProvider,
         IExplorerFileSelectorService explorerFileSelectorService,
         IList<FileHashControlViewModel> fileHashControlViewModels)
     {
         _fileDetailsProvider = fileDetailsProvider;
+        _fileSigningInfoProvider = fileSigningInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
 
         FileHashControlViewModels = new ObservableCollection<FileHashControlViewModel>(fileHashControlViewModels);
@@ -62,6 +66,15 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     public partial string? FileModified { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string? Signer { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string? Issuer { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool IsSigned { get; private set; } = false;
 
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
@@ -80,17 +93,35 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
             WeakReferenceMessenger.Default.Send(
                 new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false)); // a new file is selected, so force recalculation
 
-            var fileDetailsModel = await
-                _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+            var fileDetailsTask = _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+            var signingInfoTask = _fileSigningInfoProvider.GetSigningInfoAsync(_selectedFileName);
 
-            if (fileDetailsModel != null)
+            try
             {
-                UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+                await Task.WhenAll(fileDetailsTask, signingInfoTask);
 
-                FileName = fileDetailsModel.FileName;
-                FileSize = fileDetailsModel.FileSize;
-                FileCreated = fileDetailsModel.FileCreated;
-                FileModified = fileDetailsModel.FileModified;
+                var fileDetailsModel = await fileDetailsTask;
+                if (fileDetailsModel != null)
+                {
+                    UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+
+                    FileName = fileDetailsModel.FileName;
+                    FileSize = fileDetailsModel.FileSize;
+                    FileCreated = fileDetailsModel.FileCreated;
+                    FileModified = fileDetailsModel.FileModified;
+                }
+
+                var signingInfo = await signingInfoTask;
+                if (signingInfo != null)
+                {
+                    IsSigned = signingInfo.IsSigned;
+                    Signer = signingInfo.Signer;
+                    Issuer = signingInfo.Issuer;
+                }
+            }
+            catch (Exception)
+            {
+                // ignore
             }
         }
         finally

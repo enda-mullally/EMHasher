@@ -79,13 +79,18 @@
                     </localcontrols:HandHoverGrid>
                 </controls:SettingsCard>
 
-                <!-- TODO: SIGNED INFO -->
-                <controls:SettingsCard Margin="0,0,0,4">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="Digital Signature"
+                           Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+
+                <controls:SettingsCard Margin="0,0,0,4"
+                                       Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                     <controls:SettingsCard.Header>
-                        <localcontrols:SignedFileInformationControl />
+                        <localcontrols:SignedFileInformationControl
+                            Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
+                            Signer="{x:Bind ViewModel.Signer, Mode=OneWay}" />
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
-                <!-- TODO -->
 
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Information" />
 

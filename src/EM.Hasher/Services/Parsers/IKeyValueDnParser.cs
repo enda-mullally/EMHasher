@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
+namespace EM.Hasher.Services.Parsers;
 
-namespace EM.Hasher.Models
+public interface IKeyValueDnParser
 {
-    public class StoreAppLicenseModel
-    {
-        public bool IsActive { get; init; }
+    IKeyValueDnParser Load(string input);
 
-        public bool IsTrial { get; init; }
-
-        public string Data { get; init; } = string.Empty;
-
-        public DateTimeOffset ExpirationDate { get; init; }
-
-        public override string ToString()
-        {
-            return $"IsActive={IsActive}, IsTrial={IsTrial}, ExpirationDate={ExpirationDate}, Data={Data}";
-        }
-    }
+    string GetValue(string key);
 }
