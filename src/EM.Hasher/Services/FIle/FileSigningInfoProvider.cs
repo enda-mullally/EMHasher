@@ -18,6 +18,7 @@
 
 using System.IO;
 using System.Security.Cryptography.Pkcs;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using EM.Hasher.Models;
 using EM.Hasher.Services.Parsers;
@@ -124,7 +125,8 @@ namespace EM.Hasher.Services.File
                 {
                     return new FileSigningInfo
                     {
-                        IsSigned = false
+                        IsSigned = false,
+                        IsTrusted = false
                     };
                 }
 
@@ -134,8 +136,25 @@ namespace EM.Hasher.Services.File
                 {
                     return new FileSigningInfo
                     {
-                        IsSigned = true
+                        IsSigned = true,
+                        IsTrusted = false
                     };
+                }
+
+                // Build an X509 chain to verify whether the certificate chains to a trusted root
+                using var chain = new X509Chain();
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EndCertificateOnly;
+                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+
+                var chainOk = false;
+                try
+                {
+                    chainOk = chain.Build(signerCert);
+                }
+                catch
+                {
+                    chainOk = false;
                 }
 
                 var signer = _dnParser
@@ -143,23 +162,44 @@ namespace EM.Hasher.Services.File
                     .GetValue("CN")
                     .Trim('"');
 
+                // Try "O" if "CN" is not present
+                if (string.IsNullOrEmpty(signer))
+                {
+                    signer = _dnParser
+                        .Load(signerCert.Subject)
+                        .GetValue("O")
+                        .Trim('"');
+                }
+
                 var issuer = _dnParser
                     .Load(signerCert.Issuer)
                     .GetValue("CN")
                     .Trim('"');
 
+                // Try "O" if "CN" is not present in the issuer
+                if (string.IsNullOrEmpty(issuer))
+                {
+                    issuer = _dnParser
+                        .Load(signerCert.Issuer)
+                        .GetValue("O")
+                        .Trim('"');
+                }
+
                 return new FileSigningInfo
                 {
-                    IsSigned = true,
                     Signer = signer ?? string.Empty,
-                    Issuer = issuer ?? string.Empty
+                    Issuer = issuer ?? string.Empty,
+                    IsTrusted = chainOk,
+                    IsSigned = chainOk && !(string.IsNullOrWhiteSpace(signer) &&
+                                            string.IsNullOrWhiteSpace(issuer))
                 };
             }
             catch
             {
                 return new FileSigningInfo
                 {
-                    IsSigned = false
+                    IsSigned = false,
+                    IsTrusted = false
                 };
             }
         }

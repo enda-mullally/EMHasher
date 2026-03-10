@@ -25,6 +25,8 @@ namespace EM.Hasher.Models
             get; init;
         }
 
+        public bool IsTrusted { get; init; }
+
         public string Signer { get; init; } = string.Empty;
 
         public string Issuer { get; init; } =  string.Empty;
