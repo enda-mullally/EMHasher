@@ -143,7 +143,7 @@ namespace EM.Hasher.Services.File
 
                 // Build an X509 chain to verify whether the certificate chains to a trusted root
                 using var chain = new X509Chain();
-                chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
                 chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EndCertificateOnly;
                 chain.ChainPolicy.VerificationFlags = X509VerificationFlags.IgnoreNotTimeValid;
 
