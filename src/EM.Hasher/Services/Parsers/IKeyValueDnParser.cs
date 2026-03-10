@@ -22,5 +22,5 @@ public interface IKeyValueDnParser
 {
     IKeyValueDnParser Load(string input);
 
-    public string GetFirstFoundValue(params string[] keys);
+    string GetFirstFoundValue(params string[] keys);
 }
