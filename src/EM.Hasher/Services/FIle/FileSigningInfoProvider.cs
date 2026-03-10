@@ -159,31 +159,13 @@ namespace EM.Hasher.Services.File
 
                 var signer = _dnParser
                     .Load(signerCert.Subject)
-                    .GetValue("CN")
+                    .GetFirstFoundValue("CN", "O")
                     .Trim('"');
-
-                // Try "O" if "CN" is not present
-                if (string.IsNullOrEmpty(signer))
-                {
-                    signer = _dnParser
-                        .Load(signerCert.Subject)
-                        .GetValue("O")
-                        .Trim('"');
-                }
 
                 var issuer = _dnParser
                     .Load(signerCert.Issuer)
-                    .GetValue("CN")
+                    .GetFirstFoundValue("CN", "O")
                     .Trim('"');
-
-                // Try "O" if "CN" is not present in the issuer
-                if (string.IsNullOrEmpty(issuer))
-                {
-                    issuer = _dnParser
-                        .Load(signerCert.Issuer)
-                        .GetValue("O")
-                        .Trim('"');
-                }
 
                 return new FileSigningInfo
                 {

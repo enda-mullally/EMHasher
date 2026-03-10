@@ -52,10 +52,18 @@ public class KeyValueDnParser : IKeyValueDnParser
         return this;
     }
 
-    public string GetValue(string key)
+    public string GetFirstFoundValue(params string[] keys)
     {
-        return _values!.TryGetValue(key, out var value)
-            ? value
-            : string.Empty;
+        foreach (var key in keys)
+        {
+            if (_values != null &&
+                !string.IsNullOrEmpty(key) &&
+                _values.TryGetValue(key, out var value))
+            {
+                return value;
+            }
+        }
+
+        return string.Empty;
     }
 }
