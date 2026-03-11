@@ -22,7 +22,10 @@
             HorizontalAlignment="Left"
             Glyph="&#xE946;" />
 
-        <!--  Details Grid with aligned rows  -->
+        <!--  Details Grid with aligned rows  
+              TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
+        -->
+
         <Grid
             Grid.Column="1"
             Grid.ColumnSpan="2"
@@ -65,6 +68,7 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
                 Text="{x:Bind FileSize, Mode=OneWay}" />
 
             <!--  Row 2: Created  -->
@@ -78,6 +82,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
                 Text="{x:Bind FileCreated, Mode=OneWay}" />
 
             <!--  Row 3: Modified  -->
@@ -91,6 +96,7 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
                 Text="{x:Bind FileModified, Mode=OneWay}" />
         </Grid>
     </Grid>

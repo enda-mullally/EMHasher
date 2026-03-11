@@ -143,9 +143,9 @@ namespace EM.Hasher.Services.File
 
                 // Build an X509 chain to verify whether the certificate chains to a trusted root
                 using var chain = new X509Chain();
-                chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
                 chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EndCertificateOnly;
-                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.NoFlag;
+                chain.ChainPolicy.VerificationFlags = X509VerificationFlags.IgnoreNotTimeValid;
 
                 var chainOk = false;
                 try
@@ -159,31 +159,13 @@ namespace EM.Hasher.Services.File
 
                 var signer = _dnParser
                     .Load(signerCert.Subject)
-                    .GetValue("CN")
+                    .GetFirstFoundValue("CN", "O")
                     .Trim('"');
-
-                // Try "O" if "CN" is not present
-                if (string.IsNullOrEmpty(signer))
-                {
-                    signer = _dnParser
-                        .Load(signerCert.Subject)
-                        .GetValue("O")
-                        .Trim('"');
-                }
 
                 var issuer = _dnParser
                     .Load(signerCert.Issuer)
-                    .GetValue("CN")
+                    .GetFirstFoundValue("CN", "O")
                     .Trim('"');
-
-                // Try "O" if "CN" is not present in the issuer
-                if (string.IsNullOrEmpty(issuer))
-                {
-                    issuer = _dnParser
-                        .Load(signerCert.Issuer)
-                        .GetValue("O")
-                        .Trim('"');
-                }
 
                 return new FileSigningInfo
                 {

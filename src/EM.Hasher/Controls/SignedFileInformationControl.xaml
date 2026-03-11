@@ -22,7 +22,10 @@
             HorizontalAlignment="Left"
             Glyph="&#xEB95;" />
 
-        <!--  Details Grid with aligned rows  -->
+        <!--  Details Grid with aligned rows  
+              TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
+        -->
+        
         <Grid
             Grid.Column="1"
             Grid.ColumnSpan="2"
@@ -48,6 +51,7 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
                 Text="{x:Bind Signer, Mode=OneWay}"
                 TextWrapping="Wrap" />
 
@@ -62,6 +66,7 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
                 Text="{x:Bind Issuer, Mode=OneWay}" />
         </Grid>
     </Grid>
