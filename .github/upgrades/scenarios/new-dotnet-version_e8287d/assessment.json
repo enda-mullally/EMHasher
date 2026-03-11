@@ -1,0 +1,164 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-03-11T21:46:53.5986965Z",
+  "analysisEndTime": "2026-03-11T21:46:53.6830539Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 3,
+      "issues": 1,
+      "incidents": 1,
+      "effort": 1
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 1,
+        "Optional": 0,
+        "Potential": 0,
+        "Information": 0
+      },
+      "category": {
+        "Project": 1
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "EM.Hasher (Package)\\EM.Hasher (Package).wapproj",
+      "startingProject": true,
+      "issues": 1,
+      "storyPoints": 1,
+      "properties": {
+        "appName": "EM.Hasher (Package)",
+        "projectKind": "WinUI",
+        "frameworks": [
+          "net451"
+        ],
+        "languages": [
+          ""
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 10,
+        "numberOfCodeFiles": 0,
+        "linesTotal": 276,
+        "linesOfCode": 0,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "bae64590-2748-415c-a970-040b7e443041",
+          "ruleId": "Project.0002",
+          "projectPath": "EM.Hasher (Package)\\EM.Hasher (Package).wapproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: net451\nRecommended target framework: net10.0-windows10.0.26100.0",
+              "protected": "Current target framework: net451\nRecommended target framework: net10.0-windows10.0.26100.0"
+            },
+            "kind": "File",
+            "path": "EM.Hasher (Package)\\EM.Hasher (Package).wapproj",
+            "snippet": "Current target framework: net451\nRecommended target framework: net10.0-windows10.0.26100.0",
+            "protectedSnippet": "Current target framework: net451\nRecommended target framework: net10.0-windows10.0.26100.0",
+            "properties": {
+              "CurrentTargetFramework": "net451",
+              "RecommendedTargetFramework": "net10.0-windows10.0.26100.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    },
+    {
+      "path": "EM.Hasher\\EM.Hasher.csproj",
+      "startingProject": true,
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "EM.Hasher",
+        "projectKind": "WinForms",
+        "frameworks": [
+          "net10.0-windows10.0.22621.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 82,
+        "numberOfCodeFiles": 71,
+        "linesTotal": 5036,
+        "linesOfCode": 4477,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [],
+      "features": []
+    },
+    {
+      "path": "EM.Hasher.Tests\\EM.Hasher.Tests.csproj",
+      "startingProject": true,
+      "issues": 0,
+      "storyPoints": 0,
+      "properties": {
+        "appName": "EM.Hasher.Tests",
+        "projectKind": "WinForms",
+        "frameworks": [
+          "net10.0-windows10.0.22621.0"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": true,
+        "numberOfFiles": 41,
+        "numberOfCodeFiles": 25,
+        "linesTotal": 4311,
+        "linesOfCode": 1095,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [],
+      "features": []
+    }
+  ],
+  "rules": {
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
