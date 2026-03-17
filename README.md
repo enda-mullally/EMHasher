@@ -37,7 +37,7 @@ Hash verification and support for launching EM Hasher directly in Verify mode vi
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Drop.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Drop.png">
 </p>
 
 <p align="center">
