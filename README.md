@@ -37,7 +37,23 @@ Hash verification and support for launching EM Hasher directly in Verify mode vi
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Results.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Drop.png">
+</p>
+
+<p align="center">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_03_Main_Screen_Results.png">
+</p>
+
+<p align="center">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_04_Main_Screen_Signed_Results.png">
+</p>
+
+<p align="center">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_05_Main_Screen_Settings_Dark.png">
+</p>
+
+<p align="center">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_06_Main_Screen_Settings_Light.png">
 </p>
 
 <br />
