@@ -112,7 +112,7 @@ v1.1.67 - UI - Small tooltip fix.
 ### 02/Jan/2026 ###
 v1.1.68 - UI - Improved look of Settings page UI - Fixed rendering issue when app is resized on snap. App package size fixed.
 
-### 17/Mar/2026 ###  [[Store submission pending]]
+### 17/Mar/2026 ###  [Store submission pending]
 v1.1.69 - Misc bug fix's - Added Digital Signature info panel for signed files.
 
 
