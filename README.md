@@ -33,11 +33,11 @@ Hash verification and support for launching EM Hasher directly in Verify mode vi
 #### Screenshots
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Drop.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Drop.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen.png">
 </p>
 
 <p align="center">
