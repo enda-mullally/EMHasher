@@ -27,109 +27,108 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using WinUIEx;
 
-namespace EM.Hasher
+namespace EM.Hasher;
+
+/// <summary>
+/// Provides application-specific behavior to supplement the default Application class.
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
-    public partial class App : Application
+    private static readonly IServiceProvider ServiceProvider =
+        Container
+            .Create()
+            .BuildServiceProvider();
+
+    public static T GetService<T>() where T : class
     {
-        private static readonly IServiceProvider ServiceProvider =
-            Container
-                .Create()
-                .BuildServiceProvider();
+        var service =
+            ServiceProvider.GetService<T>() ?? throw
+                    new NullReferenceException("Could not create type [" + typeof(T) + "]. Please ensure this type is registered.");
 
-        public static T GetService<T>() where T : class
+        return service;
+    }
+
+    public static WindowEx? MainWindow
+    {
+        get; private set;
+    }
+
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
+
+    /// <summary>
+    /// Initializes the singleton application object.  This is the first line of authored code
+    /// executed, and as such is the logical equivalent of main() or WinMain().
+    /// </summary>
+    public App()
+    {
+        InitializeComponent();
+
+        var eventLog = GetService<IEventLogWriter>();
+
+        UnhandledException += App_UnhandledException;
+    }
+
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    {
+        // TODO: Log and handle exceptions as appropriate.
+        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception
+        e.Handled = true;
+    }
+
+    /// <summary>
+    /// Invoked when the application is launched.
+    /// </summary>
+    /// <param name="args">Details about the launch request and process.</param>
+    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    {
+        try
         {
-            var service =
-                ServiceProvider.GetService<T>() ?? throw
-                        new NullReferenceException("Could not create type [" + typeof(T) + "]. Please ensure this type is registered.");
+            var licseService = GetService<ICachedStoreAppLicense>();
 
-            return service;
-        }
+            var license =
+               await licseService
+                .GetCachedStoreAppLicenseAsync();
 
-        public static WindowEx? MainWindow
-        {
-            get; private set;
-        }
+            var settingsProvider = GetService<ISettingsProvider>();
 
-        public static UIElement? AppTitlebar
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
-        public App()
-        {
-            InitializeComponent();
-
-            var eventLog = GetService<IEventLogWriter>();
-
-            UnhandledException += App_UnhandledException;
-        }
-
-        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
-        {
-            // TODO: Log and handle exceptions as appropriate.
-            // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception
-            e.Handled = true;
-        }
-
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
-        protected async override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            try
+            if (MainWindow == null)
             {
-                var licseService = GetService<ICachedStoreAppLicense>();
+                MainWindow = new MainWindow();
+            }
 
-                var license =
-                   await licseService
-                    .GetCachedStoreAppLicenseAsync();
-
-                var settingsProvider = GetService<ISettingsProvider>();
-
-                if (MainWindow == null)
+            // Set the MainWindow Content.
+            if (MainWindow.Content != null)
+            {
+                if (!license!.IsActive || (license!.IsTrial))
                 {
-                    MainWindow = new MainWindow();
+                    settingsProvider.IsTrialMode = true;
                 }
 
-                // Set the MainWindow Content.
-                if (MainWindow.Content != null)
-                {
-                    if (!license!.IsActive || (license!.IsTrial))
-                    {
-                        settingsProvider.IsTrialMode = true;
-                    }
+                var shell = App.GetService<Shell>();
 
-                    var shell = App.GetService<Shell>();
-
-                    MainWindow.Content = shell;
-                }
-
-                // Apply the saved theme
-                var theme = settingsProvider.SelectedTheme switch
-                {
-                    (int)Enums.AppThemeSetting.Dark => ElementTheme.Dark,
-                    (int)Enums.AppThemeSetting.Light => ElementTheme.Light,
-                     _ => ElementTheme.Default
-                };
-
-                ((FrameworkElement)MainWindow.Content!).RequestedTheme = theme;
-                TitleBarHelper.ApplySystemThemeToCaptionButtons(theme);
+                MainWindow.Content = shell;
             }
-            catch
+
+            // Apply the saved theme
+            var theme = settingsProvider.SelectedTheme switch
             {
-            }
-            finally
-            {
-                MainWindow!.Activate();
-            }
+                (int)Enums.AppThemeSetting.Dark => ElementTheme.Dark,
+                (int)Enums.AppThemeSetting.Light => ElementTheme.Light,
+                 _ => ElementTheme.Default
+            };
+
+            ((FrameworkElement)MainWindow.Content!).RequestedTheme = theme;
+            TitleBarHelper.ApplySystemThemeToCaptionButtons(theme);
+        }
+        catch
+        {
+        }
+        finally
+        {
+            MainWindow!.Activate();
         }
     }
 }

@@ -20,24 +20,23 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EM.Hasher.Helpers
+namespace EM.Hasher.Helpers;
+
+public static class TaskHelper
 {
-    public static class TaskHelper
+    public static async Task<TResult?> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
     {
-        public static async Task<TResult?> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
+        using var timeoutCancellationTokenSource = new CancellationTokenSource();
+
+        var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+
+        if (completedTask == task)
         {
-            using var timeoutCancellationTokenSource = new CancellationTokenSource();
+            timeoutCancellationTokenSource.Cancel();
 
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
-
-            if (completedTask == task)
-            {
-                timeoutCancellationTokenSource.Cancel();
-
-                return await task;  // Very important in order to propagate exceptions
-            }
-
-            return default;
+            return await task;  // Very important in order to propagate exceptions
         }
+
+        return default;
     }
 }

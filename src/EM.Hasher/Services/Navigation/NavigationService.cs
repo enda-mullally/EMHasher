@@ -19,30 +19,29 @@
 using System;
 using Microsoft.UI.Xaml.Controls;
 
-namespace EM.Hasher.Services.Navigation
+namespace EM.Hasher.Services.Navigation;
+
+public class NavigationService : INavigationService
 {
-    public class NavigationService : INavigationService
+    private Frame? _frame;
+
+    public void Initialize(Frame frame) => _frame = frame;
+
+    public void Navigate(Type viewType, object? parameter = null)
     {
-        private Frame? _frame;
+        _frame?.Navigate(viewType, parameter);
+    }
 
-        public void Initialize(Frame frame) => _frame = frame;
+    public void Navigate<TView>(object? parameter = null)
+    {
+        _frame?.Navigate(typeof(TView), parameter);
+    }
 
-        public void Navigate(Type viewType, object? parameter = null)
+    public void GoBack()
+    {
+        if (_frame?.CanGoBack == true)
         {
-            _frame?.Navigate(viewType, parameter);
-        }
-
-        public void Navigate<TView>(object? parameter = null)
-        {
-            _frame?.Navigate(typeof(TView), parameter);
-        }
-
-        public void GoBack()
-        {
-            if (_frame?.CanGoBack == true)
-            {
-                _frame.GoBack();
-            }
+            _frame.GoBack();
         }
     }
 }

@@ -19,16 +19,15 @@
 using System;
 using Microsoft.UI.Xaml.Controls;
 
-namespace EM.Hasher.Services.Navigation
+namespace EM.Hasher.Services.Navigation;
+
+public interface INavigationService
 {
-    public interface INavigationService
-    {
-        void Initialize(Frame frame);
+    void Initialize(Frame frame);
 
-        void Navigate(Type viewType, object? parameter = null);
+    void Navigate(Type viewType, object? parameter = null);
 
-        void Navigate<TView>(object? parameter = null);
+    void Navigate<TView>(object? parameter = null);
 
-        void GoBack();
-    }
+    void GoBack();
 }

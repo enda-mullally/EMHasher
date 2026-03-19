@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages.UI
-{
-    public class DropFileErrorMessage(bool dropFileError, string errorMessage)
-    {
-        public bool IsDropFileError { get; init; } = dropFileError;
+namespace EM.Hasher.Messages.UI;
 
-        public string ErrorMessage { get; init; } = errorMessage;
-    }
+public class DropFileErrorMessage(bool dropFileError, string errorMessage)
+{
+    public bool IsDropFileError { get; init; } = dropFileError;
+
+    public string ErrorMessage { get; init; } = errorMessage;
 }

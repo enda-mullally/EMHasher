@@ -8,6 +8,7 @@
     xmlns:local="using:EM.Hasher.Views"
     xmlns:localcontrols="using:EM.Hasher.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:portedcontrols="using:EM.Hasher.Controls.Ported"
     xmlns:toolkitConverters="using:CommunityToolkit.WinUI.Converters"
     xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:viewmodels="using:EM.Hasher.ViewModels.Controls"
@@ -79,16 +80,14 @@
                     </localcontrols:HandHoverGrid>
                 </controls:SettingsCard>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="Digital Signature"
-                           Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                <TextBlock
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                    Text="Digital Signature"
+                    Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
 
-                <controls:SettingsCard Margin="0,0,0,4"
-                                       Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                <controls:SettingsCard Margin="0,0,0,4" Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                     <controls:SettingsCard.Header>
-                        <localcontrols:SignedFileInformationControl
-                            Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
-                            Signer="{x:Bind ViewModel.Signer, Mode=OneWay}" />
+                        <localcontrols:SignedFileInformationControl Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}" Signer="{x:Bind ViewModel.Signer, Mode=OneWay}" />
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
 
@@ -119,7 +118,7 @@
                                         </localcontrols:IconButton>
                                     </localcontrols:HandHoverGrid>
                                     <localcontrols:HandHoverGrid>
-                                        <localcontrols:CopyButton
+                                        <portedcontrols:CopyButton
                                             Width="40"
                                             Height="40"
                                             Command="{x:Bind CopyHashCommand, Mode=OneWay}"

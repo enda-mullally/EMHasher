@@ -18,76 +18,75 @@
 
 using Windows.Storage;
 
-namespace EM.Hasher.Services.Settings
+namespace EM.Hasher.Services.Settings;
+
+public class SettingsProvider : ISettingsProvider
 {
-    public class SettingsProvider : ISettingsProvider
+    private readonly ApplicationDataContainer _localSettings;
+    private bool _isTrialMode = false;
+
+    public SettingsProvider()
     {
-        private readonly ApplicationDataContainer _localSettings;
-        private bool _isTrialMode = false;
+        _localSettings = ApplicationData.Current.LocalSettings;
+    }
 
-        public SettingsProvider()
-        {
-            _localSettings = ApplicationData.Current.LocalSettings;
-        }
+    public bool IsCrc32Enabled
+    {
+        set => _localSettings.Values[nameof(IsCrc32Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsCrc32Enabled)] ?? false);
+    }
 
-        public bool IsCrc32Enabled
-        {
-            set => _localSettings.Values[nameof(IsCrc32Enabled)] = value;
-            get => (bool)(_localSettings.Values[nameof(IsCrc32Enabled)] ?? false);
-        }
+    public bool IsMd5Enabled
+    {
+        set => _localSettings.Values[nameof(IsMd5Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true);
+    }
 
-        public bool IsMd5Enabled
+    public bool IsSha256Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha256Enabled)] = value;
+        get
         {
-            set => _localSettings.Values[nameof(IsMd5Enabled)] = value;
-            get => (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true);
-        }
-
-        public bool IsSha256Enabled
-        {
-            set => _localSettings.Values[nameof(IsSha256Enabled)] = value;
-            get
+            if (_isTrialMode)
             {
-                if (_isTrialMode)
-                {
-                    return false; // In trial mode, SHA-256 is disabled
-                }
-
-                return (bool)(_localSettings.Values[nameof(IsSha256Enabled)] ?? true);
+                return false; // In trial mode, SHA-256 is disabled
             }
-        }
 
-        public bool IsSha512Enabled
+            return (bool)(_localSettings.Values[nameof(IsSha256Enabled)] ?? true);
+        }
+    }
+
+    public bool IsSha512Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha512Enabled)] = value;
+        get
         {
-            set => _localSettings.Values[nameof(IsSha512Enabled)] = value;
-            get
+            if (_isTrialMode)
             {
-                if (_isTrialMode)
-                {
-                    return false; // In trial mode, SHA-512 is disabled
-                }
-
-                return (bool)(_localSettings.Values[nameof(IsSha512Enabled)] ?? false);
+                return false; // In trial mode, SHA-512 is disabled
             }
-        }
 
-        public int SelectedTheme
-        {
-            set => _localSettings.Values[nameof(SelectedTheme)] = (int)value;
-            get => (int)(_localSettings.Values[nameof(SelectedTheme)] ?? 0);
+            return (bool)(_localSettings.Values[nameof(IsSha512Enabled)] ?? false);
         }
+    }
 
-        public bool IsUppercaseHashValues
-        {
-            set => _localSettings.Values[nameof(IsUppercaseHashValues)] = value;
-            get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? false);
-        }
+    public int SelectedTheme
+    {
+        set => _localSettings.Values[nameof(SelectedTheme)] = (int)value;
+        get => (int)(_localSettings.Values[nameof(SelectedTheme)] ?? 0);
+    }
 
-        // Note: This property is not persisted; it's set at runtime based on license status.
-        // Note: No longer used as the app is now open source/free. Keeping for reference.
-        public bool IsTrialMode
-        {
-            get => _isTrialMode;
-            set => _isTrialMode = value;
-        }
+    public bool IsUppercaseHashValues
+    {
+        set => _localSettings.Values[nameof(IsUppercaseHashValues)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? false);
+    }
+
+    // Note: This property is not persisted; it's set at runtime based on license status.
+    // Note: No longer used as the app is now open source/free. Keeping for reference.
+    public bool IsTrialMode
+    {
+        get => _isTrialMode;
+        set => _isTrialMode = value;
     }
 }

@@ -27,167 +27,166 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 
-namespace EM.Hasher.Views
+namespace EM.Hasher.Views;
+
+public sealed partial class Shell : Page
 {
-    public sealed partial class Shell : Page
+    private readonly INavigationService _navigationService;
+
+    public UIStateViewModel UiStateViewModel
     {
-        private readonly INavigationService _navigationService;
+        get;
+    }
 
-        public UIStateViewModel UiStateViewModel
+    public ShellViewModel ViewModel
+    {
+        get;
+    }
+
+    public Shell(INavigationService navigationService)
+    {
+        UiStateViewModel = App.GetService<UIStateViewModel>();
+        ViewModel = App.GetService<ShellViewModel>();
+
+        App.MainWindow!.SetTitleBar(uxTitleBar);
+
+        InitializeComponent();
+
+        uxTitleBar.ActualThemeChanged += UxTitleBar_ActualThemeChanged;
+        uxTitleBar.Loaded += UxTitleBar_Loaded;
+        _navigationService = navigationService;
+        _navigationService.Initialize(contentFrame);
+
+        // I need to use code behind to manually set the binding for the settings item
+        // which can't be done via x:bind
+        navigationView.LayoutUpdated += OnNavigationViewLayoutUpdated!;
+    }
+
+    private void OnNavigationViewLayoutUpdated(object sender, object e)
+    {
+        if (navigationView.SettingsItem is NavigationViewItem settingsItem)
         {
-            get;
-        }
+            // Workaround - Do this only once
+            navigationView.LayoutUpdated -= OnNavigationViewLayoutUpdated!;
 
-        public ShellViewModel ViewModel
-        {
-            get;
-        }
-
-        public Shell(INavigationService navigationService)
-        {
-            UiStateViewModel = App.GetService<UIStateViewModel>();
-            ViewModel = App.GetService<ShellViewModel>();
-
-            App.MainWindow!.SetTitleBar(uxTitleBar);
-
-            InitializeComponent();
-
-            uxTitleBar.ActualThemeChanged += UxTitleBar_ActualThemeChanged;
-            uxTitleBar.Loaded += UxTitleBar_Loaded;
-            _navigationService = navigationService;
-            _navigationService.Initialize(contentFrame);
-
-            // I need to use code behind to manually set the binding for the settings item
-            // which can't be done via x:bind
-            navigationView.LayoutUpdated += OnNavigationViewLayoutUpdated!;
-        }
-
-        private void OnNavigationViewLayoutUpdated(object sender, object e)
-        {
-            if (navigationView.SettingsItem is NavigationViewItem settingsItem)
+            var binding = new Binding
             {
-                // Workaround - Do this only once
-                navigationView.LayoutUpdated -= OnNavigationViewLayoutUpdated!;
+                Source = UiStateViewModel,
+                Path = new PropertyPath("IsSettingsTabEnabled"),
+                Mode = BindingMode.OneWay
+            };
 
-                var binding = new Binding
+            BindingOperations.SetBinding(settingsItem, NavigationViewItem.IsEnabledProperty, binding);
+        }
+    }
+
+    private void UxTitleBar_Loaded(object sender, RoutedEventArgs e)
+    {
+        ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
+    }
+
+    private void UxTitleBar_ActualThemeChanged(FrameworkElement sender, object args)
+    {
+        ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
+    }
+
+    private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        if (args.IsSettingsSelected)
+        {
+            // If we navigate away from Home, clear any FileDrop error messages
+            WeakReferenceMessenger.Default.Send(
+                new DropFileErrorMessage(false, string.Empty));
+
+            contentFrame.Navigate(typeof(Views.Settings));
+        }
+        else
+        {
+            var selectedItem = args.SelectedItem as NavigationViewItem;
+            if (selectedItem != null)
+            {
+                var selectedItemTag = ((string)selectedItem.Tag);
+                sender.Header = selectedItem.Content;
+
+                // Use a switch statement to avoid reflection
+                var pageType = selectedItemTag switch
                 {
-                    Source = UiStateViewModel,
-                    Path = new PropertyPath("IsSettingsTabEnabled"),
-                    Mode = BindingMode.OneWay
+                    "Home" => typeof(Views.Home),
+                    "Calculate" => typeof(Views.Calculate),
+                    _ => null
                 };
 
-                BindingOperations.SetBinding(settingsItem, NavigationViewItem.IsEnabledProperty, binding);
-            }
-        }
-
-        private void UxTitleBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
-        }
-
-        private void UxTitleBar_ActualThemeChanged(FrameworkElement sender, object args)
-        {
-            ApplySystemThemeToCaptionButtons((App.MainWindow! as MainWindow)!);
-        }
-
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected)
-            {
-                // If we navigate away from Home, clear any FileDrop error messages
-                WeakReferenceMessenger.Default.Send(
-                    new DropFileErrorMessage(false, string.Empty));
-
-                contentFrame.Navigate(typeof(Views.Settings));
-            }
-            else
-            {
-                var selectedItem = args.SelectedItem as NavigationViewItem;
-                if (selectedItem != null)
+                if (pageType != null)
                 {
-                    var selectedItemTag = ((string)selectedItem.Tag);
-                    sender.Header = selectedItem.Content;
-
-                    // Use a switch statement to avoid reflection
-                    var pageType = selectedItemTag switch
+                    if (pageType != typeof(Home))
                     {
-                        "Home" => typeof(Views.Home),
-                        "Calculate" => typeof(Views.Calculate),
-                        _ => null
-                    };
-
-                    if (pageType != null)
-                    {
-                        if (pageType != typeof(Home))
-                        {
-                            // If we navigate away from Home, clear any FileDrop error messages
-                            WeakReferenceMessenger.Default.Send(
-                                new DropFileErrorMessage(false, string.Empty));
-                        }
-
-                        if (pageType == typeof(Calculate))
-                        {
-                            // If we navigate to the Calculate page, trigger hash calculation for any hash
-                            // calculation controls that might now be enabled, which are listening for this
-                            // message.
-                            WeakReferenceMessenger.Default.Send(
-                                new CalculatePageSelectedMessage());
-                        }
-
-                        contentFrame.Navigate(pageType);
+                        // If we navigate away from Home, clear any FileDrop error messages
+                        WeakReferenceMessenger.Default.Send(
+                            new DropFileErrorMessage(false, string.Empty));
                     }
+
+                    if (pageType == typeof(Calculate))
+                    {
+                        // If we navigate to the Calculate page, trigger hash calculation for any hash
+                        // calculation controls that might now be enabled, which are listening for this
+                        // message.
+                        WeakReferenceMessenger.Default.Send(
+                            new CalculatePageSelectedMessage());
+                    }
+
+                    contentFrame.Navigate(pageType);
                 }
             }
-            sender.IsBackEnabled = contentFrame.CanGoBack;
+        }
+        sender.IsBackEnabled = contentFrame.CanGoBack;
+    }
+
+    private void NavigationView_Loaded(object sender, RoutedEventArgs e)
+    {
+        navigationView.SelectedItem = navigationView.MenuItems[0];
+    }
+
+    private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+    {
+    }
+
+    private void ApplySystemThemeToCaptionButtons(Window window)
+    {
+        var res = Application.Current.Resources;
+        Windows.UI.Color buttonForegroundColor;
+        Windows.UI.Color buttonHoverForegroundColor;
+        Windows.UI.Color buttonHoverBackgroundColor;
+
+        if (ActualTheme == ElementTheme.Dark)
+        {
+            buttonForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
+            buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
+            buttonHoverBackgroundColor = ColorHelper.GetColorFromHex("#0FFFFFFF");
+        }
+        else
+        {
+            buttonForegroundColor = ColorHelper.GetColorFromHex("#191919");
+            buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#191919");
+            buttonHoverBackgroundColor = ColorHelper.GetColorFromHex("#09000000");
         }
 
-        private void NavigationView_Loaded(object sender, RoutedEventArgs e)
-        {
-            navigationView.SelectedItem = navigationView.MenuItems[0];
-        }
+        res["WindowCaptionForeground"] = buttonForegroundColor;
 
-        private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-        }
+        window.AppWindow.TitleBar.ButtonForegroundColor = buttonForegroundColor;
+        window.AppWindow.TitleBar.ButtonHoverForegroundColor = buttonHoverForegroundColor;
+        window.AppWindow.TitleBar.ButtonHoverBackgroundColor = buttonHoverBackgroundColor;
+    }
 
-        private void ApplySystemThemeToCaptionButtons(Window window)
+    private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+    {
+        // Ensure correct menu item is selected based on navigation
+        foreach (var item in navigationView.MenuItems.Cast<NavigationViewItem>())
         {
-            var res = Application.Current.Resources;
-            Windows.UI.Color buttonForegroundColor;
-            Windows.UI.Color buttonHoverForegroundColor;
-            Windows.UI.Color buttonHoverBackgroundColor;
-
-            if (ActualTheme == ElementTheme.Dark)
+            if (item.Tag as string == e.SourcePageType.Name) // Match by tag
             {
-                buttonForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
-                buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#FFFFFF");
-                buttonHoverBackgroundColor = ColorHelper.GetColorFromHex("#0FFFFFFF");
-            }
-            else
-            {
-                buttonForegroundColor = ColorHelper.GetColorFromHex("#191919");
-                buttonHoverForegroundColor = ColorHelper.GetColorFromHex("#191919");
-                buttonHoverBackgroundColor = ColorHelper.GetColorFromHex("#09000000");
-            }
+                navigationView.SelectedItem = item;
 
-            res["WindowCaptionForeground"] = buttonForegroundColor;
-
-            window.AppWindow.TitleBar.ButtonForegroundColor = buttonForegroundColor;
-            window.AppWindow.TitleBar.ButtonHoverForegroundColor = buttonHoverForegroundColor;
-            window.AppWindow.TitleBar.ButtonHoverBackgroundColor = buttonHoverBackgroundColor;
-        }
-
-        private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
-        {
-            // Ensure correct menu item is selected based on navigation
-            foreach (var item in navigationView.MenuItems.Cast<NavigationViewItem>())
-            {
-                if (item.Tag as string == e.SourcePageType.Name) // Match by tag
-                {
-                    navigationView.SelectedItem = item;
-
-                    break;
-                }
+                break;
             }
         }
     }

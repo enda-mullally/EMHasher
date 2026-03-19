@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages
-{
-    public class CalculateFileHashStartOrEndMessage(string algorithmName, bool isStart)
-    {
-        public string AlgorithmName { get; init; } = algorithmName;
+namespace EM.Hasher.Messages;
 
-        public bool IsStart { get; init; } = isStart;
-    }
+public class CalculateFileHashStartOrEndMessage(string algorithmName, bool isStart)
+{
+    public string AlgorithmName { get; init; } = algorithmName;
+
+    public bool IsStart { get; init; } = isStart;
 }

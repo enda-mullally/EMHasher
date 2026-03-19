@@ -19,24 +19,23 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EM.Hasher.DI
+namespace EM.Hasher.DI;
+
+public partial class Container
 {
-    public partial class Container
+    private readonly ServiceCollection _container = [];
+
+    private Container()
     {
-        private readonly ServiceCollection _container = [];
+    }
 
-        private Container()
-        {
-        }
+    public static Container Create()
+    {
+        return new Container().RegisterServices();
+    }
 
-        public static Container Create()
-        {
-            return new Container().RegisterServices();
-        }
-
-        public IServiceProvider BuildServiceProvider()
-        {
-            return _container.BuildServiceProvider();
-        }
+    public IServiceProvider BuildServiceProvider()
+    {
+        return _container.BuildServiceProvider();
     }
 }

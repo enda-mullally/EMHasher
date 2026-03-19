@@ -16,9 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages.UI
+namespace EM.Hasher.Messages.UI;
+
+public class CalculatePageSelectedMessage()
 {
-    public class CalculatePageSelectedMessage()
-    {
-    }
 }

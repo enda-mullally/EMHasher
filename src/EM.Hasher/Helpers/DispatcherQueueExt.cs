@@ -20,26 +20,25 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.UI.Dispatching;
 
-namespace EM.Hasher.Helpers
+namespace EM.Hasher.Helpers;
+
+public static class DispatcherQueueExtensions
 {
-    public static class DispatcherQueueExtensions
+    public static Task ExtEnqueueAsync(this DispatcherQueue dispatcherQueue, Func<Task> func)
     {
-        public static Task ExtEnqueueAsync(this DispatcherQueue dispatcherQueue, Func<Task> func)
+        var tcs = new TaskCompletionSource();
+        dispatcherQueue.TryEnqueue(async () =>
         {
-            var tcs = new TaskCompletionSource();
-            dispatcherQueue.TryEnqueue(async () =>
+            try
             {
-                try
-                {
-                    await func();
-                    tcs.SetResult();
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-            });
-            return tcs.Task;
-        }
+                await func();
+                tcs.SetResult();
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
+        });
+        return tcs.Task;
     }
 }

@@ -16,19 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Models
+namespace EM.Hasher.Models;
+
+public class FileSigningInfo
 {
-    public class FileSigningInfo
+    public bool IsSigned
     {
-        public bool IsSigned
-        {
-            get; init;
-        }
-
-        public bool IsTrusted { get; init; }
-
-        public string Signer { get; init; } = string.Empty;
-
-        public string Issuer { get; init; } =  string.Empty;
+        get; init;
     }
+
+    public bool IsTrusted { get; init; }
+
+    public string Signer { get; init; } = string.Empty;
+
+    public string Issuer { get; init; } =  string.Empty;
 }

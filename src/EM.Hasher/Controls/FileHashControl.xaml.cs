@@ -20,26 +20,25 @@ using EM.Hasher.ViewModels.Controls;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace EM.Hasher.Controls
+namespace EM.Hasher.Controls;
+
+public sealed partial class FileHashControl : UserControl
 {
-    public sealed partial class FileHashControl : UserControl
+    public FileHashControlViewModel ViewModel
     {
-        public FileHashControlViewModel ViewModel
-        {
-            get => (FileHashControlViewModel)GetValue(ViewModelProperty);
-            set => SetValue(ViewModelProperty, value);
-        }
+        get => (FileHashControlViewModel)GetValue(ViewModelProperty);
+        set => SetValue(ViewModelProperty, value);
+    }
 
-        public readonly DependencyProperty ViewModelProperty =
-            DependencyProperty.Register(
-                nameof(FileHashControlViewModel),
-                typeof(FileHashControlViewModel),
-                typeof(FileHashControl),
-                new PropertyMetadata(null));
+    public readonly DependencyProperty ViewModelProperty =
+        DependencyProperty.Register(
+            nameof(FileHashControlViewModel),
+            typeof(FileHashControlViewModel),
+            typeof(FileHashControl),
+            new PropertyMetadata(null));
 
-        public FileHashControl()
-        {
-            InitializeComponent();
-        }
+    public FileHashControl()
+    {
+        InitializeComponent();
     }
 }

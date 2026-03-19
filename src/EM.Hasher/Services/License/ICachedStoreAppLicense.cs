@@ -19,10 +19,9 @@
 using System.Threading.Tasks;
 using EM.Hasher.Models;
 
-namespace EM.Hasher.Services.License
+namespace EM.Hasher.Services.License;
+
+public interface ICachedStoreAppLicense
 {
-    public interface ICachedStoreAppLicense
-    {
-        Task<StoreAppLicenseModel?> GetCachedStoreAppLicenseAsync();
-    }
+    Task<StoreAppLicenseModel?> GetCachedStoreAppLicenseAsync();
 }

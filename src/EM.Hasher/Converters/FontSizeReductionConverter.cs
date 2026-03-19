@@ -19,23 +19,22 @@
 using System;
 using Microsoft.UI.Xaml.Data;
 
-namespace EM.Hasher.Converters
+namespace EM.Hasher.Converters;
+
+public partial class FontSizeReductionConverter : IValueConverter
 {
-    public partial class FontSizeReductionConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, string language)
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        if (value is double fontSize && parameter is string param && double.TryParse(param, out var offset))
         {
-            if (value is double fontSize && parameter is string param && double.TryParse(param, out var offset))
-            {
-                return fontSize + offset; // use negative offset like "-2" to reduce font size
-            }
-
-            return value;
+            return fontSize + offset; // use negative offset like "-2" to reduce font size
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+        return value;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
     }
 }
