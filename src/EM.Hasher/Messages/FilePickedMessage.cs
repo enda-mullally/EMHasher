@@ -16,18 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages
-{
-    public class FilePickedMessage
-    {
-        public required string FileName
-        {
-            get; init;
-        }
+namespace EM.Hasher.Messages;
 
-        public required bool ItsNew
-        {
-            get; init;
-        }
+public class FilePickedMessage
+{
+    public required string FileName
+    {
+        get; init;
+    }
+
+    public required bool ItsNew
+    {
+        get; init;
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 
-namespace EM.Hasher.Controls;
+namespace EM.Hasher.Controls.Ported;
 
 public sealed partial class CopyButton : Button
 {

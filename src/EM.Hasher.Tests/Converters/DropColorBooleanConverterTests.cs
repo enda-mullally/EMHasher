@@ -3,35 +3,34 @@ using FluentAssertions;
 using Microsoft.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Converters
+namespace EM.Hasher.Tests.Converters;
+
+[TestClass]
+public class DropColorBooleanConverterTests
 {
-    [TestClass]
-    public class DropColorBooleanConverterTests
+    [TestMethod]
+    public void DropColorBooleanConverter_True_Works()
     {
-        [TestMethod]
-        public void DropColorBooleanConverter_True_Works()
-        {
-            // Arrange
-            var sut = new DropColorBooleanConverter();
+        // Arrange
+        var sut = new DropColorBooleanConverter();
 
-            // Act
-            var result = sut.Convert(true, typeof(bool), null!, string.Empty);
+        // Act
+        var result = sut.Convert(true, typeof(bool), null!, string.Empty);
 
-            // Assert
-            result.Should().Be(Colors.Green);
-        }
+        // Assert
+        result.Should().Be(Colors.Green);
+    }
 
-        [TestMethod]
-        public void DropColorBooleanConverter_False_Works()
-        {
-            // Arrange
-            var sut = new DropColorBooleanConverter();
+    [TestMethod]
+    public void DropColorBooleanConverter_False_Works()
+    {
+        // Arrange
+        var sut = new DropColorBooleanConverter();
 
-            // Act
-            var result = sut.Convert(false, typeof(bool), null!, string.Empty);
+        // Act
+        var result = sut.Convert(false, typeof(bool), null!, string.Empty);
 
-            // Assert
-            result.Should().Be(Colors.Gray);
-        }
+        // Assert
+        result.Should().Be(Colors.Gray);
     }
 }

@@ -20,23 +20,22 @@ using System;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Data;
 
-namespace EM.Hasher.Converters
+namespace EM.Hasher.Converters;
+
+public partial class DropColorBooleanConverter : IValueConverter
 {
-    public partial class DropColorBooleanConverter : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, string language)
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        if (value is bool boolValue)
         {
-            if (value is bool boolValue)
-            {
-                return boolValue ? Colors.Green : Colors.Gray;
-            }
-
-            return Colors.Transparent;
+            return boolValue ? Colors.Green : Colors.Gray;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
-            throw new NotImplementedException();
-        }
+        return Colors.Transparent;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
     }
 }

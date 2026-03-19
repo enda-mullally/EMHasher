@@ -19,10 +19,9 @@
 using System.Threading.Tasks;
 using EM.Hasher.Models;
 
-namespace EM.Hasher.Services.File
+namespace EM.Hasher.Services.File;
+
+public interface IFileSigningInfoProvider
 {
-    public interface IFileSigningInfoProvider
-    {
-        Task<FileSigningInfo> GetSigningInfoAsync(string fileName);
-    }
+    Task<FileSigningInfo> GetSigningInfoAsync(string fileName);
 }

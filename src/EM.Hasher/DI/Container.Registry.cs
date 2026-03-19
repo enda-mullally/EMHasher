@@ -33,73 +33,72 @@ using EM.Hasher.ViewModels.UI;
 using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EM.Hasher.DI
+namespace EM.Hasher.DI;
+
+public partial class Container
 {
-    public partial class Container
+    private Container RegisterServices()
     {
-        private Container RegisterServices()
-        {
-            // Singleton services
-            _container.AddSingleton<ISettingsProvider, SettingsProvider>();
-            _container.AddSingleton<INavigationService, NavigationService>();
-            _container.AddSingleton<ICachedStoreAppLicense, CachedStoreAppLicenseProvider>();
+        // Singleton services
+        _container.AddSingleton<ISettingsProvider, SettingsProvider>();
+        _container.AddSingleton<INavigationService, NavigationService>();
+        _container.AddSingleton<ICachedStoreAppLicense, CachedStoreAppLicenseProvider>();
 
-            // Views
-            _container.AddSingleton<Shell>();               // Main frame content, used to host all other pages
-            _container.AddSingleton<TrialExpired>();        // Trial ezxpired frame content
+        // Views
+        _container.AddSingleton<Shell>();               // Main frame content, used to host all other pages
+        _container.AddSingleton<TrialExpired>();        // Trial ezxpired frame content
 
-            // Views ViewModels
-            _container.AddSingleton<UIStateViewModel>();    // Used to manage the enabled/disabled state of some UI elements 
-            _container.AddSingleton<ShellViewModel>();
-            _container.AddSingleton<HomeViewModel>();
-            _container.AddSingleton<CalculateViewModel>();
-            _container.AddSingleton<SettingsViewModel>();
+        // Views ViewModels
+        _container.AddSingleton<UIStateViewModel>();    // Used to manage the enabled/disabled state of some UI elements 
+        _container.AddSingleton<ShellViewModel>();
+        _container.AddSingleton<HomeViewModel>();
+        _container.AddSingleton<CalculateViewModel>();
+        _container.AddSingleton<SettingsViewModel>();
 
-            // Services
-            _container.AddTransient<IAppVersion, AppVersion>();
-            _container.AddTransient<IFileDetailsProvider, FileDetailsProvider>();
-            _container.AddTransient<IFileSigningInfoProvider, FileSigningInfoProvider>();
-            _container.AddTransient<IExplorerFileSelectorService, ExplorerFileSelectorService>();
-            _container.AddTransient<IKeyValueDnParser, KeyValueDnParser>();
+        // Services
+        _container.AddTransient<IAppVersion, AppVersion>();
+        _container.AddTransient<IFileDetailsProvider, FileDetailsProvider>();
+        _container.AddTransient<IFileSigningInfoProvider, FileSigningInfoProvider>();
+        _container.AddTransient<IExplorerFileSelectorService, ExplorerFileSelectorService>();
+        _container.AddTransient<IKeyValueDnParser, KeyValueDnParser>();
 
-            _container.AddSingleton(CreateFileHashControlViewModels);
-            _container.AddSingleton<IEventLogWriter, EventLogWriter>(CreateEventLogWriter);
+        _container.AddSingleton(CreateFileHashControlViewModels);
+        _container.AddSingleton<IEventLogWriter, EventLogWriter>(CreateEventLogWriter);
 
-            return this;
-        }
+        return this;
+    }
 
-        private static IList<FileHashControlViewModel> CreateFileHashControlViewModels(IServiceProvider provider)
-        {
-            var settings = provider
-                .GetRequiredService<ISettingsProvider>();
+    private static IList<FileHashControlViewModel> CreateFileHashControlViewModels(IServiceProvider provider)
+    {
+        var settings = provider
+            .GetRequiredService<ISettingsProvider>();
 
-            return
-            [
-                new FileHashControlViewModel(
-                    new Crc32HashCalculator(),
-                    settings.IsUppercaseHashValues,
-                    settings.IsCrc32Enabled),
+        return
+        [
+            new FileHashControlViewModel(
+                new Crc32HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsCrc32Enabled),
 
-                new FileHashControlViewModel(
-                    new Md5HashCalculator(),
-                    settings.IsUppercaseHashValues,
-                    settings.IsMd5Enabled),
+            new FileHashControlViewModel(
+                new Md5HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsMd5Enabled),
 
-                new FileHashControlViewModel(
-                    new Sha256HashCalculator(),
-                    settings.IsUppercaseHashValues,
-                    settings.IsSha256Enabled),
+            new FileHashControlViewModel(
+                new Sha256HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsSha256Enabled),
 
-                new FileHashControlViewModel(
-                    new Sha512HashCalculator(),
-                    settings.IsUppercaseHashValues,
-                    settings.IsSha512Enabled)
-            ];
-        }
+            new FileHashControlViewModel(
+                new Sha512HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsSha512Enabled)
+        ];
+    }
 
-        private static EventLogWriter CreateEventLogWriter(IServiceProvider provider)
-        {
-            return new EventLogWriter("Enda Mullally", "EM Hasher", "EM_HASHER_LOG");
-        }
+    private static EventLogWriter CreateEventLogWriter(IServiceProvider provider)
+    {
+        return new EventLogWriter("Enda Mullally", "EM Hasher", "EM_HASHER_LOG");
     }
 }

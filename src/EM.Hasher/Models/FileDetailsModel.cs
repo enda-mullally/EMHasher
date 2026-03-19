@@ -16,23 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Models
+namespace EM.Hasher.Models;
+
+public class FileDetailsModel
 {
-    public class FileDetailsModel
+    public string FileName { get; init; } = string.Empty;
+
+    public string FullFileName { get; init; } = string.Empty;
+
+    public string FileSize { get; init; } = string.Empty;
+
+    public string FileCreated { get; init; } = string.Empty;
+
+    public string FileModified { get; init; } = string.Empty;
+
+    public override string ToString()
     {
-        public string FileName { get; init; } = string.Empty;
-
-        public string FullFileName { get; init; } = string.Empty;
-
-        public string FileSize { get; init; } = string.Empty;
-
-        public string FileCreated { get; init; } = string.Empty;
-
-        public string FileModified { get; init; } = string.Empty;
-
-        public override string ToString()
-        {
-            return $"FileName={FileName}, FullFileName={FullFileName}, FileSize={FileSize}, FileCreated={FileCreated}, FileModified={FileModified}";
-        }
+        return $"FileName={FileName}, FullFileName={FullFileName}, FileSize={FileSize}, FileCreated={FileCreated}, FileModified={FileModified}";
     }
 }

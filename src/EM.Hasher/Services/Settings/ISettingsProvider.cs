@@ -16,43 +16,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Services.Settings
+namespace EM.Hasher.Services.Settings;
+
+public interface ISettingsProvider
 {
-    public interface ISettingsProvider
+    bool IsCrc32Enabled
     {
-        bool IsCrc32Enabled
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        bool IsMd5Enabled
-        {
-            get; set;
-        }
+    bool IsMd5Enabled
+    {
+        get; set;
+    }
 
-        bool IsSha256Enabled
-        {
-            get; set;
-        }
+    bool IsSha256Enabled
+    {
+        get; set;
+    }
 
-        bool IsSha512Enabled
-        {
-            get; set;
-        }
+    bool IsSha512Enabled
+    {
+        get; set;
+    }
 
-        public int SelectedTheme
-        {
-            get; set;
-        }
+    public int SelectedTheme
+    {
+        get; set;
+    }
 
-        public bool IsUppercaseHashValues
-        {
-            get; set;
-        }
+    public bool IsUppercaseHashValues
+    {
+        get; set;
+    }
 
-        public bool IsTrialMode
-        {
-            get; set;
-        }
+    public bool IsTrialMode
+    {
+        get; set;
     }
 }

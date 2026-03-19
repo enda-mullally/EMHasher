@@ -2,19 +2,18 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Messages.UI
-{
-    [TestClass]
-    public class SetAppSubTitleMessageTests
-    {
-        [TestMethod]
-        public void SetAppSubTitleMessage_Works()
-        {
-            // Act
-            var sut = new SetAppSubTitleMessage("test");
+namespace EM.Hasher.Tests.Messages.UI;
 
-            // Assert
-            sut.AppSubTitle.Should().BeEquivalentTo("test");
-        }
+[TestClass]
+public class SetAppSubTitleMessageTests
+{
+    [TestMethod]
+    public void SetAppSubTitleMessage_Works()
+    {
+        // Act
+        var sut = new SetAppSubTitleMessage("test");
+
+        // Assert
+        sut.AppSubTitle.Should().BeEquivalentTo("test");
     }
 }

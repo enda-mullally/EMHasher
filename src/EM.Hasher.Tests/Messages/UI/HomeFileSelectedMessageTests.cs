@@ -2,19 +2,18 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Messages.UI
-{
-    [TestClass]
-    public class HomeFileSelectedMessageTests
-    {
-        [TestMethod]
-        public void HomeFileSelectedMessage_Works()
-        {
-            // Act
-            var sut = new HomeFileSelectedMessage(true);
+namespace EM.Hasher.Tests.Messages.UI;
 
-            // Assert
-            sut.IsFileSelected.Should().BeTrue();
-        }
+[TestClass]
+public class HomeFileSelectedMessageTests
+{
+    [TestMethod]
+    public void HomeFileSelectedMessage_Works()
+    {
+        // Act
+        var sut = new HomeFileSelectedMessage(true);
+
+        // Assert
+        sut.IsFileSelected.Should().BeTrue();
     }
 }

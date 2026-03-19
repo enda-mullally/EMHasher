@@ -21,30 +21,29 @@ using System.Threading.Tasks;
 using EM.Hasher.Models;
 using Humanizer;
 
-namespace EM.Hasher.Services.File
+namespace EM.Hasher.Services.File;
+
+public class FileDetailsProvider : IFileDetailsProvider
 {
-    public class FileDetailsProvider : IFileDetailsProvider
+    public async Task<FileDetailsModel?> GetFileDetailsAsync(string fileName)
     {
-        public async Task<FileDetailsModel?> GetFileDetailsAsync(string fileName)
+        return await Task.Run(() =>
         {
-            return await Task.Run(() =>
+            FileInfo? selectedFileInfo = new(fileName);
+
+            if (selectedFileInfo.Exists)
             {
-                FileInfo? selectedFileInfo = new(fileName);
-
-                if (selectedFileInfo.Exists)
+                return new FileDetailsModel()
                 {
-                    return new FileDetailsModel()
-                    {
-                        FullFileName = fileName,
-                        FileCreated = selectedFileInfo.CreationTime.ToString("f") + "  (" + selectedFileInfo.CreationTime.Humanize() + ")",
-                        FileModified = selectedFileInfo.LastWriteTime.ToString("f") + "  (" + selectedFileInfo.LastWriteTime.Humanize() + ")",
-                        FileName = selectedFileInfo.Name,
-                        FileSize = $"{ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")}  ({selectedFileInfo.Length:N0}{(selectedFileInfo.Length == 1 ? " byte)" : " bytes)")}"
-                    };
-                }
+                    FullFileName = fileName,
+                    FileCreated = selectedFileInfo.CreationTime.ToString("f") + "  (" + selectedFileInfo.CreationTime.Humanize() + ")",
+                    FileModified = selectedFileInfo.LastWriteTime.ToString("f") + "  (" + selectedFileInfo.LastWriteTime.Humanize() + ")",
+                    FileName = selectedFileInfo.Name,
+                    FileSize = $"{ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")}  ({selectedFileInfo.Length:N0}{(selectedFileInfo.Length == 1 ? " byte)" : " bytes)")}"
+                };
+            }
 
-                return default;
-            });
-        }
+            return default;
+        });
     }
 }

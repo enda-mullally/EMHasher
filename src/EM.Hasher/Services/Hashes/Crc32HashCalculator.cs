@@ -21,32 +21,31 @@ using System.IO;
 using System.Threading.Tasks;
 using Force.Crc32;
 
-namespace EM.Hasher.Services.Hashes
+namespace EM.Hasher.Services.Hashes;
+
+public class Crc32HashCalculator : IHashCalculator
 {
-    public class Crc32HashCalculator : IHashCalculator
+    public async Task<string> CalculateHashAsync(string fileName)
     {
-        public async Task<string> CalculateHashAsync(string fileName)
-        {
-            using var crc32 = new Crc32Algorithm();
+        using var crc32 = new Crc32Algorithm();
 
-            await using var fileStream = new FileStream(fileName,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read,
-                IHashCalculator.BufferSize,
-                useAsync: true);
+        await using var fileStream = new FileStream(fileName,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            IHashCalculator.BufferSize,
+            useAsync: true);
 
-            using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
+        using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
-            var hashBytes = await crc32.ComputeHashAsync(bufferedStream);
+        var hashBytes = await crc32.ComputeHashAsync(bufferedStream);
 
-            return Convert.ToHexStringLower(hashBytes);
-        }
+        return Convert.ToHexStringLower(hashBytes);
+    }
 
-        public string GetAlgorithmName()
-        {
-            return "CRC-32";
-        }
+    public string GetAlgorithmName()
+    {
+        return "CRC-32";
     }
 }
 

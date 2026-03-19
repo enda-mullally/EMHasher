@@ -2,19 +2,18 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Messages.UI
-{
-    [TestClass]
-    public class SettingsSelectionMessageTests
-    {
-        [TestMethod]
-        public void SettingsSelectionMessage_Works()
-        {
-            // Act
-            var sut = new SettingsSelectionMessage(true);
+namespace EM.Hasher.Tests.Messages.UI;
 
-            // Assert
-            sut.IsSettingsSelectionValid.Should().BeTrue();
-        }
+[TestClass]
+public class SettingsSelectionMessageTests
+{
+    [TestMethod]
+    public void SettingsSelectionMessage_Works()
+    {
+        // Act
+        var sut = new SettingsSelectionMessage(true);
+
+        // Assert
+        sut.IsSettingsSelectionValid.Should().BeTrue();
     }
 }

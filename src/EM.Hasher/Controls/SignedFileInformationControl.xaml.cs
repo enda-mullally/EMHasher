@@ -19,31 +19,30 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace EM.Hasher.Controls
+namespace EM.Hasher.Controls;
+
+public sealed partial class SignedFileInformationControl : UserControl
 {
-    public sealed partial class SignedFileInformationControl : UserControl
+    public SignedFileInformationControl()
     {
-        public SignedFileInformationControl()
-        {
-            InitializeComponent();
-        }
-
-        public string Signer
-        {
-            get => (string)GetValue(SignerProperty);
-            set => SetValue(SignerProperty, value);
-        }
-
-        public static readonly DependencyProperty SignerProperty =
-            DependencyProperty.Register(nameof(Signer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
-
-        public string Issuer
-        {
-            get => (string)GetValue(IssuerProperty);
-            set => SetValue(IssuerProperty, value);
-        }
-
-        public static readonly DependencyProperty IssuerProperty =
-            DependencyProperty.Register(nameof(Issuer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+        InitializeComponent();
     }
+
+    public string Signer
+    {
+        get => (string)GetValue(SignerProperty);
+        set => SetValue(SignerProperty, value);
+    }
+
+    public static readonly DependencyProperty SignerProperty =
+        DependencyProperty.Register(nameof(Signer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+
+    public string Issuer
+    {
+        get => (string)GetValue(IssuerProperty);
+        set => SetValue(IssuerProperty, value);
+    }
+
+    public static readonly DependencyProperty IssuerProperty =
+        DependencyProperty.Register(nameof(Issuer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
 }

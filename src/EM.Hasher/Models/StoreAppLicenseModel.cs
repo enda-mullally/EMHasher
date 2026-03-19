@@ -18,21 +18,20 @@
 
 using System;
 
-namespace EM.Hasher.Models
+namespace EM.Hasher.Models;
+
+public class StoreAppLicenseModel
 {
-    public class StoreAppLicenseModel
+    public bool IsActive { get; init; }
+
+    public bool IsTrial { get; init; }
+
+    public string Data { get; init; } = string.Empty;
+
+    public DateTimeOffset ExpirationDate { get; init; }
+
+    public override string ToString()
     {
-        public bool IsActive { get; init; }
-
-        public bool IsTrial { get; init; }
-
-        public string Data { get; init; } = string.Empty;
-
-        public DateTimeOffset ExpirationDate { get; init; }
-
-        public override string ToString()
-        {
-            return $"IsActive={IsActive}, IsTrial={IsTrial}, ExpirationDate={ExpirationDate}, Data={Data}";
-        }
+        return $"IsActive={IsActive}, IsTrial={IsTrial}, ExpirationDate={ExpirationDate}, Data={Data}";
     }
 }

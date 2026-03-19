@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Services
-{
-    public interface IEventLogWriter
-    {
-        void WriteInfo(string info);
+namespace EM.Hasher.Services;
 
-        void WriteError(string error);
-    }
+public interface IEventLogWriter
+{
+    void WriteInfo(string info);
+
+    void WriteError(string error);
 }

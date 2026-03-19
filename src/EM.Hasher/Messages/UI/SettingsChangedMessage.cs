@@ -18,12 +18,11 @@
 
 using System.Collections.Generic;
 
-namespace EM.Hasher.Messages.UI
-{
-    public class SettingsChangedMessage(Dictionary<string, bool> hashAlgorithmsEnabled, bool isUppercaseHashValues)
-    {
-        public Dictionary<string, bool> HashAlgorithmsEnabled { get; init; } = hashAlgorithmsEnabled;
+namespace EM.Hasher.Messages.UI;
 
-        public bool IsUppercaseHashValues { get; init; } = isUppercaseHashValues;
-    }
+public class SettingsChangedMessage(Dictionary<string, bool> hashAlgorithmsEnabled, bool isUppercaseHashValues)
+{
+    public Dictionary<string, bool> HashAlgorithmsEnabled { get; init; } = hashAlgorithmsEnabled;
+
+    public bool IsUppercaseHashValues { get; init; } = isUppercaseHashValues;
 }

@@ -2,27 +2,26 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EM.Hasher.Tests.Messages
+namespace EM.Hasher.Tests.Messages;
+
+[TestClass]
+public class FilePickedMessageTests
 {
-    [TestClass]
-    public class FilePickedMessageTests
+    [TestMethod]
+    public void FilePickedMessage_Works()
     {
-        [TestMethod]
-        public void FilePickedMessage_Works()
+        // Arrange
+        var fileName = "test.txt";
+
+        // Act
+        var sut = new FilePickedMessage
         {
-            // Arrange
-            var fileName = "test.txt";
+            FileName = fileName,
+            ItsNew = true
+        };
 
-            // Act
-            var sut = new FilePickedMessage
-            {
-                FileName = fileName,
-                ItsNew = true
-            };
-
-            // Assert
-            sut.FileName.Should().Be(fileName);
-            sut.ItsNew.Should().BeTrue();
-        }
+        // Assert
+        sut.FileName.Should().Be(fileName);
+        sut.ItsNew.Should().BeTrue();
     }
 }

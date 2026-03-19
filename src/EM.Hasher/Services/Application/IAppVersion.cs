@@ -1,7 +1,6 @@
-﻿namespace EM.Hasher.Services.Application
+﻿namespace EM.Hasher.Services.Application;
+
+public interface IAppVersion
 {
-    public interface IAppVersion
-    {
-        string GetVersionDescription();
-    }
+    string GetVersionDescription();
 }

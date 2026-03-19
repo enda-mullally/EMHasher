@@ -21,31 +21,30 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace EM.Hasher.Services.Hashes
+namespace EM.Hasher.Services.Hashes;
+
+public class Md5HashCalculator : IHashCalculator
 {
-    public class Md5HashCalculator : IHashCalculator
+    public async Task<string> CalculateHashAsync(string fileName)
     {
-        public async Task<string> CalculateHashAsync(string fileName)
-        {
-            using var md5 = MD5.Create();
+        using var md5 = MD5.Create();
 
-            await using var fileStream = new FileStream(fileName,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read,
-                IHashCalculator.BufferSize,
-                useAsync: true);
+        await using var fileStream = new FileStream(fileName,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            IHashCalculator.BufferSize,
+            useAsync: true);
 
-            using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
+        using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
-            var hashBytes = await md5.ComputeHashAsync(bufferedStream);
+        var hashBytes = await md5.ComputeHashAsync(bufferedStream);
 
-            return Convert.ToHexStringLower(hashBytes);
-        }
+        return Convert.ToHexStringLower(hashBytes);
+    }
 
-        public string GetAlgorithmName()
-        {
-            return "MD5";
-        }
+    public string GetAlgorithmName()
+    {
+        return "MD5";
     }
 }

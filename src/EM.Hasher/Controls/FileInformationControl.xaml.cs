@@ -19,56 +19,55 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace EM.Hasher.Controls
+namespace EM.Hasher.Controls;
+
+public sealed partial class FileInformationControl : UserControl
 {
-    public sealed partial class FileInformationControl : UserControl
+    public FileInformationControl()
     {
-        public FileInformationControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public string FileName
-        {
-            get => (string)GetValue(FileNameProperty);
-            set => SetValue(FileNameProperty, ForceHardWrap(value));
-        }
+    public string FileName
+    {
+        get => (string)GetValue(FileNameProperty);
+        set => SetValue(FileNameProperty, ForceHardWrap(value));
+    }
 
-        public static readonly DependencyProperty FileNameProperty =
-            DependencyProperty.Register(nameof(FileName), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+    public static readonly DependencyProperty FileNameProperty =
+        DependencyProperty.Register(nameof(FileName), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
 
-        public string FileSize
-        {
-            get => (string)GetValue(FileSizeProperty);
-            set => SetValue(FileSizeProperty, value);
-        }
+    public string FileSize
+    {
+        get => (string)GetValue(FileSizeProperty);
+        set => SetValue(FileSizeProperty, value);
+    }
 
-        public static readonly DependencyProperty FileSizeProperty =
-            DependencyProperty.Register(nameof(FileSize), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+    public static readonly DependencyProperty FileSizeProperty =
+        DependencyProperty.Register(nameof(FileSize), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
 
-        public string FileCreated
-        {
-            get => (string)GetValue(FileCreatedProperty);
-            set => SetValue(FileCreatedProperty, value);
-        }
+    public string FileCreated
+    {
+        get => (string)GetValue(FileCreatedProperty);
+        set => SetValue(FileCreatedProperty, value);
+    }
 
-        public static readonly DependencyProperty FileCreatedProperty =
-            DependencyProperty.Register(nameof(FileCreated), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+    public static readonly DependencyProperty FileCreatedProperty =
+        DependencyProperty.Register(nameof(FileCreated), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
 
-        public string FileModified
-        {
-            get => (string)GetValue(FileModifiedProperty);
-            set => SetValue(FileModifiedProperty, value);
-        }
+    public string FileModified
+    {
+        get => (string)GetValue(FileModifiedProperty);
+        set => SetValue(FileModifiedProperty, value);
+    }
 
-        public static readonly DependencyProperty FileModifiedProperty =
-            DependencyProperty.Register(nameof(FileModified), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+    public static readonly DependencyProperty FileModifiedProperty =
+        DependencyProperty.Register(nameof(FileModified), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
 
-        // This fix's a small issue with wrapping of filename
-        // strings with hyphens "-" being treated as line breaks.
-        private static string ForceHardWrap(string input)
-        {
-            return string.Join("\u200B", input.ToCharArray()); // inserts zero-width space between every char
-        }
+    // This fix's a small issue with wrapping of filename
+    // strings with hyphens "-" being treated as line breaks.
+    private static string ForceHardWrap(string input)
+    {
+        return string.Join("\u200B", input.ToCharArray()); // inserts zero-width space between every char
     }
 }

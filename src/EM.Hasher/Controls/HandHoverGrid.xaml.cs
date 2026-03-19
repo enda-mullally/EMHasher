@@ -20,39 +20,38 @@ using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 
-namespace EM.Hasher.Controls
+namespace EM.Hasher.Controls;
+
+public sealed partial class HandHoverGrid : Grid
 {
-    public sealed partial class HandHoverGrid : Grid
+    public HandHoverGrid()
     {
-        public HandHoverGrid()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private InputCursor InputCursor
-        {
-            get => ProtectedCursor;
-            set => ProtectedCursor = value;
-        }
+    private InputCursor InputCursor
+    {
+        get => ProtectedCursor;
+        set => ProtectedCursor = value;
+    }
 
-        private InputCursor? OriginalInputCursor
-        {
-            get; set;
-        }
+    private InputCursor? OriginalInputCursor
+    {
+        get; set;
+    }
 
-        private new void PointerEntered(object sender, PointerRoutedEventArgs e)
-        {
-            OriginalInputCursor = InputCursor ?? InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+    private new void PointerEntered(object sender, PointerRoutedEventArgs e)
+    {
+        OriginalInputCursor = InputCursor ?? InputSystemCursor.Create(InputSystemCursorShape.Arrow);
 
-            InputCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
-        }
+        InputCursor = InputSystemCursor.Create(InputSystemCursorShape.Hand);
+    }
 
-        private new void PointerExited(object sender, PointerRoutedEventArgs e)
+    private new void PointerExited(object sender, PointerRoutedEventArgs e)
+    {
+        if (OriginalInputCursor != null)
         {
-            if (OriginalInputCursor != null)
-            {
-                InputCursor = OriginalInputCursor;
-            }
+            InputCursor = OriginalInputCursor;
         }
     }
 }

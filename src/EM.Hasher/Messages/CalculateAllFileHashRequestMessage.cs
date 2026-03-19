@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages
-{
-    public class CalculateAllFileHashRequestMessage(string fileName, bool onlyCalculateIfNeeded)
-    {
-        public string FileName { get; init; } = fileName;
+namespace EM.Hasher.Messages;
 
-        public bool OnlyCalculateIfNeeded { get; init; } = onlyCalculateIfNeeded;
-    }
+public class CalculateAllFileHashRequestMessage(string fileName, bool onlyCalculateIfNeeded)
+{
+    public string FileName { get; init; } = fileName;
+
+    public bool OnlyCalculateIfNeeded { get; init; } = onlyCalculateIfNeeded;
 }

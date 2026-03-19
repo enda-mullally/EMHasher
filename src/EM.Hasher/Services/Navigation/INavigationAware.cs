@@ -18,10 +18,9 @@
 
 using System.Threading.Tasks;
 
-namespace EM.Hasher.Services.Navigation
+namespace EM.Hasher.Services.Navigation;
+
+public interface INavigationAware
 {
-    public interface INavigationAware
-    {
-        Task OnNavigatedToAsync(object parameter);
-    }
+    Task OnNavigatedToAsync(object parameter);
 }

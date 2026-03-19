@@ -18,15 +18,14 @@
 
 using System.Drawing;
 
-namespace EM.Hasher.Helpers
-{
-    public class ColorHelper
-    {
-        public static Windows.UI.Color GetColorFromHex(string hexaColor)
-        {
-            var clr = (Color)new ColorConverter().ConvertFromString(hexaColor)!;
+namespace EM.Hasher.Helpers;
 
-            return Windows.UI.Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
-        }
+public class ColorHelper
+{
+    public static Windows.UI.Color GetColorFromHex(string hexaColor)
+    {
+        var clr = (Color)new ColorConverter().ConvertFromString(hexaColor)!;
+
+        return Windows.UI.Color.FromArgb(clr.A, clr.R, clr.G, clr.B);
     }
 }

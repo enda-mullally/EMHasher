@@ -21,31 +21,30 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace EM.Hasher.Services.Hashes
+namespace EM.Hasher.Services.Hashes;
+
+public class Sha512HashCalculator : IHashCalculator
 {
-    public class Sha512HashCalculator : IHashCalculator
+    public async Task<string> CalculateHashAsync(string fileName)
     {
-        public async Task<string> CalculateHashAsync(string fileName)
-        {
-            using var sha512 = SHA512.Create();
+        using var sha512 = SHA512.Create();
 
-            await using var fileStream = new FileStream(fileName,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read,
-                IHashCalculator.BufferSize,
-                useAsync: true);
+        await using var fileStream = new FileStream(fileName,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            IHashCalculator.BufferSize,
+            useAsync: true);
 
-            using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
+        using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
-            var hashBytes = await sha512.ComputeHashAsync(bufferedStream);
+        var hashBytes = await sha512.ComputeHashAsync(bufferedStream);
 
-            return Convert.ToHexStringLower(hashBytes);
-        }
+        return Convert.ToHexStringLower(hashBytes);
+    }
 
-        public string GetAlgorithmName()
-        {
-            return "SHA-512";
-        }
+    public string GetAlgorithmName()
+    {
+        return "SHA-512";
     }
 }

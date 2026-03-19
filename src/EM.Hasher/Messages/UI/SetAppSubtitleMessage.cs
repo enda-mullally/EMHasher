@@ -16,10 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace EM.Hasher.Messages.UI
+namespace EM.Hasher.Messages.UI;
+
+public class SetAppSubTitleMessage(string appSubTitle)
 {
-    public class SetAppSubTitleMessage(string appSubTitle)
-    {
-        public string AppSubTitle { get; init; } = appSubTitle;
-    }
+    public string AppSubTitle { get; init; } = appSubTitle;
 }

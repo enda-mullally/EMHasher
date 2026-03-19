@@ -19,10 +19,9 @@
 using System.Threading.Tasks;
 using EM.Hasher.Models;
 
-namespace EM.Hasher.Services.File
+namespace EM.Hasher.Services.File;
+
+public interface IFileDetailsProvider
 {
-    public interface IFileDetailsProvider
-    {
-        Task<FileDetailsModel?> GetFileDetailsAsync(string fileName);
-    }
+    Task<FileDetailsModel?> GetFileDetailsAsync(string fileName);
 }

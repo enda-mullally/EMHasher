@@ -19,83 +19,82 @@
 using System;
 using System.Diagnostics;
 
-namespace EM.Hasher.Services
+namespace EM.Hasher.Services;
+
+public class EventLogWriter : IEventLogWriter
 {
-    public class EventLogWriter : IEventLogWriter
+    private readonly EventLog? _eventLog;
+    private readonly bool _loggingEnabled;
+    private readonly string _logPrefix;
+
+    public EventLogWriter(
+        string logName,
+        string appSourceName,
+        string loggingEnvVarName)
     {
-        private readonly EventLog? _eventLog;
-        private readonly bool _loggingEnabled;
-        private readonly string _logPrefix;
+        _loggingEnabled =
+            Environment.GetEnvironmentVariable(loggingEnvVarName) != null &&
+            (Environment.GetEnvironmentVariable(loggingEnvVarName)!.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
+             Environment.GetEnvironmentVariable(loggingEnvVarName)!.Equals("1", StringComparison.InvariantCultureIgnoreCase));
 
-        public EventLogWriter(
-            string logName,
-            string appSourceName,
-            string loggingEnvVarName)
+        if (!_loggingEnabled)
         {
-            _loggingEnabled =
-                Environment.GetEnvironmentVariable(loggingEnvVarName) != null &&
-                (Environment.GetEnvironmentVariable(loggingEnvVarName)!.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
-                 Environment.GetEnvironmentVariable(loggingEnvVarName)!.Equals("1", StringComparison.InvariantCultureIgnoreCase));
+            _logPrefix = string.Empty;
 
-            if (!_loggingEnabled)
-            {
-                _logPrefix = string.Empty;
-
-                return;
-            }
-
-            var sourceExists = AppSourceExists(appSourceName);
-            var sn = sourceExists ? appSourceName : "Application";
-
-            if (sn.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
-            {
-                _logPrefix = $"[{appSourceName}] ";
-                _eventLog = new EventLog("Application");
-            }
-            else
-            {
-                _logPrefix = string.Empty;
-                _eventLog = new EventLog($"{logName}");
-            }
-
-            _eventLog.Source = sn;
+            return;
         }
 
-        private static bool AppSourceExists(string sourceName)
+        var sourceExists = AppSourceExists(appSourceName);
+        var sn = sourceExists ? appSourceName : "Application";
+
+        if (sn.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
         {
-            var initMessage = "EM Hasher App Init";
-
-            try
-            {
-                // Try writing to the custom source directly
-                EventLog.WriteEntry(sourceName, initMessage, EventLogEntryType.Information);
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
+            _logPrefix = $"[{appSourceName}] ";
+            _eventLog = new EventLog("Application");
+        }
+        else
+        {
+            _logPrefix = string.Empty;
+            _eventLog = new EventLog($"{logName}");
         }
 
-        public void WriteInfo(string info)
-        {
-            if (!_loggingEnabled || _eventLog == null)
-            {
-                return;
-            }
+        _eventLog.Source = sn;
+    }
 
-            _eventLog.WriteEntry(_logPrefix + info, EventLogEntryType.Information);
+    private static bool AppSourceExists(string sourceName)
+    {
+        var initMessage = "EM Hasher App Init";
+
+        try
+        {
+            // Try writing to the custom source directly
+            EventLog.WriteEntry(sourceName, initMessage, EventLogEntryType.Information);
+        }
+        catch
+        {
+            return false;
         }
 
-        public void WriteError(string error)
-        {
-            if (!_loggingEnabled || _eventLog == null)
-            {
-                return;
-            }
+        return true;
+    }
 
-            _eventLog.WriteEntry(_logPrefix + error, EventLogEntryType.Error);
+    public void WriteInfo(string info)
+    {
+        if (!_loggingEnabled || _eventLog == null)
+        {
+            return;
         }
+
+        _eventLog.WriteEntry(_logPrefix + info, EventLogEntryType.Information);
+    }
+
+    public void WriteError(string error)
+    {
+        if (!_loggingEnabled || _eventLog == null)
+        {
+            return;
+        }
+
+        _eventLog.WriteEntry(_logPrefix + error, EventLogEntryType.Error);
     }
 }

@@ -18,29 +18,28 @@
 
 using System.IO;
 
-namespace EM.Hasher.Helpers
+namespace EM.Hasher.Helpers;
+
+public static class FileNameShortener
 {
-    public static class FileNameShortener
+    public static string ShortenFilename(string filename, int maxLength)
     {
-        public static string ShortenFilename(string filename, int maxLength)
+        if (filename.Length <= maxLength)
         {
-            if (filename.Length <= maxLength)
-            {
-                return filename;
-            }
-            var extension = Path.GetExtension(filename);
-            var filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
-
-            var keepLength = maxLength - extension.Length - 3; // 3 for "..."
-            var firstPartLength = keepLength / 2;
-            var lastPartLength = keepLength - firstPartLength;
-
-            var shortened = filenameWithoutExtension.Substring(0, firstPartLength)
-                              + "..."
-                              + filenameWithoutExtension.Substring(filenameWithoutExtension.Length - lastPartLength)
-                              + extension;
-
-            return shortened;
+            return filename;
         }
+        var extension = Path.GetExtension(filename);
+        var filenameWithoutExtension = Path.GetFileNameWithoutExtension(filename);
+
+        var keepLength = maxLength - extension.Length - 3; // 3 for "..."
+        var firstPartLength = keepLength / 2;
+        var lastPartLength = keepLength - firstPartLength;
+
+        var shortened = filenameWithoutExtension.Substring(0, firstPartLength)
+                          + "..."
+                          + filenameWithoutExtension.Substring(filenameWithoutExtension.Length - lastPartLength)
+                          + extension;
+
+        return shortened;
     }
 }
