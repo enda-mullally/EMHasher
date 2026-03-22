@@ -27,12 +27,12 @@ jobs:
       with:
         dotnet-version: 10.0.x
         
-    - name: Export package list
-      run: dotnet list package --include-transitive --format json > packages.json
-
     - name: Block FluentAssertions 8.x
+      working-directory: src  
       shell: pwsh
       run: |
+        dotnet list package --include-transitive --format json > packages.json
+
         $json = Get-Content packages.json | ConvertFrom-Json
         $violations = @()
 
