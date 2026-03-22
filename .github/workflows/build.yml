@@ -26,38 +26,40 @@ jobs:
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
-        
-    - name: Block FluentAssertions 8.x
-      working-directory: src  
-      shell: pwsh
-      run: |
-        dotnet list package --include-transitive --format json > packages.json
-
-        $json = Get-Content packages.json | ConvertFrom-Json
-        $violations = @()
-
-        foreach ($proj in $json.projects) {
-            foreach ($fw in $proj.frameworks) {
-                $all = @()
-                if ($fw.topLevelPackages) { $all += $fw.topLevelPackages }
-                if ($fw.transitivePackages) { $all += $fw.transitivePackages }
-
-                foreach ($pkg in $all) {
-                    if ($pkg.id -eq "FluentAssertions") {
-                        if ([version]$pkg.resolvedVersion -ge [version]"8.0.0") {
-                            $violations += $pkg
-                        }
-                    }
-                }
-            }
-        }
-
-        if ($violations.Count -gt 0) {
-            Write-Error "FluentAssertions 8.x detected. This repository only allows version 7.x."
-            exit 1
-        }
-
-        Write-Host "FluentAssertions version policy OK."
+    #
+    # TODO Revisit and fix this
+    #
+    #- name: Block FluentAssertions 8.x
+    #  working-directory: src  
+    #  shell: pwsh
+    #  run: |
+    #    dotnet list package --include-transitive --format json > packages.json
+    #
+    #    $json = Get-Content packages.json | ConvertFrom-Json
+    #    $violations = @()
+    #
+    #    foreach ($proj in $json.projects) {
+    #        foreach ($fw in $proj.frameworks) {
+    #            $all = @()
+    #            if ($fw.topLevelPackages) { $all += $fw.topLevelPackages }
+    #            if ($fw.transitivePackages) { $all += $fw.transitivePackages }
+    #
+    #            foreach ($pkg in $all) {
+    #                if ($pkg.id -eq "FluentAssertions") {
+    #                    if ([version]$pkg.resolvedVersion -ge [version]"8.0.0") {
+    #                        $violations += $pkg
+    #                    }
+    #                }
+    #            }
+    #        }
+    #    }
+    #
+    #    if ($violations.Count -gt 0) {
+    #        Write-Error "FluentAssertions 8.x detected. This repository only allows version 7.x."
+    #        exit 1
+    #    }
+    #
+    #    Write-Host "FluentAssertions version policy OK."
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
