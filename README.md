@@ -26,18 +26,18 @@ EM Hasher is a modern, simple & free hash-generating application built from the 
 
 ## Coming soon!
 
-Hash verification and support for launching EM Hasher directly in Verify mode via '.md5', '.sha256' files etc; Quickly verify the hashes of single or multiple files with a single click.
+Hash verification via auto detection of file hashes containted in any local .md5, .sha256 file(s) etc. If the selected file is matched to any hash validation file, a simple validation result will be shown in the UI (Icon).
 
 <br />
 
 #### Screenshots
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen_Drop.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen_Drop.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen.png">
+  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen.png">
 </p>
 
 <p align="center">
@@ -114,5 +114,10 @@ v1.1.68 - UI - Improved look of Settings page UI - Fixed rendering issue when ap
 
 ### 18/Mar/2026 ###
 v1.1.69 - Misc bug fix's - Added Digital Signature info panel for signed files.
+
+### 25/Mar/2026 ###
+v1.1.70 - (Pending) Settings -> About. Improved copyright notice.
+
+
 
 

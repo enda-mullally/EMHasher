@@ -163,23 +163,28 @@
                 <!--  String resource key 'SettingsAboutAppDisplayName.Header' will map to Header below, very subtle  -->
                 <controls:SettingsExpander
                     x:Uid="SettingsAboutAppDisplayName"
-                    Description="{x:Bind sys:String.Format('Copyright © 2025-2026 Enda Mullally. All rights reserved.{0}', ViewModel.TrialLicenseDescription), Mode=OneWay}"
                     HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/EMHasher40x40.png}"
                     IsExpanded="False">
+                    <controls:SettingsExpander.Description>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Copyright © 2025-2026 Enda Mullally" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="License:" />
+                                <HyperlinkButton
+                                    Margin="3,-1,0,0"
+                                    Padding="0"
+                                    Content="GPL-3.0"
+                                    NavigateUri="https://github.com/enda-mullally/EMHasher/blob/main/LICENSE" />
+                            </StackPanel>
+                        </StackPanel>
+                    </controls:SettingsExpander.Description>
+
                     <TextBlock
                         Margin="0,0,10,0"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
 
                     <controls:SettingsExpander.Items>
-
-                        <controls:SettingsCard MinHeight="36" Header="https://github.com/enda-mullally/EMHasher">
-                            <HyperlinkButton
-                                Margin="0,0,7,0"
-                                Padding="0"
-                                Content="GPL-3.0"
-                                NavigateUri="https://github.com/enda-mullally/EMHasher/blob/main/LICENSE" />
-                        </controls:SettingsCard>
 
                         <controls:SettingsCard MinHeight="30">
                             <controls:SettingsCard.Header>
