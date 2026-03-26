@@ -116,8 +116,4 @@ v1.1.68 - UI - Improved look of Settings page UI - Fixed rendering issue when ap
 v1.1.69 - Misc bug fix's - Added Digital Signature info panel for signed files.
 
 ### 25/Mar/2026 ###
-v1.1.70 - (Pending) Settings -> About. Improved copyright notice.
-
-
-
-
+v1.1.70 - Mini release. Settings -> About. Improved copyright notice.
