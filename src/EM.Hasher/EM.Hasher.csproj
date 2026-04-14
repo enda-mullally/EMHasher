@@ -45,6 +45,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Update="Views\HashingAlgorithms.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <Page Update="Controls\Ported\CopyButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
