@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 using System;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace EM.Hasher.Services.Navigation;
 
@@ -29,12 +30,22 @@ public class NavigationService : INavigationService
 
     public void Navigate(Type viewType, object? parameter = null)
     {
-        _frame?.Navigate(viewType, parameter);
+        var transitionInfo = new SlideNavigationTransitionInfo
+        {
+            Effect = SlideNavigationTransitionEffect.FromRight
+        };
+
+        _frame?.Navigate(viewType, parameter, transitionInfo);
     }
 
     public void Navigate<TView>(object? parameter = null)
     {
-        _frame?.Navigate(typeof(TView), parameter);
+        var transitionInfo = new SlideNavigationTransitionInfo
+        {
+            Effect = SlideNavigationTransitionEffect.FromRight
+        };
+
+        _frame?.Navigate(typeof(TView), parameter, transitionInfo);
     }
 
     public void GoBack()

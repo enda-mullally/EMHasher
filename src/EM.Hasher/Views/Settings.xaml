@@ -48,85 +48,13 @@
 
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Settings" />
 
-                <controls:SettingsExpander
+                <controls:SettingsCard
+                    x:Name="uxHashingAlgorithmsCard"
                     Description="Select your preferred hasing algorithms"
                     Header="Hashing Algorithms"
                     HeaderIcon="{ui:FontIcon Glyph=&#xE8EF;}"
-                    IsExpanded="True">
-                    <controls:SettingsExpander.Items>
-
-                        <controls:SettingsCard Header="CRC-32">
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
-                        </controls:SettingsCard>
-
-                        <controls:SettingsCard Header="MD5">
-                            <ToggleSwitch IsOn="{x:Bind ViewModel.IsMd5Enabled, Mode=TwoWay}" />
-                        </controls:SettingsCard>
-
-                        <controls:SettingsCard>
-                            <controls:SettingsCard.Header>
-                                <Grid VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock
-                                        x:Name="sha256HeaderTextBlock"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Text="SHA-256" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        FontSize="{Binding ElementName=sha256HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
-                                        Foreground="{ThemeResource TextFillColorTertiary}"
-                                        Text="(Not available in trial version)"
-                                        Visibility="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
-                                </Grid>
-                            </controls:SettingsCard.Header>
-
-                            <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha256Enabled, Mode=TwoWay}" />
-                        </controls:SettingsCard>
-
-                        <controls:SettingsCard>
-                            <controls:SettingsCard.Header>
-                                <Grid VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock
-                                        x:Name="sha512HeaderTextBlock"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Text="SHA-512" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        FontSize="{Binding ElementName=sha512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
-                                        Foreground="{ThemeResource TextFillColorTertiary}"
-                                        Text="(Not available in trial version)"
-                                        Visibility="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
-                                </Grid>
-                            </controls:SettingsCard.Header>
-
-                            <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsTrialMode, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha512Enabled, Mode=TwoWay}" />
-                        </controls:SettingsCard>
-
-                        <controls:SettingsCard Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
-                            <controls:SettingsCard.Description>
-                                <TextBlock Foreground="PaleVioletRed" Text="Please select at least one hash algorithm" />
-                            </controls:SettingsCard.Description>
-                        </controls:SettingsCard>
-
-                    </controls:SettingsExpander.Items>
-                </controls:SettingsExpander>
+                    IsClickEnabled="True"
+                    Tapped="OnHashingAlgorithmsCardTapped" />
 
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Preferences" />
 
