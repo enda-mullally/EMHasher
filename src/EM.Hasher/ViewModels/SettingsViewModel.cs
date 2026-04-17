@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
@@ -39,7 +38,6 @@ public partial class SettingsViewModel : ObservableObject
     private readonly WindowEx _currentWindow = null!;
     private readonly Dictionary<string, bool> _hashAlgorithmsEnabled = [];
     private readonly bool _initialized = false;
-    private readonly ObservableCollection<string> _breadcrumbItems = ["Settings", "Hashing Algorithms"];
 
     [ObservableProperty]
     public partial string? VersionDescription
@@ -90,8 +88,6 @@ public partial class SettingsViewModel : ObservableObject
     public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha256Enabled && !IsSha512Enabled;
 
     public bool IsTrialMode => _settingsProvider.IsTrialMode;
-
-    public ObservableCollection<string> BreadcrumbItems => _breadcrumbItems;
 
     public SettingsViewModel(
         ICachedStoreAppLicense cachedStoreAppLicenseModel,

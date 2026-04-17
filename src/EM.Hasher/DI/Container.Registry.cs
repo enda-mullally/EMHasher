@@ -46,7 +46,7 @@ public partial class Container
 
         // Views
         _container.AddSingleton<Shell>();               // Main frame content, used to host all other pages
-        _container.AddSingleton<TrialExpired>();        // Trial ezxpired frame content
+        _container.AddSingleton<TrialExpired>();        // Trial expired frame content
 
         // Views ViewModels
         _container.AddSingleton<UIStateViewModel>();    // Used to manage the enabled/disabled state of some UI elements 

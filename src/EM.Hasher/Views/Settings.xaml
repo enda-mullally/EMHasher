@@ -46,8 +46,6 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Settings" />
-
                 <controls:SettingsCard
                     x:Name="uxHashingAlgorithmsCard"
                     Description="Select your preferred hasing algorithms"
