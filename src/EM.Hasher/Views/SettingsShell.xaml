@@ -26,8 +26,8 @@
             <TextBlock
                 Margin="1,8,0,4"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="Settings"
-                Tapped="OnSettingsBreadcrumbTapped" />
+                Tapped="OnSettingsBreadcrumbTapped"
+                Text="Settings" />
             <TextBlock
                 Margin="6,8,5,4"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"

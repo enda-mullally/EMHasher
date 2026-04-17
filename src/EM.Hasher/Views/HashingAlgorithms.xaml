@@ -21,9 +21,7 @@
 
         <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
-        <Style
-            x:Key="CompactSettingsCardStyle"
-            TargetType="controls:SettingsCard">
+        <Style x:Key="CompactSettingsCardStyle" TargetType="controls:SettingsCard">
             <Style.Setters>
                 <Setter Property="MinHeight" Value="40" />
                 <Setter Property="Padding" Value="16,8" />
