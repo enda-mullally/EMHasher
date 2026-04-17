@@ -10,27 +10,6 @@
     mc:Ignorable="d">
     <Page.Resources>
         <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
-
-        <!--  Style (inc. the correct spacing) of a section header  -->
-        <Style
-            x:Key="SettingsSectionHeaderTextBlockStyle"
-            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-            TargetType="TextBlock">
-            <Style.Setters>
-                <Setter Property="Margin" Value="1,8,0,4" />
-            </Style.Setters>
-        </Style>
-
-        <!--  Style for the breadcrumb separator  -->
-        <Style
-            x:Key="BreadcrumbSeparatorStyle"
-            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-            TargetType="TextBlock">
-            <Style.Setters>
-                <Setter Property="Margin" Value="4,8,4,4" />
-                <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
-            </Style.Setters>
-        </Style>
     </Page.Resources>
 
     <Grid>
@@ -45,15 +24,19 @@
             Margin="10,0,0,0"
             Orientation="Horizontal">
             <TextBlock
-                Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                Margin="1,8,0,4"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
                 Text="Settings"
                 Tapped="OnSettingsBreadcrumbTapped" />
             <TextBlock
-                Style="{StaticResource BreadcrumbSeparatorStyle}"
-                Text="  &gt;  "
+                Margin="6,8,5,4"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="&gt;"
                 Visibility="{x:Bind UiStateViewModel.IsSettingsSubPageVisible, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
             <TextBlock
-                Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                Margin="1,8,0,4"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
                 Text="{x:Bind UiStateViewModel.SettingsSubPageTitle, Mode=OneWay}"
                 Visibility="{x:Bind UiStateViewModel.IsSettingsSubPageVisible, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
         </StackPanel>
