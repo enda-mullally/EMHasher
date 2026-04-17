@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,4 +78,14 @@ public partial class UIStateViewModel : ObservableObject
     public bool IsCalculateTabEnabled => SettingsSelectionIsValid && HomeFileIsSelected;
 
     public bool IsSettingsTabEnabled => !IsUiBusy;
+
+    // These properties control the settings breadcrumb header visibility in SettingsShell
+    [ObservableProperty]
+    public partial bool IsSettingsSubPageVisible { get; set; } = false;
+
+    [ObservableProperty]
+    public partial string SettingsSubPageTitle { get; set; } = string.Empty;
+
+    // Can navigate back from settings sub-page only if algorithm selection is valid
+    public bool CanNavigateBackFromSettingsSubPage => IsSettingsSubPageVisible && SettingsSelectionIsValid;
 }

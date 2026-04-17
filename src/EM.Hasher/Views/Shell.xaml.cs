@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,8 @@ public sealed partial class Shell : Page
             WeakReferenceMessenger.Default.Send(
                 new DropFileErrorMessage(false, string.Empty));
 
-            contentFrame.Navigate(typeof(Views.Settings));
+            // Navigate to the SettingsShell which manages settings navigation
+            contentFrame.Navigate(typeof(Views.SettingsShell));
         }
         else
         {
@@ -150,6 +151,39 @@ public sealed partial class Shell : Page
     {
     }
 
+    private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+    {
+        // Sync NavigationView selection when programmatic navigation occurs
+        var pageType = e.SourcePageType;
+
+        if (pageType == typeof(Views.SettingsShell))
+        {
+            navigationView.SelectedItem = navigationView.SettingsItem;
+        }
+        else
+        {
+            // Find the matching menu item by page type
+            foreach (var menuItem in navigationView.MenuItems.OfType<NavigationViewItem>())
+            {
+                var tag = menuItem.Tag as string;
+                var expectedPageType = tag switch
+                {
+                    "Home" => typeof(Views.Home),
+                    "Calculate" => typeof(Views.Calculate),
+                    _ => null
+                };
+
+                if (expectedPageType == pageType)
+                {
+                    navigationView.SelectedItem = menuItem;
+                    break;
+                }
+            }
+        }
+
+        navigationView.IsBackEnabled = contentFrame.CanGoBack;
+    }
+
     private void ApplySystemThemeToCaptionButtons(Window window)
     {
         var res = Application.Current.Resources;
@@ -175,19 +209,5 @@ public sealed partial class Shell : Page
         window.AppWindow.TitleBar.ButtonForegroundColor = buttonForegroundColor;
         window.AppWindow.TitleBar.ButtonHoverForegroundColor = buttonHoverForegroundColor;
         window.AppWindow.TitleBar.ButtonHoverBackgroundColor = buttonHoverBackgroundColor;
-    }
-
-    private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
-    {
-        // Ensure correct menu item is selected based on navigation
-        foreach (var item in navigationView.MenuItems.Cast<NavigationViewItem>())
-        {
-            if (item.Tag as string == e.SourcePageType.Name) // Match by tag
-            {
-                navigationView.SelectedItem = item;
-
-                break;
-            }
-        }
     }
 }

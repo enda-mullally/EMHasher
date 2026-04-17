@@ -16,6 +16,7 @@
     <None Remove="Controls\Ported\CopyButton.xaml" />
     <None Remove="Views\Home.xaml" />
     <None Remove="Views\Settings.xaml" />
+    <None Remove="Views\SettingsShell.xaml" />
     <None Remove="Controls\DropFileControl.xaml" />
     <None Remove="Controls\FileInformationControl.xaml" />
     <None Remove="Controls\HandHoverGrid.xaml" />
@@ -48,6 +49,9 @@
     <None Update="Views\HashingAlgorithms.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Update="Views\SettingsShell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\Ported\CopyButton.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

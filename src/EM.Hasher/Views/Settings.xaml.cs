@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.Services.Navigation;
 using EM.Hasher.ViewModels;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace EM.Hasher.Views;
 
@@ -38,7 +38,10 @@ public sealed partial class Settings : Page
 
     private void OnHashingAlgorithmsCardTapped(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
     {
-        var navigationService = App.GetService<INavigationService>();
-        navigationService.Navigate<HashingAlgorithms>();
+        // Navigate to HashingAlgorithms within the settings shell frame
+        Frame.Navigate(typeof(HashingAlgorithms), null, new SlideNavigationTransitionInfo
+        {
+            Effect = SlideNavigationTransitionEffect.FromRight
+        });
     }
 }

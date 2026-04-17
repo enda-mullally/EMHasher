@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using EM.Hasher.Services.Navigation;
 using EM.Hasher.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
@@ -34,19 +33,5 @@ public sealed partial class HashingAlgorithms : Page
         ViewModel = App.GetService<SettingsViewModel>();
 
         InitializeComponent();
-    }
-
-    private void OnBreadcrumbBarItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
-    {
-        if (args.Index == 0)
-        {
-            // Only allow navigating back if the algorithm selection is valid.
-            if (!ViewModel.IsAlgorithmSelectionInvalid)
-            {
-                var navigationService = App.GetService<INavigationService>();
-
-                navigationService.GoBack();
-            }
-        }
     }
 }

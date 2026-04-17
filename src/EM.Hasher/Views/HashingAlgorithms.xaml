@@ -22,24 +22,6 @@
         <x:Double x:Key="SettingsCardSpacing">4</x:Double>
 
         <Style
-            x:Key="SettingsSectionHeaderTextBlockStyle"
-            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-            TargetType="TextBlock">
-            <Style.Setters>
-                <Setter Property="Margin" Value="5,10" />
-            </Style.Setters>
-        </Style>
-
-        <Style
-            x:Key="BreadcrumbTextBlockStyle"
-            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-            TargetType="TextBlock">
-            <Style.Setters>
-                <Setter Property="Margin" Value="3,7" />
-            </Style.Setters>
-        </Style>
-
-        <Style
             x:Key="CompactSettingsCardStyle"
             TargetType="controls:SettingsCard">
             <Style.Setters>
@@ -51,17 +33,6 @@
     <ScrollViewer>
         <Grid>
             <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
-
-                <BreadcrumbBar
-                    x:Name="uxBreadcrumbBar"
-                    ItemClicked="OnBreadcrumbBarItemClicked"
-                    ItemsSource="{x:Bind ViewModel.BreadcrumbItems, Mode=OneWay}">
-                    <BreadcrumbBar.ItemTemplate>
-                        <DataTemplate x:DataType="x:String">
-                            <TextBlock Style="{StaticResource BreadcrumbTextBlockStyle}" Text="{x:Bind}" />
-                        </DataTemplate>
-                    </BreadcrumbBar.ItemTemplate>
-                </BreadcrumbBar>
 
                 <controls:SettingsCard Header="CRC-32" Style="{StaticResource CompactSettingsCardStyle}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
