@@ -67,7 +67,7 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ## Release history
 
-### 18/Apr/2026 (Pending)
+### 18/Apr/2026
 v1.1.71
   - [UI] Renamed nav bar tab pages 'Select File' and 'Hash Values' and added better Icons.
   - [UI] Settings -> Hash Algorithms -> Breadcrumb style navigation (enabling new Algorithms).
