@@ -22,7 +22,7 @@
 
 ## Overview
 
-EM Hasher is a modern, simple & free hash-generating application built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-256/SHA-512. What would you like to see next?
+EM Hasher is a modern, simple & free hash-generating application  (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-256/SHA-512. What would you like to see next?
 
 ## Coming soon!
 
