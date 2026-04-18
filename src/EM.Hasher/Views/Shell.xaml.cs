@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Helpers;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Navigation;
+using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels;
 using EM.Hasher.ViewModels.UI;
 using Microsoft.UI.Xaml;
@@ -32,6 +33,7 @@ namespace EM.Hasher.Views;
 public sealed partial class Shell : Page
 {
     private readonly INavigationService _navigationService;
+    private readonly ISettingsProvider _settingsProvider;
 
     public UIStateViewModel UiStateViewModel
     {
@@ -47,10 +49,16 @@ public sealed partial class Shell : Page
     {
         UiStateViewModel = App.GetService<UIStateViewModel>();
         ViewModel = App.GetService<ShellViewModel>();
+        _settingsProvider = App.GetService<ISettingsProvider>();
 
         App.MainWindow!.SetTitleBar(uxTitleBar);
 
         InitializeComponent();
+
+        navigationView.RegisterPropertyChangedCallback(NavigationView.IsPaneOpenProperty, (_, _) =>
+        {
+            _settingsProvider.IsNavigationPaneOpen = navigationView.IsPaneOpen;
+        });
 
         uxTitleBar.ActualThemeChanged += UxTitleBar_ActualThemeChanged;
         uxTitleBar.Loaded += UxTitleBar_Loaded;
@@ -144,6 +152,7 @@ public sealed partial class Shell : Page
 
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
+        navigationView.IsPaneOpen = _settingsProvider.IsNavigationPaneOpen;
         navigationView.SelectedItem = navigationView.MenuItems[0];
     }
 

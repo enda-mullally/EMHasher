@@ -54,4 +54,9 @@ public interface ISettingsProvider
     {
         get; set;
     }
+
+    public bool IsNavigationPaneOpen
+    {
+        get; set;
+    }
 }

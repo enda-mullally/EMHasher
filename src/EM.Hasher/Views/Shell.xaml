@@ -108,10 +108,10 @@
                 x:Name="navigationView"
                 AlwaysShowHeader="False"
                 BackRequested="NavigationView_BackRequested"
-                CompactModeThresholdWidth="0"
+                CompactPaneLength="48"
                 IsBackButtonVisible="Collapsed"
                 IsPaneOpen="True"
-                IsPaneToggleButtonVisible="False"
+                IsPaneToggleButtonVisible="True"
                 Loaded="NavigationView_Loaded"
                 OpenPaneLength="200"
                 PaneDisplayMode="Left"
@@ -119,15 +119,18 @@
 
                 <NavigationView.MenuItems>
                     <NavigationViewItem
-                        Content="Home"
-                        Icon="Home"
+                        Content="Select File"
+                        Icon="Document"
                         IsEnabled="{x:Bind UiStateViewModel.IsHomeTabEnabled, Mode=OneWay}"
                         Tag="Home" />
                     <NavigationViewItem
-                        Content="Calculate"
-                        Icon="Calculator"
+                        Content="Hash Values"
                         IsEnabled="{x:Bind UiStateViewModel.IsCalculateTabEnabled, Mode=OneWay}"
-                        Tag="Calculate" />
+                        Tag="Calculate">
+                        <NavigationViewItem.Icon>
+                            <BitmapIcon UriSource="ms-appx:///Assets/EMHasher.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                 </NavigationView.MenuItems>
 
                 <Frame
