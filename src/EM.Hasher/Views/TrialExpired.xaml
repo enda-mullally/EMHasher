@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:localcontrols="using:EM.Hasher.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:EM.Hasher.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:HomeViewModel}"
     Background="{ThemeResource SolidBackgroundFillColorBase}"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
