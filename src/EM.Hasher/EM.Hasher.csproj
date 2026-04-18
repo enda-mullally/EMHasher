@@ -11,6 +11,7 @@
     <Nullable>enable</Nullable>
 	<LangVersion>preview</LangVersion>
 	<ApplicationIcon>Assets\EMHasher.ico</ApplicationIcon>
+	<NoWarn>$(NoWarn);CS0612</NoWarn>  
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Controls\Ported\CopyButton.xaml" />
