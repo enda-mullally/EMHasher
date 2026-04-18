@@ -15,7 +15,7 @@
   <Identity
     Name="26772EndaMullally.EMHasher"
     Publisher="CN=em.apps@outlook.ie"
-    Version="1.1.70.0" />
+    Version="1.1.71.0" />
   
   <!-- Above is [Major].[Minor].[Build].[Revision]  -->
   <!-- Will display in app as v[Major].[Minor] Build([Build]) i.e "v1.1 (Build 28)" -->
