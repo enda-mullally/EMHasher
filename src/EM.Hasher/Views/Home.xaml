@@ -60,7 +60,7 @@
                     Text="Welcome to EM Hasher" />
             -->
 
-            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Home" />
+            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Select File" />
 
             <localcontrols:HandHoverGrid>
                 <controls:SettingsCard

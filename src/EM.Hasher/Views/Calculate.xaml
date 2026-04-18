@@ -54,7 +54,7 @@
                     <win:RepositionThemeTransition IsStaggeringEnabled="False" />
                 </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="File Information" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="File Details" />
 
                 <controls:SettingsCard Margin="0,0,0,4">
                     <controls:SettingsCard.Header>
@@ -91,7 +91,7 @@
                     </controls:SettingsCard.Header>
                 </controls:SettingsCard>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Information" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Values" />
 
                 <ItemsControl ItemsSource="{x:Bind ViewModel.FileHashControlViewModels, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
