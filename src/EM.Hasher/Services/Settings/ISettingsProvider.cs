@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,11 @@ public interface ISettingsProvider
     }
 
     bool IsMd5Enabled
+    {
+        get; set;
+    }
+
+    bool IsSha1Enabled
     {
         get; set;
     }

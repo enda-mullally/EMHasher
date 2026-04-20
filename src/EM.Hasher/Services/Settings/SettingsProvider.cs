@@ -42,6 +42,12 @@ public class SettingsProvider : ISettingsProvider
         get => (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true);
     }
 
+    public bool IsSha1Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha1Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha1Enabled)] ?? false);
+    }
+
     public bool IsSha256Enabled
     {
         set => _localSettings.Values[nameof(IsSha256Enabled)] = value;
