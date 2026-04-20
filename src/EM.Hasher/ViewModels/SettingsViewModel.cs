@@ -73,6 +73,13 @@ public partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsSha1Enabled
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
     public partial bool IsSha256Enabled
     {
         get; set;
@@ -85,7 +92,7 @@ public partial class SettingsViewModel : ObservableObject
         get; set;
     }
 
-    public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha256Enabled && !IsSha512Enabled;
+    public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha1Enabled && !IsSha256Enabled && !IsSha512Enabled;
 
     public bool IsTrialMode => _settingsProvider.IsTrialMode;
 
@@ -100,12 +107,14 @@ public partial class SettingsViewModel : ObservableObject
 
         _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled;
         _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled;
+        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled;
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled;
         _hashAlgorithmsEnabled["SHA-512"] = settingsProvider.IsSha512Enabled;
 
         // Init observables
         IsCrc32Enabled = _settingsProvider.IsCrc32Enabled;
         IsMd5Enabled = _settingsProvider.IsMd5Enabled;
+        IsSha1Enabled = _settingsProvider.IsSha1Enabled;
         IsSha256Enabled = _settingsProvider.IsSha256Enabled;
         IsSha512Enabled = _settingsProvider.IsSha512Enabled;
         IsUppercaseHashValues = _settingsProvider.IsUppercaseHashValues;
@@ -178,6 +187,11 @@ public partial class SettingsViewModel : ObservableObject
         OnAlgorithmEnabled();
     }
 
+    partial void OnIsSha1EnabledChanged(bool value)
+    {
+        OnAlgorithmEnabled();
+    }
+
     partial void OnIsSha256EnabledChanged(bool value)
     {
         OnAlgorithmEnabled();
@@ -241,6 +255,7 @@ public partial class SettingsViewModel : ObservableObject
 
         _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled = IsCrc32Enabled;
         _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled = IsMd5Enabled;
+        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled = IsSha1Enabled;
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled = IsSha256Enabled;
         _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled = IsSha512Enabled;
 

@@ -86,6 +86,11 @@ public partial class Container
                 settings.IsMd5Enabled),
 
             new FileHashControlViewModel(
+                new Sha1HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsSha1Enabled),
+
+            new FileHashControlViewModel(
                 new Sha256HashCalculator(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha256Enabled),

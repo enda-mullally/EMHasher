@@ -38,6 +38,10 @@
                     <ToggleSwitch IsOn="{x:Bind ViewModel.IsMd5Enabled, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
+                <controls:SettingsCard Header="SHA-1" Style="{StaticResource CompactSettingsCardStyle}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha1Enabled, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
                 <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
                     <controls:SettingsCard.Header>
                         <Grid VerticalAlignment="Center">
