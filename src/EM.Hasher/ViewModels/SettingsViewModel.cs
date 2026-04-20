@@ -109,7 +109,7 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled;
         _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled;
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled;
-        _hashAlgorithmsEnabled["SHA-512"] = settingsProvider.IsSha512Enabled;
+        _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled;
 
         // Init observables
         IsCrc32Enabled = _settingsProvider.IsCrc32Enabled;
