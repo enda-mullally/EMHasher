@@ -167,7 +167,7 @@ jobs:
             src/EM.Hasher.Tests/UnitTests
 
   appxbuild:
-    runs-on: windows-latest
+    runs-on: windows-2025
     needs: build
     if: ${{ github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.fullbuild == 'true') }}
     
@@ -177,8 +177,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup MSBuild
+    - name: Setup MSBuild (VS 18 toolset)
       uses: microsoft/setup-msbuild@v3
+      with:
+        vs-version: '[18.0,19.0)'
 
     - name: Install .NET 10
       uses: actions/setup-dotnet@v5
@@ -190,42 +192,12 @@ jobs:
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" /t:Restore
 
-    - name: Restore app x64 runtime packs
-      working-directory: src/EM.Hasher
-      run: |
-        dotnet restore EM.Hasher.csproj -r win-x64 /p:PublishReadyToRun=true
-
-    - name: Restore app arm64 runtime packs
-      working-directory: src/EM.Hasher
-      run: |
-        dotnet restore EM.Hasher.csproj -r win-arm64 /p:PublishReadyToRun=true
-
-    - name: Publish app x64 (uses existing PublishProfile and project AOT/trim settings)
-      working-directory: src/EM.Hasher
-      run: |
-        dotnet publish EM.Hasher.csproj `
-          -c Release `
-          /p:Platform=x64 `
-          /p:PublishProfile=Properties\PublishProfiles\win-x64.pubxml
-
-    - name: Publish app arm64 (uses existing PublishProfile and project AOT/trim settings)
-      working-directory: src/EM.Hasher
-      run: |
-        dotnet publish EM.Hasher.csproj `
-          -c Release `
-          /p:Platform=arm64 `
-          /p:PublishProfile=Properties\PublishProfiles\win-arm64.pubxml
-
     - name: Build package x64
       working-directory: src
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=x64 `
-          /p:RuntimeIdentifier=win-x64 `
-          /p:PublishReadyToRun=true `
-          /p:BuildProjectReferences=false `
-          /p:NoRestore=true `
           /p:AppxBundle=Always `
           /p:AppxBundlePlatforms="x64|arm64" `
           /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
@@ -238,10 +210,6 @@ jobs:
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=arm64 `
-          /p:RuntimeIdentifier=win-arm64 `
-          /p:PublishReadyToRun=true `
-          /p:BuildProjectReferences=false `
-          /p:NoRestore=true `
           /p:AppxBundle=Always `
           /p:AppxBundlePlatforms="x64|arm64" `
           /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
