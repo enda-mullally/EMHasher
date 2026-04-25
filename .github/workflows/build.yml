@@ -165,3 +165,57 @@ jobs:
         path: |
             src/EM.Hasher/bin
             src/EM.Hasher.Tests/UnitTests
+
+  appxbuild:
+    runs-on: windows-latest
+    needs: build
+    if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
+
+    - name: Install .NET 10
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Restore NuGet packages
+      working-directory: src
+      run: |
+        msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" /t:Restore
+
+    - name: Build x64
+      working-directory: src
+      run: |
+        msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
+          /p:Configuration=Release `
+          /p:Platform=x64 `
+          /p:AppxBundle=Always `
+          /p:AppxBundlePlatforms="x64|arm64" `
+          /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
+          /p:AppxPackageSigningEnabled=false `
+          /p:UapAppxPackageBuildMode=StoreUpload
+          
+    - name: Build ARM64
+      working-directory: src
+      run: |
+        msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
+          /p:Configuration=Release `
+          /p:Platform=arm64 `
+          /p:AppxBundle=Always `
+          /p:AppxBundlePlatforms="x64|arm64" `
+          /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
+          /p:AppxPackageSigningEnabled=false `
+          /p:UapAppxPackageBuildMode=StoreUpload
+          
+    - name: Upload Store Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: EMHasher-StorePackage
+        path: AppPackages/**/*.msixupload
