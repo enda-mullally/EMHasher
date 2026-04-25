@@ -166,7 +166,7 @@ jobs:
             src/EM.Hasher/bin
             src/EM.Hasher.Tests/UnitTests
 
-  msix-build:
+  msix-x64-arm64-build:
     runs-on: windows-latest
     needs: build
     if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
@@ -202,7 +202,7 @@ jobs:
           /p:AppxPackageSigningEnabled=false `
           /p:UapAppxPackageBuildMode=StoreUpload
           
-    - name: Build ARM64
+    - name: Build arm64
       working-directory: src
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
