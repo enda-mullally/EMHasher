@@ -185,10 +185,20 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
-    - name: Restore NuGet packages
+    - name: Restore package project
       working-directory: src
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" /t:Restore
+
+    - name: Restore app x64 runtime packs
+      working-directory: src/EM.Hasher
+      run: |
+        dotnet restore EM.Hasher.csproj -r win-x64 /p:PublishReadyToRun=true
+
+    - name: Restore app arm64 runtime packs
+      working-directory: src/EM.Hasher
+      run: |
+        dotnet restore EM.Hasher.csproj -r win-arm64 /p:PublishReadyToRun=true
 
     - name: Publish app x64 (uses existing PublishProfile and project AOT/trim settings)
       working-directory: src/EM.Hasher
@@ -212,7 +222,10 @@ jobs:
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=x64 `
+          /p:RuntimeIdentifier=win-x64 `
+          /p:PublishReadyToRun=true `
           /p:BuildProjectReferences=false `
+          /p:NoRestore=true `
           /p:AppxBundle=Always `
           /p:AppxBundlePlatforms="x64|arm64" `
           /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
@@ -225,7 +238,10 @@ jobs:
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=arm64 `
+          /p:RuntimeIdentifier=win-arm64 `
+          /p:PublishReadyToRun=true `
           /p:BuildProjectReferences=false `
+          /p:NoRestore=true `
           /p:AppxBundle=Always `
           /p:AppxBundlePlatforms="x64|arm64" `
           /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
