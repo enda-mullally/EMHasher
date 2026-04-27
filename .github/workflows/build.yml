@@ -234,12 +234,15 @@ jobs:
         if (-not $x64Package) { throw "Could not find x64 .msix package in $packageRoot" }
         if (-not $arm64Package) { throw "Could not find arm64 .msix package in $packageRoot" }
 
+        # makeappx mapping: [Files] section + two quoted "source" "name" lines (no here-string; avoids PowerShell
+        # here-string rules that break when the closing delimiter is indented inside YAML).
         $mapFile = Join-Path $bundleRoot "bundlemap.txt"
-        @"
-[Files]
-`"$($x64Package.FullName)`" `"$($x64Package.Name)`"
-`"$($arm64Package.FullName)`" `"$($arm64Package.Name)`"
-"@ | Set-Content -Path $mapFile -Encoding UTF8
+        $mapLines = @(
+            '[Files]'
+            "`"$($x64Package.FullName)`" `"$($x64Package.Name)`""
+            "`"$($arm64Package.FullName)`" `"$($arm64Package.Name)`""
+        )
+        ($mapLines -join [Environment]::NewLine) | Set-Content -Path $mapFile -Encoding utf8
 
         $bundleOut = Join-Path $bundleRoot "EMHasher.msixbundle"
         makeappx bundle /o /v /f "$mapFile" /p "$bundleOut"
