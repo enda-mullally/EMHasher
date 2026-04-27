@@ -190,34 +190,77 @@ jobs:
     - name: Restore package project
       working-directory: src
       run: |
-        msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" /t:Restore
+        msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" /t:Restore /p:Configuration=Release
 
-    - name: Build package x64
+    - name: Build package x64 (no bundle)
       working-directory: src
+      shell: pwsh
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=x64 `
-          /p:AppxBundle=Always `
-          /p:AppxBundlePlatforms="x64|arm64" `
-          /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
+          /p:AppxBundle=Never `
+          /p:AppxPackageDir="${{ github.workspace }}\AppPackages\" `
           /p:AppxPackageSigningEnabled=false `
           /p:UapAppxPackageBuildMode=StoreUpload
 
-    - name: Build package arm64
+    - name: Build package arm64 (no bundle)
       working-directory: src
+      shell: pwsh
       run: |
         msbuild "EM.Hasher (Package)\EM.Hasher (Package).wapproj" `
           /p:Configuration=Release `
           /p:Platform=arm64 `
-          /p:AppxBundle=Always `
-          /p:AppxBundlePlatforms="x64|arm64" `
-          /p:AppxPackageDir="${{github.workspace}}\AppPackages\" `
+          /p:AppxBundle=Never `
+          /p:AppxPackageDir="${{ github.workspace }}\AppPackages\" `
           /p:AppxPackageSigningEnabled=false `
           /p:UapAppxPackageBuildMode=StoreUpload
+
+    - name: Create combined .msixbundle with makeappx
+      shell: pwsh
+      run: |
+        $packageRoot = Join-Path "${{ github.workspace }}" "AppPackages"
+        $bundleRoot = Join-Path $packageRoot "Bundle"
+        New-Item -Path $bundleRoot -ItemType Directory -Force | Out-Null
+
+        $x64Package = Get-ChildItem -Path $packageRoot -Recurse -File -Filter *.msix |
+          Where-Object { $_.Name -match "_x64_" } |
+          Select-Object -First 1
+
+        $arm64Package = Get-ChildItem -Path $packageRoot -Recurse -File -Filter *.msix |
+          Where-Object { $_.Name -match "_arm64_" } |
+          Select-Object -First 1
+
+        if (-not $x64Package) { throw "Could not find x64 .msix package in $packageRoot" }
+        if (-not $arm64Package) { throw "Could not find arm64 .msix package in $packageRoot" }
+
+        $mapFile = Join-Path $bundleRoot "bundlemap.txt"
+        @"
+[Files]
+`"$($x64Package.FullName)`" `"$($x64Package.Name)`"
+`"$($arm64Package.FullName)`" `"$($arm64Package.Name)`"
+"@ | Set-Content -Path $mapFile -Encoding UTF8
+
+        $bundleOut = Join-Path $bundleRoot "EMHasher.msixbundle"
+        makeappx bundle /o /v /f "$mapFile" /p "$bundleOut"
+
+    - name: List generated package files
+      shell: pwsh
+      run: |
+        $packageRoot = Join-Path "${{ github.workspace }}" "AppPackages"
+        Write-Host "Package root: $packageRoot"
+        if (-not (Test-Path $packageRoot)) {
+          throw "AppPackages directory not found at $packageRoot"
+        }
+        Get-ChildItem -Path $packageRoot -Recurse -File |
+          Where-Object { $_.Extension -in @(".msix", ".msixupload", ".msixbundle", ".appxbundle") } |
+          Sort-Object FullName |
+          ForEach-Object { Write-Host $_.FullName }
 
     - name: Upload Store Package
       uses: actions/upload-artifact@v4
       with:
         name: EMHasher-StorePackage
-        path: AppPackages/**/*.msixupload
+        path: |
+          AppPackages/**/*.msixupload
+          AppPackages/Bundle/*.msixbundle
