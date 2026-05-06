@@ -26,6 +26,7 @@ jobs:
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 10.0.x
+
     #
     # TODO Revisit and fix this
     #
@@ -91,7 +92,7 @@ jobs:
     - name: Show installed Windows App SDK Runtime version
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
       run: |
-        Get-AppxPackage -Name "Microsoft.WindowsAppRuntime.1.8" | Where-Object { $_.Architecture -eq "x64" }
+        Get-AppxPackage -Name "Microsoft.WindowsAppRuntime.2*" | Where-Object { $_.Architecture -eq "x64" }
         
     - name: Register the EM.Hasher.Tests Appx
       if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
