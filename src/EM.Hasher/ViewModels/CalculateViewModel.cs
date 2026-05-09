@@ -98,25 +98,49 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
             try
             {
-                await Task.WhenAll(fileDetailsTask, signingInfoTask);
+                var completedTask = await Task.WhenAny(fileDetailsTask, signingInfoTask);
 
-                var fileDetailsModel = await fileDetailsTask;
-                if (fileDetailsModel != null)
+                if (completedTask == fileDetailsTask)
                 {
-                    UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+                    var fileDetailsModel = await fileDetailsTask;
+                    if (fileDetailsModel != null)
+                    {
+                        UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
 
-                    FileName = fileDetailsModel.FileName;
-                    FileSize = fileDetailsModel.FileSize;
-                    FileCreated = fileDetailsModel.FileCreated;
-                    FileModified = fileDetailsModel.FileModified;
+                        FileName = fileDetailsModel.FileName;
+                        FileSize = fileDetailsModel.FileSize;
+                        FileCreated = fileDetailsModel.FileCreated;
+                        FileModified = fileDetailsModel.FileModified;
+                    }
+
+                    var signingInfo = await signingInfoTask;
+                    if (signingInfo != null)
+                    {
+                        IsSigned = signingInfo.IsSigned;
+                        Signer = signingInfo.Signer;
+                        Issuer = signingInfo.Issuer;
+                    }
                 }
-
-                var signingInfo = await signingInfoTask;
-                if (signingInfo != null)
+                else
                 {
-                    IsSigned = signingInfo.IsSigned;
-                    Signer = signingInfo.Signer;
-                    Issuer = signingInfo.Issuer;
+                    var signingInfo = await signingInfoTask;
+                    if (signingInfo != null)
+                    {
+                        IsSigned = signingInfo.IsSigned;
+                        Signer = signingInfo.Signer;
+                        Issuer = signingInfo.Issuer;
+                    }
+
+                    var fileDetailsModel = await fileDetailsTask;
+                    if (fileDetailsModel != null)
+                    {
+                        UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+
+                        FileName = fileDetailsModel.FileName;
+                        FileSize = fileDetailsModel.FileSize;
+                        FileCreated = fileDetailsModel.FileCreated;
+                        FileModified = fileDetailsModel.FileModified;
+                    }
                 }
             }
             catch (Exception)
