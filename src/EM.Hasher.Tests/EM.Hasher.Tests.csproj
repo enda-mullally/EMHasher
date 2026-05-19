@@ -50,8 +50,8 @@
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="18.5.1" />  
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="4.2.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.2.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EM.Hasher\EM.Hasher.csproj" />
