@@ -9,7 +9,7 @@
   EM Hasher
 </h1>
 <p align="center">
-  Quickly calculate CRC-32/MD5/SHA-256/SHA-512 checksums in Windows 11.
+  Quickly calculate CRC-32/MD5/SHA-1/SHA-256/SHA-512 checksums in Windows 11.
 </p>
 
 <br />
@@ -22,7 +22,7 @@
 
 ## Overview
 
-EM Hasher is a modern, simple & free hash-generating application  (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-256/SHA-512. What would you like to see next?
+EM Hasher is a modern, simple & free hash-generating application  (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
 
 ## Coming soon!
 
@@ -66,6 +66,11 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 <br />
 
 ## Release history
+
+### 04/June/2026 (PENDING)
+v1.1.72
+  - Added SHA-1 algorithm.
+  - Misc bug fixs.
 
 ### 18/Apr/2026
 v1.1.71
