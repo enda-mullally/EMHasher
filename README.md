@@ -67,7 +67,7 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ## Release history
 
-### 04/June/2026 (PENDING)
+### 04/June/2026
 v1.1.72
   - Added SHA-1 algorithm.
   - Misc bug fixs.
