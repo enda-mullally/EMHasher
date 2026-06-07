@@ -38,16 +38,6 @@ public class NavigationService : INavigationService
         _frame?.Navigate(viewType, parameter, transitionInfo);
     }
 
-    public void Navigate<TView>(object? parameter = null)
-    {
-        var transitionInfo = new SlideNavigationTransitionInfo
-        {
-            Effect = SlideNavigationTransitionEffect.FromRight
-        };
-
-        _frame?.Navigate(typeof(TView), parameter, transitionInfo);
-    }
-
     public void GoBack()
     {
         if (_frame?.CanGoBack == true)

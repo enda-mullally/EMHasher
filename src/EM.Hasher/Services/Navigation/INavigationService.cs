@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@ public interface INavigationService
     void Initialize(Frame frame);
 
     void Navigate(Type viewType, object? parameter = null);
-
-    void Navigate<TView>(object? parameter = null);
 
     void GoBack();
 }
