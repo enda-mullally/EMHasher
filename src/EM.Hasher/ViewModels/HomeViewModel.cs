@@ -115,7 +115,7 @@ public partial class HomeViewModel : ObservableObject
         }
 
         // will only trigger re-calculation if a different file is selected
-        _navigationService.Navigate<Calculate>(
+        _navigationService.Navigate(typeof(Calculate),
             new FilePickedMessage()
             {
                 FileName = fileName,
