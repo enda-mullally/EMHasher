@@ -69,7 +69,7 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ### 04/June/2026
 v1.1.72
-  - Added SHA-1 algorithm.
+  - Added SHA-1 hashing.
   - Misc bug fixs.
 
 ### 18/Apr/2026
