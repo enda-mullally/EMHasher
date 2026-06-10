@@ -1,0 +1,52 @@
+name: Build '.msixupload' Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  appxbuild:
+    runs-on: windows-2025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v3
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore package project
+        working-directory: "src\\EM.Hasher (Package)"
+        run: |
+          msbuild "EM.Hasher (Package).wapproj" /t:Restore /p:Configuration=Release
+
+      - name: Make Package Dir
+        shell: cmd
+        run: |
+          mkdir Package
+
+      - name: Build Bundle
+        working-directory: "src\\EM.Hasher (Package)"
+        shell: pwsh
+        run: |
+          msbuild "EM.Hasher (Package).wapproj" `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:AppxBundle=Always `
+            /p:AppxBundlePlatforms="x64|arm64"
+            /p:AppxPackageDir="${{ github.workspace }}\\Package" `
+            /p:AppxPackageSigningEnabled=false
+
+      - name: Upload Bundle Package (.msixupload)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMHasher-Package-Bundle
+          retention-days: 1
+          path: |
+            Package/*.msixupload
