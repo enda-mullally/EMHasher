@@ -12,12 +12,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
+      
+      # See: https://github.com/actions/runner-images/issues/14017
+      # VS2026 should be available by June 15, nearly there.
       #- name: Setup MSBuild (VS 2026)
       #  uses: microsoft/setup-msbuild@v3
       #  with:
       #      vs-version: '[18.0,19.0)'
-
+      
       - name: Install Visual Studio Build Tools
         shell: pwsh
         run: |
