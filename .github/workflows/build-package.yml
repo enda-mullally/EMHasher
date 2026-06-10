@@ -1,4 +1,4 @@
-name: Build '.msixupload' Package
+name: Build '.msixupload' package
 
 on:
   workflow_dispatch:
