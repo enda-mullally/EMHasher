@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-package-bundle:
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
 
     steps:
       - name: Checkout
@@ -15,25 +15,10 @@ jobs:
       
       # See: https://github.com/actions/runner-images/issues/14017
       # VS2026 should be available by June 15, nearly there.
-      #- name: Setup MSBuild (VS 2026)
-      #  uses: microsoft/setup-msbuild@v3
-      #  with:
-      #      vs-version: '[18.0,19.0)'
-      
-      - name: Install Visual Studio Build Tools
-        shell: pwsh
-        run: |
-          Write-Host "Installing VS 2026 Build Tools..."
-          choco install visualstudio2026buildtools `
-          --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --includeRecommended --quiet" `
-          -y --ignore-package-exit-codes=3010
-          Write-Host "VS 2026 Build Tools installation completed" 
-
-      - name: Build project (${{ matrix.config }}, x64, C++latest)
-        shell: cmd
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\Common7\Tools\VsDevCmd.bat"
-    
+      # using 'windows-2025-vs2026' image until rollout is complete
+      - name: Setup MSBuild (VS 2026)
+        uses: microsoft/setup-msbuild@v3
+        
       - name: Install .NET 10
         uses: actions/setup-dotnet@v5
         with:
