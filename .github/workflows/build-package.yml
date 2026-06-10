@@ -44,7 +44,10 @@ jobs:
             /p:AppxBundle=Always `
             /p:AppxBundlePlatforms="x64|arm64" `
             /p:AppxPackageDir="${{ github.workspace }}\\Package" `
-            /p:AppxPackageSigningEnabled=false
+            /p:AppxPackageSigningEnabled=false `
+            /p:GenerateTemporaryStoreCertificate=false `
+            /p:PackageCertificateThumbprint= `
+            /p:PackageCertificateKeyFile= `
 
       - name: Upload package bundle (.msixupload)
         uses: actions/upload-artifact@v4
