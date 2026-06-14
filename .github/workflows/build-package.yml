@@ -62,7 +62,7 @@ jobs:
             /p:PackageCertificateKeyFile= `
             /p:Version="${{ steps.version.outputs.version }}" `
             /p:FileVersion="${{ steps.version.outputs.version }}" `
-            /p:Copyright="Copyright © 2025-2026 Enda Mullally"
+            /p:Copyright="© 2025-2026 Enda Mullally"
 
       - name: Upload package bundle (.msixupload)
         uses: actions/upload-artifact@v4
