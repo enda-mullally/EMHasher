@@ -65,7 +65,7 @@ jobs:
             /p:Copyright="© 2025-2026 Enda Mullally"
 
       - name: Upload package bundle (.msixupload)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: EMHasher-Package-Bundle
           retention-days: 1
