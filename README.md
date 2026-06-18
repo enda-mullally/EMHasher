@@ -1,4 +1,4 @@
-![GitHub CI](https://github.com/enda-mullally/EMHasher/actions/workflows/build.yml/badge.svg)
+[![Build and test](https://github.com/enda-mullally/EMHasher/actions/workflows/build.yml/badge.svg)](https://github.com/enda-mullally/EMHasher/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/enda-mullally/EMHasher)](/LICENSE)
 ![License](https://img.shields.io/github/v/release/enda-mullally/EMHasher)
 #
