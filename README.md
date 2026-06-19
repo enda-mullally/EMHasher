@@ -67,12 +67,12 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ## Release history
 
-### 14/June/2026 ###
+### 14/Jun/2026 ###
 v.1.1.73
   - WinAppSdk v2.2.0 upgrade
   - Package version info fix's
 
-### 04/June/2026
+### 04/Jun/2026
 v1.1.72
   - Added SHA-1 hashing.
   - Misc bug fixs.
