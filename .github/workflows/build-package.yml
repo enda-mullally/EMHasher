@@ -1,11 +1,11 @@
-name: Build '.msixupload' package
+name: Build package
 
 on:
   workflow_dispatch:
 
 jobs:
   build-package-bundle:
-    runs-on: windows-2025-vs2026
+    runs-on: windows-2025
 
     steps:
       - name: Checkout
@@ -13,9 +13,6 @@ jobs:
         with:
           fetch-depth: 0
       
-      # See: https://github.com/actions/runner-images/issues/14017
-      # VS2026 should be available by June 15, nearly there.
-      # using 'windows-2025-vs2026' image until rollout is complete
       - name: Setup MSBuild (VS 2026)
         uses: microsoft/setup-msbuild@v3
         
