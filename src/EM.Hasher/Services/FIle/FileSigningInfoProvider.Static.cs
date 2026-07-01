@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Formats.Asn1;
 using System.IO;
+using System.Security.Cryptography;
+using Humanizer;
 
 namespace EM.Hasher.Services.File;
 
@@ -106,5 +110,50 @@ public partial class FileSigningInfoProvider
         }
 
         return (ushort)(b1 | (b2 << 8));
+    }
+
+    public static string GetSigningTime(CryptographicAttributeObjectCollection attributes)
+    {
+        const string SigningTimeOid = "1.2.840.113549.1.9.5";
+        DateTimeOffset? time = null;
+
+        try
+        {
+            foreach (var attribute in attributes)
+            {
+                if (attribute.Oid?.Value != SigningTimeOid)
+                {
+                    continue;
+                }
+
+                // signingTime should contain a single value
+                foreach (var value in attribute.Values)
+                {
+                    var reader = new AsnReader(value.RawData, AsnEncodingRules.DER);
+
+                    // signingTime may be either UTCTime or GeneralizedTime
+                    if (reader.PeekTag().HasSameClassAndValue(Asn1Tag.UtcTime))
+                    {
+                        time = reader.ReadUtcTime();
+                    }
+
+                    if (reader.PeekTag().HasSameClassAndValue(Asn1Tag.GeneralizedTime))
+                    {
+                        time = reader.ReadGeneralizedTime();
+                    }
+
+                    if (time.HasValue)
+                    {
+                        return time?.ToString("f") + "  (" + time.Humanize() + ")" ?? string.Empty;
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 }

@@ -30,4 +30,6 @@ public class FileSigningInfo
     public string Signer { get; init; } = string.Empty;
 
     public string Issuer { get; init; } =  string.Empty;
+
+    public string SignedTimestamp { get; init; } = string.Empty;
 }

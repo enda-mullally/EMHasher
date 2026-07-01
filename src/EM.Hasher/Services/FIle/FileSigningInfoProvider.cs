@@ -132,6 +132,10 @@ public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFile
 
             var signerInfo = signedCms.SignerInfos[0];
             var signerCert = signerInfo.Certificate;
+            var counterSignerInfo = (signerInfo.CounterSignerInfos.Count > 0)
+                ? signerInfo.CounterSignerInfos[0]
+                : null;
+            
             if (signerCert == null)
             {
                 return new FileSigningInfo
@@ -167,10 +171,15 @@ public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFile
                 .GetFirstFoundValue("CN", "O")
                 .Trim('"');
 
+            var signedTimestamp = (counterSignerInfo != null)
+                ? GetSigningTime(counterSignerInfo!.SignedAttributes)
+                : string.Empty;
+
             return new FileSigningInfo
             {
                 Signer = signer ?? string.Empty,
                 Issuer = issuer ?? string.Empty,
+                SignedTimestamp = signedTimestamp,
                 IsTrusted = chainOk,
                 IsSigned = chainOk && !(string.IsNullOrWhiteSpace(signer) &&
                                         string.IsNullOrWhiteSpace(issuer))
