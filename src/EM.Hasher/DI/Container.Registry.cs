@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using EM.Hasher.Services;
+using EM.Hasher.Services.Activation;
 using EM.Hasher.Services.Application;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
@@ -32,6 +33,7 @@ using EM.Hasher.ViewModels.Controls;
 using EM.Hasher.ViewModels.UI;
 using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
+using WinUIEx;
 
 namespace EM.Hasher.DI;
 
@@ -39,14 +41,17 @@ public partial class Container
 {
     private Container RegisterServices()
     {
-        // Singleton services
+        // Singleton & core services
+        _container.AddSingleton<MainWindow>();
+        _container.AddSingleton<WindowEx>(sp => sp.GetRequiredService<MainWindow>());
+        _container.AddSingleton<IActivationService, ActivationService>();
         _container.AddSingleton<ISettingsProvider, SettingsProvider>();
         _container.AddSingleton<INavigationService, NavigationService>();
         _container.AddSingleton<ICachedStoreAppLicense, CachedStoreAppLicenseProvider>();
 
         // Views
         _container.AddSingleton<Shell>();               // Main frame content, used to host all other pages
-        _container.AddSingleton<TrialExpired>();        // Trial expired frame content
+        _container.AddSingleton<TrialExpired>();        // Trial expired frame content // TODO: Remove. App is now Free - Trial bits now redundant.
 
         // Views ViewModels
         _container.AddSingleton<UIStateViewModel>();    // Used to manage the enabled/disabled state of some UI elements 
@@ -75,7 +80,7 @@ public partial class Container
 
         return
         [
-            new FileHashControlViewModel(
+             new FileHashControlViewModel(
                 new Crc32HashCalculator(),
                 settings.IsUppercaseHashValues,
                 settings.IsCrc32Enabled),
@@ -99,7 +104,7 @@ public partial class Container
                 new Sha512HashCalculator(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha512Enabled)
-        ];
+         ];
     }
 
     private static EventLogWriter CreateEventLogWriter(IServiceProvider provider)

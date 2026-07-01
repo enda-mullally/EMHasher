@@ -19,10 +19,11 @@
 using System;
 using EM.Hasher.DI;
 using EM.Hasher.Helpers;
-using EM.Hasher.Views;
 using EM.Hasher.Services;
+using EM.Hasher.Services.Activation;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
+using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using WinUIEx;
@@ -50,7 +51,7 @@ public partial class App : Application
 
     public static WindowEx? MainWindow
     {
-        get; private set;
+        get; internal set;
     }
 
     public static UIElement? AppTitlebar
@@ -94,10 +95,7 @@ public partial class App : Application
 
             var settingsProvider = GetService<ISettingsProvider>();
 
-            if (MainWindow == null)
-            {
-                MainWindow = new MainWindow();
-            }
+            MainWindow = GetService<MainWindow>();
 
             // Set the MainWindow Content.
             if (MainWindow.Content != null)
@@ -117,7 +115,7 @@ public partial class App : Application
             {
                 (int)Enums.AppThemeSetting.Dark => ElementTheme.Dark,
                 (int)Enums.AppThemeSetting.Light => ElementTheme.Light,
-                 _ => ElementTheme.Default
+                _ => ElementTheme.Default
             };
 
             ((FrameworkElement)MainWindow.Content!).RequestedTheme = theme;
@@ -128,7 +126,7 @@ public partial class App : Application
         }
         finally
         {
-            MainWindow!.Activate();
+            await GetService<IActivationService>().ActivateAsync(MainWindow!);
         }
     }
 }
