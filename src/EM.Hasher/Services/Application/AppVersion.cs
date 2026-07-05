@@ -21,6 +21,10 @@ public class AppVersion : IAppVersion
             version = Assembly.GetExecutingAssembly().GetName().Version!;
         }
 
+#if DEBUG
+        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}+0.0.1";
+#else
         return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+#endif
     }
 }
