@@ -2,10 +2,6 @@
 
 https://github.com/vcsjones/AuthenticodeExaminer
 
-**Original repository:**
-
-https://github.com/vcsjones/AuthenticodeExaminer
-
 Created by Kevin Jones, licensed under the MIT License.
 
 **Fork repository:**
