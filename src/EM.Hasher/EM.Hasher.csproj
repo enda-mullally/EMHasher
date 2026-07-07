@@ -33,6 +33,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.251219" />
 	<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.251219" />
 	<PackageReference Include="Crc32.NET" Version="1.2.0" />
+	<PackageReference Include="Forked-AuthenticodeExaminer" Version="0.4.0" />
 	<PackageReference Include="Humanizer.Core" Version="3.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
 	<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" />
@@ -114,6 +115,5 @@
     <ApplicationIcon>Assets\EMHasher.ico</ApplicationIcon>
     <PackageIcon>EMHasher.ico</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  
   </PropertyGroup>
 </Project>
