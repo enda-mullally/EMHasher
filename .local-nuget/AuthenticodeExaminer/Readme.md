@@ -1,3 +1,5 @@
+# Readme
+
 `Forked-AuthenticodeExaminer.0.4.0.nupkg` is a fork of:
 
 https://github.com/vcsjones/AuthenticodeExaminer
@@ -19,6 +21,17 @@ See the full diff:
 
 https://github.com/vcsjones/AuthenticodeExaminer/compare/main...enda-mullally:AuthenticodeExaminer:main
 
-# **Miscellaneous note**
+# **Misc note:**
 
-I changed the package ID in the `.nuspec` file from `AuthenticodeExaminer` to `Forked-AuthenticodeExaminer` to ensure that the local NuGet package is restored instead of the version published on nuget.org.
+I changed the package ID from `AuthenticodeExaminer` to `Forked-AuthenticodeExaminer` to ensure that the local NuGet package is restored instead of the version published on nuget.org.
+
+
+# **Verification:**
+
+https://github.com/enda-mullally/AuthenticodeExaminer/actions/runs/28903026509
+
+Artifact : AuthenticodeExaminer-Nuget-Package (zipped)
+Digest	 : sha256:33add0e9490892312758d9cd488f173a1be6404e6a234bcbaec518cd3262bbe1
+
+-> Forked-AuthenticodeExaminer.0.4.0.nupkg
+   sha256:b8b255e0dc943413b06625bb7a5d30e6a96ce00272eaf5226ad935d0379acb7b
