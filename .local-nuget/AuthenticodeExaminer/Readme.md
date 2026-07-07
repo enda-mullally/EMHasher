@@ -21,4 +21,4 @@ https://github.com/vcsjones/AuthenticodeExaminer/compare/main...enda-mullally:Au
 
 # **Miscellaneous note**
 
-I changed the package ID in the `.nuspec` file from `AuthenticodeExaminer` to `Forked-AuthenticodeExaminer` to ensure that the local NuGet package is restored instead of the version published on NuGet.org.
+I changed the package ID in the `.nuspec` file from `AuthenticodeExaminer` to `Forked-AuthenticodeExaminer` to ensure that the local NuGet package is restored instead of the version published on nuget.org.
