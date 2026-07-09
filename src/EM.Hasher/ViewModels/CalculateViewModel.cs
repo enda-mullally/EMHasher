@@ -52,7 +52,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         _fileSigningInfoProvider = fileSigningInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
 
-        FileHashControlViewModels = new ObservableCollection<FileHashControlViewModel>(fileHashControlViewModels);
+        FileHashControlViewModels = [with(fileHashControlViewModels)];
     }
 
     [ObservableProperty]
@@ -75,6 +75,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     [ObservableProperty]
     public partial bool IsSigned { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial bool IsTimeStamped { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string? SigningTime { get; private set; } = string.Empty;
 
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
@@ -119,6 +125,8 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                         IsSigned = signingInfo.IsSigned;
                         Signer = signingInfo.Signer;
                         Issuer = signingInfo.Issuer;
+                        IsTimeStamped = signingInfo.IsTimeStamped;
+                        SigningTime = signingInfo.SigningTime;
                     }
                 }
                 else
@@ -129,6 +137,8 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                         IsSigned = signingInfo.IsSigned;
                         Signer = signingInfo.Signer;
                         Issuer = signingInfo.Issuer;
+                        IsTimeStamped = signingInfo.IsTimeStamped;
+                        SigningTime = signingInfo.SigningTime;
                     }
 
                     var fileDetailsModel = await fileDetailsTask;

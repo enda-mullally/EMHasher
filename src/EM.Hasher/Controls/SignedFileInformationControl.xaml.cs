@@ -45,4 +45,22 @@ public sealed partial class SignedFileInformationControl : UserControl
 
     public static readonly DependencyProperty IssuerProperty =
         DependencyProperty.Register(nameof(Issuer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+
+    public bool IsTimeStamped
+    {
+        get => (bool)GetValue(IsTimeStampedProperty);
+        set => SetValue(IsTimeStampedProperty, value);
+    }
+
+    public static readonly DependencyProperty IsTimeStampedProperty =
+        DependencyProperty.Register(nameof(IsTimeStamped), typeof(bool), typeof(SignedFileInformationControl), new PropertyMetadata(false));
+
+    public string SigningTime
+    {
+        get => (string)GetValue(SigningTimeProperty);
+        set => SetValue(SigningTimeProperty, value);
+    }
+
+    public static readonly DependencyProperty SigningTimeProperty =
+        DependencyProperty.Register(nameof(SigningTime), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
 }

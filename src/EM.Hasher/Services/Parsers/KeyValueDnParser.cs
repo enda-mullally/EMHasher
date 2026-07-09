@@ -35,6 +35,7 @@ public class KeyValueDnParser : IKeyValueDnParser
         }
 
         var parts = input.Split(',');
+        var prevKey = string.Empty;
 
         foreach (var part in parts)
         {
@@ -42,10 +43,15 @@ public class KeyValueDnParser : IKeyValueDnParser
 
             if (kv.Length == 2)
             {
-                var key = kv[0].Trim();
+                var key = prevKey = kv[0].Trim();
                 var value = kv[1].Trim();
 
                 _values[key] = value;
+            }
+            else if (kv.Length == 1)
+            {
+                // this is part of the previous key
+                _values[prevKey] += ", " + kv[0].Trim();
             }
         }
 

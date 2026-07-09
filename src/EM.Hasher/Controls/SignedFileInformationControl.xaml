@@ -6,7 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:EM.Hasher.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkitConverters="using:CommunityToolkit.WinUI.Converters"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,15 +27,17 @@
             HorizontalAlignment="Left"
             Glyph="&#xEB95;" />
 
-        <!--  Details Grid with aligned rows  
-              TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
+        <!--
+            Details Grid with aligned rows
+            TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
         -->
-        
+
         <Grid
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="0,0,0,0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -68,6 +75,22 @@
                 Margin="0,0,0,3"
                 IsTextSelectionEnabled="True"
                 Text="{x:Bind Issuer, Mode=OneWay}" />
+
+            <!--  Row 2: Signing Time  -->
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Margin="0,0,20,3"
+                Foreground="#8bb7f0"
+                Text="Signed"
+                Visibility="{x:Bind IsTimeStamped, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="0,0,0,3"
+                IsTextSelectionEnabled="True"
+                Text="{x:Bind SigningTime, Mode=OneWay}"
+                Visibility="{x:Bind IsTimeStamped, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
         </Grid>
     </Grid>
 </UserControl>

@@ -16,23 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.IO;
-using System.Security.Cryptography.Pkcs;
-using System.Security.Cryptography.X509Certificates;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using AuthenticodeExaminer;
 using EM.Hasher.Models;
 using EM.Hasher.Services.Parsers;
+using Humanizer;
 
 namespace EM.Hasher.Services.File;
 
 public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFileSigningInfoProvider
 {
-    private const int ImageDirEntrySecurity = 4;
-    private const int WinCertTypePkcsSignedData = 2;
-    private const int DataDirectorySize = 128; // 16 entries * 8 bytes
-    private const int DataDirectoryEntrySize = 8;
     private readonly IKeyValueDnParser _dnParser = dnParser;
-
+    
     public async Task<FileSigningInfo> GetSigningInfoAsync(string fileName)
     {
         return await Task.Run(() =>
@@ -53,135 +50,45 @@ public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFile
 
         try
         {
-            using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var inspector = new FileInspector(fileName);
+            var validationResult = inspector.Validate();
+            var signatures = inspector.GetSignatures();
+            var signingCert = signatures.FirstOrDefault();
+            
+            var signerSubject = signingCert != null ? signingCert.SigningCertificate?.Subject : string.Empty;
+            var signer = signerSubject != string.Empty
+                ? _dnParser.Load(signerSubject!)
+                           .GetFirstFoundValue("CN", "O")
+                           .Trim('"')
+                : string.Empty;
+                        
+            var issuer = signingCert != null ? signingCert.SigningCertificate?.Issuer : string.Empty;
+            issuer = issuer != string.Empty
+                ? _dnParser.Load(issuer!)
+                           .GetFirstFoundValue("CN", "O")
+                           .Trim('"')
+                : string.Empty;
 
-            if (!TryGetCertificateTableOffset(fs, out var certTableFileOffset, out var certTableSize))
+            var timestamp = signingCert != null ? signingCert.TimestampSignatures.FirstOrDefault() : null;
+            var timestampDate = timestamp != null ? timestamp.TimestampDateTime : DateTimeOffset.MinValue;
+            var hasTimestamp = timestampDate != DateTimeOffset.MinValue;
+
+            return new FileSigningInfo
             {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
-
-            if (certTableSize < 8)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
-
-            fs.Seek(certTableFileOffset, SeekOrigin.Begin);
-            using var reader = new BinaryReader(fs);
-
-            var dwLength = reader.ReadInt32();
-            if (dwLength < 8 || dwLength > certTableSize)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
-
-            _ = reader.ReadInt16(); // wRevision
-            var wCertificateType = reader.ReadInt16();
-            if (wCertificateType != WinCertTypePkcsSignedData)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
-
-            var pkcs7Length = dwLength - 8;
-            var pkcs7Blob = reader.ReadBytes(pkcs7Length);
-            if (pkcs7Blob.Length != pkcs7Length)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false
-                };
-            }
-
-            return GetSignerAndIssuerFromPkcs7(pkcs7Blob);
+                IsSigned = validationResult == SignatureCheckResult.Valid,
+                Issuer = issuer,
+                Signer = signer,
+                IsTimeStamped = hasTimestamp,
+                SigningTime = hasTimestamp
+                    ? $"{timestampDate:f} ({timestampDate.Humanize()})"
+                    : string.Empty
+            };
         }
         catch
         {
             return new FileSigningInfo
             {
                 IsSigned = false
-            };
-        }
-    }
-
-    private FileSigningInfo GetSignerAndIssuerFromPkcs7(byte[] pkcs7Blob)
-    {
-        try
-        {
-            var signedCms = new SignedCms();
-            signedCms.Decode(pkcs7Blob);
-
-            if (signedCms.SignerInfos.Count == 0)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = false,
-                    IsTrusted = false
-                };
-            }
-
-            var signerInfo = signedCms.SignerInfos[0];
-            var signerCert = signerInfo.Certificate;
-            if (signerCert == null)
-            {
-                return new FileSigningInfo
-                {
-                    IsSigned = true,
-                    IsTrusted = false
-                };
-            }
-
-            // Build an X509 chain to verify whether the certificate chains to a trusted root
-            using var chain = new X509Chain();
-            chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-            chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EndCertificateOnly;
-            chain.ChainPolicy.VerificationFlags = X509VerificationFlags.IgnoreNotTimeValid;
-
-            var chainOk = false;
-            try
-            {
-                chainOk = chain.Build(signerCert);
-            }
-            catch
-            {
-                chainOk = false;
-            }
-
-            var signer = _dnParser
-                .Load(signerCert.Subject)
-                .GetFirstFoundValue("CN", "O")
-                .Trim('"');
-
-            var issuer = _dnParser
-                .Load(signerCert.Issuer)
-                .GetFirstFoundValue("CN", "O")
-                .Trim('"');
-
-            return new FileSigningInfo
-            {
-                Signer = signer ?? string.Empty,
-                Issuer = issuer ?? string.Empty,
-                IsTrusted = chainOk,
-                IsSigned = chainOk && !(string.IsNullOrWhiteSpace(signer) &&
-                                        string.IsNullOrWhiteSpace(issuer))
-            };
-        }
-        catch
-        {
-            return new FileSigningInfo
-            {
-                IsSigned = false,
-                IsTrusted = false
             };
         }
     }
