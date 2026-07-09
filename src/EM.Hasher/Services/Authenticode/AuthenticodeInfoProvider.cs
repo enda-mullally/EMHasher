@@ -24,25 +24,25 @@ using EM.Hasher.Models;
 using EM.Hasher.Services.Parsers;
 using Humanizer;
 
-namespace EM.Hasher.Services.File;
+namespace EM.Hasher.Services.Authenticode;
 
-public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFileSigningInfoProvider
+public partial class AuthenticodeInfoProvider(IKeyValueDnParser dnParser) : IAuthenticodeInfoProvider
 {
     private readonly IKeyValueDnParser _dnParser = dnParser;
     
-    public async Task<FileSigningInfo> GetSigningInfoAsync(string fileName)
+    public async Task<AuthenticodeInfoModel> GetAuthenticodeInfoAsync(string fileName)
     {
         return await Task.Run(() =>
         {
-            return GetSigningInfoCore(fileName);
+            return GetAuthenticodeInfo(fileName);
         });
     }
 
-    private FileSigningInfo GetSigningInfoCore(string fileName)
+    private AuthenticodeInfoModel GetAuthenticodeInfo(string fileName)
     {
         if (string.IsNullOrWhiteSpace(fileName) || !System.IO.File.Exists(fileName))
         {
-            return new FileSigningInfo
+            return new AuthenticodeInfoModel
             {
                 IsSigned = false
             };
@@ -73,7 +73,7 @@ public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFile
             var timestampDate = timestamp != null ? timestamp.TimestampDateTime : DateTimeOffset.MinValue;
             var hasTimestamp = timestampDate != DateTimeOffset.MinValue;
 
-            return new FileSigningInfo
+            return new AuthenticodeInfoModel
             {
                 IsSigned = validationResult == SignatureCheckResult.Valid,
                 Issuer = issuer,
@@ -86,7 +86,7 @@ public partial class FileSigningInfoProvider(IKeyValueDnParser dnParser) : IFile
         }
         catch
         {
-            return new FileSigningInfo
+            return new AuthenticodeInfoModel
             {
                 IsSigned = false
             };

@@ -21,9 +21,9 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace EM.Hasher.Controls;
 
-public sealed partial class SignedFileInformationControl : UserControl
+public sealed partial class FileAuthenticodeInformationControl : UserControl
 {
-    public SignedFileInformationControl()
+    public FileAuthenticodeInformationControl()
     {
         InitializeComponent();
     }
@@ -35,7 +35,7 @@ public sealed partial class SignedFileInformationControl : UserControl
     }
 
     public static readonly DependencyProperty SignerProperty =
-        DependencyProperty.Register(nameof(Signer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+        DependencyProperty.Register(nameof(Signer), typeof(string), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(""));
 
     public string Issuer
     {
@@ -44,7 +44,7 @@ public sealed partial class SignedFileInformationControl : UserControl
     }
 
     public static readonly DependencyProperty IssuerProperty =
-        DependencyProperty.Register(nameof(Issuer), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+        DependencyProperty.Register(nameof(Issuer), typeof(string), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(""));
 
     public bool IsTimeStamped
     {
@@ -53,7 +53,7 @@ public sealed partial class SignedFileInformationControl : UserControl
     }
 
     public static readonly DependencyProperty IsTimeStampedProperty =
-        DependencyProperty.Register(nameof(IsTimeStamped), typeof(bool), typeof(SignedFileInformationControl), new PropertyMetadata(false));
+        DependencyProperty.Register(nameof(IsTimeStamped), typeof(bool), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(false));
 
     public string SigningTime
     {
@@ -62,5 +62,5 @@ public sealed partial class SignedFileInformationControl : UserControl
     }
 
     public static readonly DependencyProperty SigningTimeProperty =
-        DependencyProperty.Register(nameof(SigningTime), typeof(string), typeof(SignedFileInformationControl), new PropertyMetadata(""));
+        DependencyProperty.Register(nameof(SigningTime), typeof(string), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(""));
 }

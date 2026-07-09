@@ -85,7 +85,7 @@
 
                 <controls:SettingsCard Margin="0,0,0,4" Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                     <controls:SettingsCard.Header>
-                        <localcontrols:SignedFileInformationControl
+                        <localcontrols:FileAuthenticodeInformationControl
                             IsTimeStamped="{x:Bind ViewModel.IsTimeStamped, Mode=OneWay}"
                             Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
                             Signer="{x:Bind ViewModel.Signer, Mode=OneWay}"

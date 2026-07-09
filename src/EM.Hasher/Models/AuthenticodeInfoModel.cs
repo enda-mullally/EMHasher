@@ -18,7 +18,7 @@
 
 namespace EM.Hasher.Models;
 
-public class FileSigningInfo
+public class AuthenticodeInfoModel
 {
     public bool IsSigned { get; init; }
 

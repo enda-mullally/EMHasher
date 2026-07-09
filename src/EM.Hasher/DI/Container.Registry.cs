@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Activation;
 using EM.Hasher.Services.Application;
+using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Hashes;
@@ -63,7 +64,7 @@ public partial class Container
         // Services
         _container.AddTransient<IAppVersion, AppVersion>();
         _container.AddTransient<IFileDetailsProvider, FileDetailsProvider>();
-        _container.AddTransient<IFileSigningInfoProvider, FileSigningInfoProvider>();
+        _container.AddTransient<IAuthenticodeInfoProvider, AuthenticodeInfoProvider>();
         _container.AddTransient<IExplorerFileSelectorService, ExplorerFileSelectorService>();
         _container.AddTransient<IKeyValueDnParser, KeyValueDnParser>();
 
