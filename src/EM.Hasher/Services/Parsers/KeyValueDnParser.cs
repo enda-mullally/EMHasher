@@ -48,7 +48,7 @@ public class KeyValueDnParser : IKeyValueDnParser
 
                 _values[key] = value;
             }
-            else if (kv.Length == 1)
+            else if (kv.Length == 1 && !string.IsNullOrWhiteSpace(prevKey))
             {
                 // this is part of the previous key
                 _values[prevKey] += ", " + kv[0].Trim();
