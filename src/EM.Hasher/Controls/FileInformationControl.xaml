@@ -22,8 +22,9 @@
             HorizontalAlignment="Left"
             Glyph="&#xE946;" />
 
-        <!--  Details Grid with aligned rows  
-              TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
+        <!--
+            Details Grid with aligned rows
+            TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
         -->
 
         <Grid

@@ -18,16 +18,17 @@
 
 namespace EM.Hasher.Models;
 
-public class FileSigningInfo
+public class AuthenticodeInfoModel
 {
-    public bool IsSigned
-    {
-        get; init;
-    }
+    public bool IsSigned { get; init; }
 
     public bool IsTrusted { get; init; }
 
     public string Signer { get; init; } = string.Empty;
 
-    public string Issuer { get; init; } =  string.Empty;
+    public string Issuer { get; init; } = string.Empty;
+
+    public bool IsTimeStamped { get; init; }
+
+    public string SigningTime { get; init; } = string.Empty;
 }

@@ -26,6 +26,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
+using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
@@ -36,7 +37,7 @@ namespace EM.Hasher.ViewModels;
 public partial class CalculateViewModel : ObservableObject, INavigationAware
 {
     private readonly IFileDetailsProvider _fileDetailsProvider;
-    private readonly IFileSigningInfoProvider _fileSigningInfoProvider;
+    private readonly IAuthenticodeInfoProvider _authenticodeInfoProvider;
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
     private string _selectedFileName = string.Empty;
 
@@ -44,15 +45,15 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     public CalculateViewModel(
         IFileDetailsProvider fileDetailsProvider,
-        IFileSigningInfoProvider fileSigningInfoProvider,
+        IAuthenticodeInfoProvider authenticodeInfoProvider,
         IExplorerFileSelectorService explorerFileSelectorService,
         IList<FileHashControlViewModel> fileHashControlViewModels)
     {
         _fileDetailsProvider = fileDetailsProvider;
-        _fileSigningInfoProvider = fileSigningInfoProvider;
+        _authenticodeInfoProvider = authenticodeInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
 
-        FileHashControlViewModels = new ObservableCollection<FileHashControlViewModel>(fileHashControlViewModels);
+        FileHashControlViewModels = [with(fileHashControlViewModels)];
     }
 
     [ObservableProperty]
@@ -76,6 +77,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial bool IsSigned { get; private set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsTimeStamped { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string? SigningTime { get; private set; } = string.Empty;
+
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
         try
@@ -94,11 +101,11 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                 new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false)); // a new file is selected, so force recalculation
 
             var fileDetailsTask = _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
-            var signingInfoTask = _fileSigningInfoProvider.GetSigningInfoAsync(_selectedFileName);
+            var authenticodeInfoTask = _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
 
             try
             {
-                var completedTask = await Task.WhenAny(fileDetailsTask, signingInfoTask);
+                var completedTask = await Task.WhenAny(fileDetailsTask, authenticodeInfoTask);
 
                 if (completedTask == fileDetailsTask)
                 {
@@ -113,22 +120,26 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                         FileModified = fileDetailsModel.FileModified;
                     }
 
-                    var signingInfo = await signingInfoTask;
+                    var signingInfo = await authenticodeInfoTask;
                     if (signingInfo != null)
                     {
                         IsSigned = signingInfo.IsSigned;
                         Signer = signingInfo.Signer;
                         Issuer = signingInfo.Issuer;
+                        IsTimeStamped = signingInfo.IsTimeStamped;
+                        SigningTime = signingInfo.SigningTime;
                     }
                 }
                 else
                 {
-                    var signingInfo = await signingInfoTask;
+                    var signingInfo = await authenticodeInfoTask;
                     if (signingInfo != null)
                     {
                         IsSigned = signingInfo.IsSigned;
                         Signer = signingInfo.Signer;
                         Issuer = signingInfo.Issuer;
+                        IsTimeStamped = signingInfo.IsTimeStamped;
+                        SigningTime = signingInfo.SigningTime;
                     }
 
                     var fileDetailsModel = await fileDetailsTask;

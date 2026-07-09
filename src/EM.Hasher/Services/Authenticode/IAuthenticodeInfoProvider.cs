@@ -19,9 +19,9 @@
 using System.Threading.Tasks;
 using EM.Hasher.Models;
 
-namespace EM.Hasher.Services.File;
+namespace EM.Hasher.Services.Authenticode;
 
-public interface IFileSigningInfoProvider
+public interface IAuthenticodeInfoProvider
 {
-    Task<FileSigningInfo> GetSigningInfoAsync(string fileName);
+    Task<AuthenticodeInfoModel> GetAuthenticodeInfoAsync(string fileName);
 }
