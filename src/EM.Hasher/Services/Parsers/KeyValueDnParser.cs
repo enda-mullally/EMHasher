@@ -27,7 +27,7 @@ public class KeyValueDnParser : IKeyValueDnParser
 
     public IKeyValueDnParser Load(string input)
     {
-        _values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        _values = [with(StringComparer.OrdinalIgnoreCase)];
 
         if (string.IsNullOrWhiteSpace(input))
         {

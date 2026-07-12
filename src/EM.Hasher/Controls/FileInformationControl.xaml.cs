@@ -64,6 +64,42 @@ public sealed partial class FileInformationControl : UserControl
     public static readonly DependencyProperty FileModifiedProperty =
         DependencyProperty.Register(nameof(FileModified), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
 
+    public string FileVersion
+    {
+        get => (string)GetValue(FileVersionProperty);
+        set => SetValue(FileVersionProperty, value);
+    }
+
+    public static readonly DependencyProperty FileVersionProperty =
+        DependencyProperty.Register(nameof(FileVersion), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+
+    public bool HasFileVersion
+    {
+        get => (bool)GetValue(HasFileVersionProperty);
+        set => SetValue(HasFileVersionProperty, value);
+    }
+
+    public static readonly DependencyProperty HasFileVersionProperty =
+        DependencyProperty.Register(nameof(HasFileVersion), typeof(bool), typeof(FileInformationControl), new PropertyMetadata(false));
+
+    public string FileProductVersion
+    {
+        get => (string)GetValue(FileProductVersionProperty);
+        set => SetValue(FileProductVersionProperty, value);
+    }
+
+    public static readonly DependencyProperty FileProductVersionProperty =
+        DependencyProperty.Register(nameof(FileProductVersion), typeof(string), typeof(FileInformationControl), new PropertyMetadata(""));
+
+    public bool HasFileProductVersion
+    {
+        get => (bool)GetValue(HasFileProductVersionProperty);
+        set => SetValue(HasFileProductVersionProperty, value);
+    }
+
+    public static readonly DependencyProperty HasFileProductVersionProperty =
+        DependencyProperty.Register(nameof(HasFileProductVersion), typeof(bool), typeof(FileInformationControl), new PropertyMetadata(false));
+
     // This fix's a small issue with wrapping of filename
     // strings with hyphens "-" being treated as line breaks.
     private static string ForceHardWrap(string input)

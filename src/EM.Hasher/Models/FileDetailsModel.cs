@@ -30,8 +30,19 @@ public class FileDetailsModel
 
     public string FileModified { get; init; } = string.Empty;
 
+    public string FileVersion { get; init; } = string.Empty;
+
+    public string FileProductVersion { get; init; } = string.Empty;
+
     public override string ToString()
     {
-        return $"FileName={FileName}, FullFileName={FullFileName}, FileSize={FileSize}, FileCreated={FileCreated}, FileModified={FileModified}";
+        return
+            $"FileName={FileName}," +
+            $" FullFileName={FullFileName}," +
+            $" FileSize={FileSize}," +
+            $" FileCreated={FileCreated}," +
+            $" FileModified={FileModified}," +
+            $" FileVersion={FileVersion}," +
+            $" FileProductVersion={FileProductVersion}";
     }
 }

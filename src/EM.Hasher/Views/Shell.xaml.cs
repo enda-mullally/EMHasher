@@ -107,7 +107,7 @@ public sealed partial class Shell : Page
                 new DropFileErrorMessage(false, string.Empty));
 
             // Navigate to the SettingsShell which manages settings navigation
-            contentFrame.Navigate(typeof(Views.SettingsShell));
+            contentFrame.Navigate(typeof(SettingsShell));
         }
         else
         {
@@ -120,8 +120,8 @@ public sealed partial class Shell : Page
                 // Use a switch statement to avoid reflection
                 var pageType = selectedItemTag switch
                 {
-                    "Home" => typeof(Views.Home),
-                    "Calculate" => typeof(Views.Calculate),
+                    "Home" => typeof(Home),
+                    "Calculate" => typeof(Calculate),
                     _ => null
                 };
 
@@ -165,7 +165,7 @@ public sealed partial class Shell : Page
         // Sync NavigationView selection when programmatic navigation occurs
         var pageType = e.SourcePageType;
 
-        if (pageType == typeof(Views.SettingsShell))
+        if (pageType == typeof(SettingsShell))
         {
             navigationView.SelectedItem = navigationView.SettingsItem;
         }
@@ -177,8 +177,8 @@ public sealed partial class Shell : Page
                 var tag = menuItem.Tag as string;
                 var expectedPageType = tag switch
                 {
-                    "Home" => typeof(Views.Home),
-                    "Calculate" => typeof(Views.Calculate),
+                    "Home" => typeof(Home),
+                    "Calculate" => typeof(Calculate),
                     _ => null
                 };
 

@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using EM.Hasher.Helpers;
 using EM.Hasher.Models;
 using Humanizer;
 
@@ -33,17 +36,59 @@ public class FileDetailsProvider : IFileDetailsProvider
 
             if (selectedFileInfo.Exists)
             {
+                var (FileVersion, ProductVersion) = GetFileVersionAndFileProductVersion(fileName);
+
+                var unit = selectedFileInfo.Length == 1
+                    ? ResourceExtensions.GetLocalized("byte")
+                    : ResourceExtensions.GetLocalized("bytes");
+
                 return new FileDetailsModel()
                 {
                     FullFileName = fileName,
                     FileCreated = selectedFileInfo.CreationTime.ToString("f") + "  (" + selectedFileInfo.CreationTime.Humanize() + ")",
                     FileModified = selectedFileInfo.LastWriteTime.ToString("f") + "  (" + selectedFileInfo.LastWriteTime.Humanize() + ")",
                     FileName = selectedFileInfo.Name,
-                    FileSize = $"{ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")}  ({selectedFileInfo.Length:N0}{(selectedFileInfo.Length == 1 ? " byte)" : " bytes)")}"
+                    FileSize = $"{ByteSize.FromBytes(selectedFileInfo.Length).Humanize(format: "#0.00")}  ({selectedFileInfo.Length:N0} {unit})",
+                    FileVersion = FileVersion,
+                    FileProductVersion = ProductVersion
                 };
             }
 
             return default;
         });
+    }
+
+    public static (string FileVersion, string ProductVersion) GetFileVersionAndFileProductVersion(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName) || !System.IO.File.Exists(fileName))
+        {
+            return (string.Empty, string.Empty);
+        }
+
+        var fileVersionResult = string.Empty;
+        var productVersionResult = string.Empty;
+
+        try
+        {
+            var versionInfo = FileVersionInfo.GetVersionInfo(fileName);
+
+            var fileVersion = versionInfo.FileVersion;
+            if (!string.IsNullOrWhiteSpace(fileVersion))
+            {
+                fileVersionResult = ResourceExtensions.GetLocalized("File") + ": " + fileVersion;
+            }
+
+            var productVersion = versionInfo.ProductVersion;
+            if (!string.IsNullOrWhiteSpace(productVersion))
+            {
+                productVersionResult = ResourceExtensions.GetLocalized("Product") + ": " + productVersion;
+            }
+
+            return (fileVersionResult, productVersionResult);
+        }
+        catch
+        {
+            return (string.Empty, string.Empty);
+        }
     }
 }

@@ -60,7 +60,11 @@
                             FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
                             FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
                             FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
-                            FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}" />
+                            FileProductVersion="{x:Bind ViewModel.FileProductVersion, Mode=OneWay}"
+                            FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
+                            FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
+                            HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
+                            HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}" />
                     </controls:SettingsCard.Header>
                     <localcontrols:HandHoverGrid>
                         <localcontrols:IconButton

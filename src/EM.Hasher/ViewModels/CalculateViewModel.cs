@@ -69,6 +69,18 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial string? FileModified { get; private set; } = string.Empty;
 
     [ObservableProperty]
+    public partial string? FileVersion { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool HasFileVersion { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string? FileProductVersion { get; private set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool HasFileProductVersion { get; private set; } = false;
+
+    [ObservableProperty]
     public partial string? Signer { get; private set; } = string.Empty;
 
     [ObservableProperty]
@@ -118,6 +130,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                         FileSize = fileDetailsModel.FileSize;
                         FileCreated = fileDetailsModel.FileCreated;
                         FileModified = fileDetailsModel.FileModified;
+                        
+                        FileVersion = fileDetailsModel.FileVersion;
+                        HasFileVersion = !string.IsNullOrWhiteSpace(FileVersion);
+                        
+                        FileProductVersion = fileDetailsModel.FileProductVersion;
+                        HasFileProductVersion = !string.IsNullOrWhiteSpace(FileProductVersion);
                     }
 
                     var signingInfo = await authenticodeInfoTask;
@@ -151,6 +169,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                         FileSize = fileDetailsModel.FileSize;
                         FileCreated = fileDetailsModel.FileCreated;
                         FileModified = fileDetailsModel.FileModified;
+                        
+                        FileVersion = fileDetailsModel.FileVersion;
+                        HasFileVersion = !string.IsNullOrWhiteSpace(FileVersion);
+                        
+                        FileProductVersion = fileDetailsModel.FileProductVersion;
+                        HasFileProductVersion = !string.IsNullOrWhiteSpace(FileProductVersion);
                     }
                 }
             }

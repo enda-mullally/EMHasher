@@ -49,7 +49,7 @@ public sealed partial class SettingsShell : Page
         }
     }
 
-    private void SettingsFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+    private void SettingsFrame_Navigated(object sender, NavigationEventArgs e)
     {
         // Update breadcrumb state based on current page
         if (e.SourcePageType == typeof(Settings))
