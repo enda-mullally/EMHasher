@@ -125,6 +125,12 @@
                                     <HyperlinkButton
                                         Margin="0,0,15,0"
                                         Padding="0"
+                                        Content="AuthenticodeExaminer"
+                                        NavigateUri="https://github.com/vcsjones/AuthenticodeExaminer/blob/main/LICENSE" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
                                         Content="Crc32.NET"
                                         NavigateUri="https://github.com/force-net/Crc32.NET/blob/develop/LICENSE" />
 
