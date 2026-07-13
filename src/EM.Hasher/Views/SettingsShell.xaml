@@ -23,10 +23,10 @@
         <!--  Settings Breadcrumb Header  -->
         <StackPanel
             Grid.Row="0"
-            Margin="10,0,0,0"
+            Margin="5,0,0,0"
             Orientation="Horizontal">
             <TextBlock
-                Margin="1,8,0,4"
+                Margin="1,8,0,7"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
                 Tapped="OnSettingsBreadcrumbTapped"
                 Text="Settings" />
@@ -48,7 +48,7 @@
             x:Name="settingsFrame"
             Grid.Row="1"
             Margin="0,0,0,0"
-            Padding="10"
+            Padding="0"
             Background="Transparent"
             Navigated="SettingsFrame_Navigated" />
     </Grid>
