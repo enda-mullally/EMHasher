@@ -24,7 +24,7 @@
             BasedOn="{StaticResource BodyStrongTextBlockStyle}"
             TargetType="TextBlock">
             <Style.Setters>
-                <Setter Property="Margin" Value="5,2,5,5" />
+                <Setter Property="Margin" Value="3,2,3,3" />
                 <Setter Property="FontSize" Value="18" />
             </Style.Setters>
         </Style>

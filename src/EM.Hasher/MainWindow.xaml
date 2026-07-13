@@ -7,10 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winex="using:WinUIEx"
     Title="EM Hasher"
-    Width="930"
-    Height="900"
-    MinWidth="930"
-    MinHeight="900"
+    Width="910"
+    Height="800"
+    MinWidth="910"
+    MinHeight="800"
     Closed="MainWindow_Closed"
     mc:Ignorable="d">
 
