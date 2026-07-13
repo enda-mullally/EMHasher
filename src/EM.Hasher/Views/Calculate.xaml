@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localConverters="using:EM.Hasher.Converters"
     xmlns:localcontrols="using:EM.Hasher.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:portedcontrols="using:EM.Hasher.Controls.Ported"
@@ -41,102 +42,133 @@
 
         <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
+        <localConverters:ScrollBarVisibilityToPaddingConverter x:Key="ScrollBarVisibilityToPadding" />
 
     </Page.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
-        <!--  disabled  -->
-        <Grid>
-            <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
-                <win:StackPanel.ChildrenTransitions>
-                    <win:EntranceThemeTransition FromVerticalOffset="50" />
-                    <win:RepositionThemeTransition IsStaggeringEnabled="False" />
-                </win:StackPanel.ChildrenTransitions>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="File Details" />
+    <Grid>
+        <Grid
+            x:Name="CalcPanel"
+            HorizontalAlignment="Stretch"
+            RowSpacing="{StaticResource SettingsCardSpacing}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <controls:SettingsCard Margin="0,0,0,4">
-                    <controls:SettingsCard.Header>
-                        <localcontrols:FileInformationControl
-                            FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
-                            FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
-                            FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
-                            FileProductVersion="{x:Bind ViewModel.FileProductVersion, Mode=OneWay}"
-                            FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
-                            FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
-                            HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
-                            HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}" />
-                    </controls:SettingsCard.Header>
-                    <localcontrols:HandHoverGrid>
-                        <localcontrols:IconButton
-                            Width="40"
-                            Height="40"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
-                            ToolTipService.ToolTip="Open file location">
-                            <localcontrols:IconButton.Icon>
-                                <FontIcon Glyph="&#xE8E5;" />
-                                <!--  Open file icon  -->
-                            </localcontrols:IconButton.Icon>
-                        </localcontrols:IconButton>
-                    </localcontrols:HandHoverGrid>
-                </controls:SettingsCard>
+            <win:Grid.ChildrenTransitions>
+                <win:EntranceThemeTransition FromVerticalOffset="50" />
+                <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+            </win:Grid.ChildrenTransitions>
 
-                <TextBlock
-                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                    Text="Digital Signature"
-                    Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+            <TextBlock
+                Grid.Row="0"
+                Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                Text="File Details" />
 
-                <controls:SettingsCard Margin="0,0,0,4" Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
-                    <controls:SettingsCard.Header>
-                        <localcontrols:FileAuthenticodeInformationControl
-                            IsTimeStamped="{x:Bind ViewModel.IsTimeStamped, Mode=OneWay}"
-                            Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
-                            Signer="{x:Bind ViewModel.Signer, Mode=OneWay}"
-                            SigningTime="{x:Bind ViewModel.SigningTime, Mode=OneWay}" />
-                    </controls:SettingsCard.Header>
-                </controls:SettingsCard>
+            <controls:SettingsCard Grid.Row="1" Margin="0,0,0,4">
+                <controls:SettingsCard.Header>
+                    <localcontrols:FileInformationControl
+                        FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
+                        FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
+                        FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
+                        FileProductVersion="{x:Bind ViewModel.FileProductVersion, Mode=OneWay}"
+                        FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
+                        FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
+                        HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
+                        HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}" />
+                </controls:SettingsCard.Header>
+                <localcontrols:HandHoverGrid>
+                    <localcontrols:IconButton
+                        Width="40"
+                        Height="40"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
+                        ToolTipService.ToolTip="Open file location">
+                        <localcontrols:IconButton.Icon>
+                            <FontIcon Glyph="&#xE8E5;" />
+                            <!--  Open file icon  -->
+                        </localcontrols:IconButton.Icon>
+                    </localcontrols:IconButton>
+                </localcontrols:HandHoverGrid>
+            </controls:SettingsCard>
 
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Hash Values" />
+            <TextBlock
+                Grid.Row="2"
+                Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                Text="Digital Signature"
+                Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
 
-                <ItemsControl ItemsSource="{x:Bind ViewModel.FileHashControlViewModels, Mode=OneWay}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="viewmodels:FileHashControlViewModel">
-                            <controls:SettingsCard Margin="0,0,0,4" Visibility="{x:Bind IsEnabled, Mode=OneWay}">
-                                <controls:SettingsCard.Header>
-                                    <localcontrols:FileHashControl ViewModel="{x:Bind Mode=OneWay}" />
-                                </controls:SettingsCard.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <localcontrols:HandHoverGrid>
-                                        <localcontrols:IconButton
-                                            Width="40"
-                                            Height="40"
-                                            Margin="0,0,6,0"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
-                                            Command="{x:Bind SearchHashCommand, Mode=OneWay}"
-                                            ToolTipService.ToolTip="Search this hash on VirusTotal"
-                                            Visibility="{x:Bind ShowVirusTotalSearch, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
-                                            <localcontrols:IconButton.Icon>
-                                                <FontIcon Glyph="&#xE721;" />
-                                                <!--  Search icon  -->
-                                            </localcontrols:IconButton.Icon>
-                                        </localcontrols:IconButton>
-                                    </localcontrols:HandHoverGrid>
-                                    <localcontrols:HandHoverGrid>
-                                        <portedcontrols:CopyButton
-                                            Width="40"
-                                            Height="40"
-                                            Command="{x:Bind CopyHashCommand, Mode=OneWay}"
-                                            ToolTipService.ToolTip="Copy hash to clipboard"
-                                            Visibility="{x:Bind IsCalculationComplete, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
-                                    </localcontrols:HandHoverGrid>
-                                </StackPanel>
-                            </controls:SettingsCard>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
+            <controls:SettingsCard
+                Grid.Row="3"
+                Margin="0,0,0,4"
+                Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                <controls:SettingsCard.Header>
+                    <localcontrols:FileAuthenticodeInformationControl
+                        IsTimeStamped="{x:Bind ViewModel.IsTimeStamped, Mode=OneWay}"
+                        Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
+                        Signer="{x:Bind ViewModel.Signer, Mode=OneWay}"
+                        SigningTime="{x:Bind ViewModel.SigningTime, Mode=OneWay}" />
+                </controls:SettingsCard.Header>
+            </controls:SettingsCard>
+
+            <TextBlock
+                Grid.Row="4"
+                Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                Text="Hash Values" />
+
+            <ScrollViewer
+                x:Name="HashValuesScrollViewer"
+                Grid.Row="5"
+                HorizontalScrollBarVisibility="Disabled"
+                HorizontalScrollMode="Disabled"
+                VerticalScrollBarVisibility="Auto"
+                VerticalScrollMode="Enabled">
+                <Border Padding="{Binding ElementName=HashValuesScrollViewer, Path=ComputedVerticalScrollBarVisibility, Converter={StaticResource ScrollBarVisibilityToPadding}}">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.FileHashControlViewModels, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodels:FileHashControlViewModel">
+                                <controls:SettingsCard Margin="0,0,0,4" Visibility="{x:Bind IsEnabled, Mode=OneWay}">
+                                    <controls:SettingsCard.Header>
+                                        <localcontrols:FileHashControl ViewModel="{x:Bind Mode=OneWay}" />
+                                    </controls:SettingsCard.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <localcontrols:HandHoverGrid>
+                                            <localcontrols:IconButton
+                                                Width="40"
+                                                Height="40"
+                                                Margin="0,0,6,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                Command="{x:Bind SearchHashCommand, Mode=OneWay}"
+                                                ToolTipService.ToolTip="Search this hash on VirusTotal"
+                                                Visibility="{x:Bind ShowVirusTotalSearch, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                                                <localcontrols:IconButton.Icon>
+                                                    <FontIcon Glyph="&#xE721;" />
+                                                    <!--  Search icon  -->
+                                                </localcontrols:IconButton.Icon>
+                                            </localcontrols:IconButton>
+                                        </localcontrols:HandHoverGrid>
+                                        <localcontrols:HandHoverGrid>
+                                            <portedcontrols:CopyButton
+                                                Width="40"
+                                                Height="40"
+                                                Command="{x:Bind CopyHashCommand, Mode=OneWay}"
+                                                ToolTipService.ToolTip="Copy hash to clipboard"
+                                                Visibility="{x:Bind IsCalculationComplete, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                                        </localcontrols:HandHoverGrid>
+                                    </StackPanel>
+                                </controls:SettingsCard>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </ScrollViewer>
         </Grid>
-    </ScrollViewer>
+    </Grid>
 </Page>
