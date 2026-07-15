@@ -33,39 +33,44 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 #### Screenshots
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_01_Main_Screen_Drop.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_01_Main_Screen_Drop.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_02_Main_Screen.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_02_Main_Screen.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_03_Main_Screen_Results.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_03_Main_Screen_Results.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_04_Main_Screen_Results_Compact.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_04_Main_Screen_Results_Compact.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_05_Main_Screen_Signed_Results.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_05_Main_Screen_Signed_Results.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_06_Main_Screen_Settings_Dark.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_06_Main_Screen_Settings_Dark.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_07_Main_Screen_Settings_HashAlgorithms_Dark.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_07_Main_Screen_Settings_HashAlgorithms_Dark.png">
 </p>
 
 <p align="center">
-  <img width="auto" align="center" style="border-radius: 8px; width: auto; height: auto;" src="docs/images/Store_08_Main_Screen_Settings_Light.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_08_Main_Screen_Settings_Light.png">
 </p>
 <br />
 
 ## Release history
+
+### 15/Jul/2026 (Pending) ###
+v.1.1.74
+  - Authenticode refactor - Display Authenticode Signing Time (signed files)
+  - File properties - Display file version info (File & Product version properties)
 
 ### 14/Jun/2026 ###
 v.1.1.73
