@@ -24,7 +24,7 @@
 
 EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
 
-## Coming soon!
+## Coming soon! (No really, it is :-)
 
 Hash verification via auto detection of file hashes contained in any local .md5, .sha256 file(s) etc. If the selected file is matched to any hash validation file, a simple validation result will be shown in the UI (icon).
 
