@@ -15,7 +15,7 @@
   <Identity
     Name="26772EndaMullally.EMHasher"
     Publisher="CN=3828CB90-B2F7-46C6-8B9B-6DDEBE9CBF4F"
-    Version="1.1.73.0" />
+    Version="1.1.74.0" />
   
   <!-- Above is [Major].[Minor].[Build].[Revision]  -->
   <!-- Will display in app as v[Major].[Minor] Build([Build]) i.e "v1.1 (Build 28)" -->
@@ -44,7 +44,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="EM Hasher"
-        Description="EM Hasher is a simple, modern hash-generating application built from the ground up for Windows 11. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your favorite hashing algorithms, including CRC32,MD5,SHA-256 and SHA-512."
+        Description="EM Hasher is a simple hash-calculating app built from the ground up for Windows 11. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your favorite hashing algorithms, including CRC32,MD5,SHA-1,SHA-256 and SHA-512."
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
