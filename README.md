@@ -71,6 +71,7 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 v.1.1.74
   - Authenticode refactor - Display Authenticode Signing Time (signed files)
   - File properties - Display file version info (File & Product version properties)
+  - [UI] Improved scrolling (Hash Values)
 
 ### 14/Jun/2026 ###
 v.1.1.73
