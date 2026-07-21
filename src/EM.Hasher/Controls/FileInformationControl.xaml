@@ -116,9 +116,7 @@
                 Foreground="#8bb7f0"
                 Text="Version"
                 Visibility="{x:Bind HasFileVersion, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
-            <controls:WrapPanel
-                Grid.Row="4"
-                Grid.Column="1">
+            <controls:WrapPanel Grid.Row="4" Grid.Column="1">
                 <TextBlock
                     Margin="0,0,8,3"
                     IsTextSelectionEnabled="True"
@@ -128,7 +126,7 @@
                     Margin="0,0,0,3"
                     IsTextSelectionEnabled="True"
                     Text="{x:Bind FileProductVersion, Mode=OneWay}"
-                    Visibility="{x:Bind HasFileProductVersion, Converter={StaticResource BoolToVisibility}, Mode=OneWay}"/>
+                    Visibility="{x:Bind HasFileProductVersion, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
             </controls:WrapPanel>
         </Grid>
     </Grid>
