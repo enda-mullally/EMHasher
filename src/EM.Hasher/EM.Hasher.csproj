@@ -40,6 +40,7 @@
 	<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.3.1" />
     <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.10" />
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.10" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
     <PackageReference Include="WinUIEx" Version="2.9.2" />
   </ItemGroup>
 
