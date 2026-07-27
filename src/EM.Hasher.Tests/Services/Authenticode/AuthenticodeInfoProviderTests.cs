@@ -117,7 +117,7 @@ public class AuthenticodeInfoProviderTests
     [TestMethod]
     [DataRow("")]
     [DataRow("   ")]
-    [DataRow(null)]
+    [DataRow((string?)null)]
     public async Task GetAuthenticodeInfoAsync_NullOrWhiteSpaceFileName_ReturnsNotSignedAsync(string? fileName)
     {
         // Arrange
