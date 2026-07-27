@@ -18,6 +18,10 @@ jobs:
       FullBuild: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || inputs.fullbuild }}
     
     steps:
+    - name: Env state
+      run: |
+        echo "FullBuild=${{ env.FullBuild }}"
+    
     - name: Checkout
       uses: actions/checkout@v7
       with:
