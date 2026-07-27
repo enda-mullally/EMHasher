@@ -15,6 +15,7 @@ jobs:
     runs-on: windows-latest
     env:
       TargetMinWinVersion: net10.0-windows10.0.22621.0
+      FullBuild: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || inputs.fullbuild }}
     
     steps:
     - name: Checkout
@@ -25,42 +26,7 @@ jobs:
     - name: Install .NET 10
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.x
-
-    #
-    # TODO Revisit and fix this
-    #
-    #- name: Block FluentAssertions 8.x
-    #  working-directory: src  
-    #  shell: pwsh
-    #  run: |
-    #    dotnet list package --include-transitive --format json > packages.json
-    #
-    #    $json = Get-Content packages.json | ConvertFrom-Json
-    #    $violations = @()
-    #
-    #    foreach ($proj in $json.projects) {
-    #        foreach ($fw in $proj.frameworks) {
-    #            $all = @()
-    #            if ($fw.topLevelPackages) { $all += $fw.topLevelPackages }
-    #            if ($fw.transitivePackages) { $all += $fw.transitivePackages }
-    #
-    #            foreach ($pkg in $all) {
-    #                if ($pkg.id -eq "FluentAssertions") {
-    #                    if ([version]$pkg.resolvedVersion -ge [version]"8.0.0") {
-    #                        $violations += $pkg
-    #                    }
-    #                }
-    #            }
-    #        }
-    #    }
-    #
-    #    if ($violations.Count -gt 0) {
-    #        Write-Error "FluentAssertions 8.x detected. This repository only allows version 7.x."
-    #        exit 1
-    #    }
-    #
-    #    Write-Host "FluentAssertions version policy OK."
+        dotnet-version: 10.0.x   
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v3
@@ -76,7 +42,7 @@ jobs:
         msbuild EM.Hasher.csproj /restore /m /p:configuration="Release" /p:platform="arm64" -p:PublishReadyToRun=false
 
     - name: Build Unit Tests Project (x64)
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       working-directory: src/EM.Hasher.Tests
       run: |
         msbuild EM.Hasher.Tests.csproj /restore /m /p:configuration="Debug" /p:platform="x64" -p:PublishReadyToRun=false
@@ -86,23 +52,23 @@ jobs:
     #
 
     - name: Install the Windows App SDK Runtime - Action
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       uses: enda-mullally/Install-WindowsAppSDKRuntime@v1.1
 
     - name: Show installed Windows App SDK Runtime version
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       run: |
         Get-AppxPackage -Name "Microsoft.WindowsAppRuntime.*" | Where-Object { $_.Architecture -eq "x64" }
         
     - name: Register the EM.Hasher.Tests Appx
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetMinWinVersion}}
       shell: powershell
       run: |
         powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-AppxPackage -Register (Resolve-Path .\AppxManifest.xml) -ForceUpdateFromAnyVersion"
 
     - name: Run Unit Tests via Appx --run
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       working-directory: src/EM.Hasher.Tests
       shell: powershell
       continue-on-error: true
@@ -139,7 +105,7 @@ jobs:
         }
         
     - name: Display Unit Test Results
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       working-directory: src/EM.Hasher.Tests/UnitTests
       shell: cmd
       run: |
@@ -158,7 +124,7 @@ jobs:
         )
 
     - name: Upload Build Artifacts
-      if: (github.ref == 'refs/heads/main' || inputs.fullbuild)
+      if: (env.FullBuild == 'true')
       uses: actions/upload-artifact@v7
       with:
         name: Build Artifacts
