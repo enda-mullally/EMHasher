@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -96,16 +97,71 @@ public partial class UnitTestApp : Application
 
     private Window? m_window;
 
-    private async Task RunTestMethodAsync(MethodInfo method, object instance)
+    private sealed record TestInvocationResult(string? ArgumentsLabel, Exception? Error);
+
+    private async Task<List<TestInvocationResult>> RunTestMethodAsync(MethodInfo method, object instance)
+    {
+        // A [DataTestMethod] can have one or more [DataRow] attributes, each supplying
+        // the arguments for a single invocation. Parameterless [TestMethod] tests have
+        // no rows, so we fall back to a single argument-less invocation.
+        var dataRows = method.GetCustomAttributes(typeof(DataRowAttribute), true)
+            .Cast<DataRowAttribute>()
+            .ToList();
+
+        var results = new List<TestInvocationResult>();
+
+        if (dataRows.Count > 0)
+        {
+            foreach (var dataRow in dataRows)
+            {
+                results.Add(await RunSingleInvocationAsync(method, instance, dataRow.Data));
+            }
+        }
+        else
+        {
+            results.Add(await RunSingleInvocationAsync(method, instance, null));
+        }
+
+        return results;
+    }
+
+    private async Task<TestInvocationResult> RunSingleInvocationAsync(MethodInfo method, object instance, object?[]? parameters)
+    {
+        var argumentsLabel = parameters != null ? FormatArguments(parameters) : null;
+
+        try
+        {
+            await InvokeTestMethodAsync(method, instance, parameters);
+            return new TestInvocationResult(argumentsLabel, null);
+        }
+        catch (Exception ex)
+        {
+            return new TestInvocationResult(argumentsLabel, ex.InnerException ?? ex);
+        }
+    }
+
+    private static string FormatArguments(object?[] parameters)
+    {
+        var formatted = parameters.Select(p => p switch
+        {
+            null => "null",
+            string s => $"\"{s}\"",
+            _ => p.ToString()
+        });
+
+        return $"({string.Join(", ", formatted)})";
+    }
+
+    private async Task InvokeTestMethodAsync(MethodInfo method, object instance, object?[]? parameters)
     {
         if (UITestMethodAttribute.DispatcherQueue != null)
         {
             var tcs = new TaskCompletionSource<object?>();
-            UITestMethodAttribute.DispatcherQueue.TryEnqueue(() =>
+            UITestMethodAttribute.DispatcherQueue.TryEnqueue(async () =>
             {
                 try
                 {
-                    method.Invoke(instance, null);
+                    await InvokeAndAwaitAsync(method, instance, parameters);
                     tcs.SetResult(null);
                 }
                 catch (Exception ex)
@@ -117,7 +173,18 @@ public partial class UnitTestApp : Application
         }
         else
         {
-            method.Invoke(instance, null);
+            await InvokeAndAwaitAsync(method, instance, parameters);
+        }
+    }
+
+    private static async Task InvokeAndAwaitAsync(MethodInfo method, object instance, object?[]? parameters)
+    {
+        var result = method.Invoke(instance, parameters);
+
+        // Await async test methods so their assertion failures surface as exceptions.
+        if (result is Task task)
+        {
+            await task;
         }
     }
 
@@ -165,9 +232,24 @@ public partial class UnitTestApp : Application
             {
                 try
                 {
-                    await RunTestMethodAsync(method, instance!);
-                    File.AppendAllText(logFile, $"[PASS] {testClass.Name}.{method.Name}\n");
-                    System.Diagnostics.Debug.WriteLine($"[PASS] {testClass.Name}.{method.Name}");
+                    var results = await RunTestMethodAsync(method, instance!);
+
+                    foreach (var result in results)
+                    {
+                        var testName = $"{testClass.Name}.{method.Name}{result.ArgumentsLabel}";
+
+                        if (result.Error == null)
+                        {
+                            File.AppendAllText(logFile, $"[PASS] {testName}\n");
+                            System.Diagnostics.Debug.WriteLine($"[PASS] {testName}");
+                        }
+                        else
+                        {
+                            failures++;
+                            File.AppendAllText(logFile, $"[FAIL] {testName} - {result.Error.Message}\n");
+                            System.Diagnostics.Debug.WriteLine($"[FAIL] {testName} - {result.Error.Message}");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

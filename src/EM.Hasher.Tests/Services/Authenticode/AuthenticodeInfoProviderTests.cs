@@ -113,25 +113,21 @@ public class AuthenticodeInfoProviderTests
         result.IsTimeStamped.Should().BeFalse();
         result.SigningTime.Should().BeEmpty();
     }
+    
+    [TestMethod]
+    [DataRow("")]
+    [DataRow("   ")]
+    [DataRow((string?)null)]
+    public async Task GetAuthenticodeInfoAsync_NullOrWhiteSpaceFileName_ReturnsNotSignedAsync(string? fileName)
+    {
+        // Arrange
+        var sut = CreateSut();
 
-    // TODO: This runs fine locally, but fails on pipeline run (ci).
-    // Likely an issue with my headless test runner (RunAllTestsAsync).
-    // Will re-visit and fix for tests with parameters.
+        // Act
+        var result = await sut.GetAuthenticodeInfoAsync(fileName!);
 
-    //[TestMethod]
-    //[DataRow("")]
-    //[DataRow("   ")]
-    //[DataRow((string?)null)]
-    //public async Task GetAuthenticodeInfoAsync_NullOrWhiteSpaceFileName_ReturnsNotSignedAsync(string? fileName)
-    //{
-    //    // Arrange
-    //    var sut = CreateSut();
-
-    //    // Act
-    //    var result = await sut.GetAuthenticodeInfoAsync(fileName!);
-
-    //    // Assert
-    //    result.Should().NotBeNull();
-    //    result.IsSigned.Should().BeFalse();
-    //}
+        // Assert
+        result.Should().NotBeNull();
+        result.IsSigned.Should().BeFalse();
+    }
 }
