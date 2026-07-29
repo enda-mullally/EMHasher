@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -37,8 +38,17 @@ public class ExplorerFileSelectorService : IExplorerFileSelectorService
                 {
                     await Task.Run(() =>
                     {
+                        var explorerPath = Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Windows),
+                            "explorer.exe");
+
                         // Open file explorer and select the file
-                        Process.Start("explorer.exe", $"/e, /select,\"{fileName}\"");
+                        Process.Start(new ProcessStartInfo
+                        {
+                            FileName = explorerPath,
+                            Arguments = $"/select,\"{fileName}\"",
+                            UseShellExecute = false
+                        });
                     });
                 }
             });
