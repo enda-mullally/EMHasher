@@ -9,9 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.AppContainer;
 using Microsoft.VisualStudio.TestPlatform.TestExecutor;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace EM.Hasher.Tests;
 
 /// <summary>
@@ -23,6 +20,7 @@ public partial class UnitTestApp : Application
     private const string FailedFileName = "FailedTests.txt";
 
     private string _logFilePath = string.Empty;
+    private Window? _mainWindow;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -30,8 +28,8 @@ public partial class UnitTestApp : Application
     /// </summary>
     public UnitTestApp()
     {
-        this.InitializeComponent();
-    }
+        InitializeComponent();
+    }    
 
     /// <summary>
     /// Invoked when the application is launched.
@@ -65,12 +63,11 @@ public partial class UnitTestApp : Application
                     }
                 }
             }
-            //..
-
+            
             // Headless test runner path
-            m_window = new UnitTestAppWindow();
-            m_window.Activate();
-            UITestMethodAttribute.DispatcherQueue = m_window.DispatcherQueue;
+            _mainWindow = new UnitTestAppWindow();
+            _mainWindow.Activate();
+            UITestMethodAttribute.DispatcherQueue = _mainWindow.DispatcherQueue;
 
             var failures = await RunAllTestsAsync(); // your reflection-based runner
 
@@ -87,15 +84,13 @@ public partial class UnitTestApp : Application
 
         UnitTestClient.CreateDefaultUI();
 
-        m_window = new UnitTestAppWindow();
-        m_window.Activate();
+        _mainWindow = new UnitTestAppWindow();
+        _mainWindow.Activate();
 
-        UITestMethodAttribute.DispatcherQueue = m_window.DispatcherQueue;
+        UITestMethodAttribute.DispatcherQueue = _mainWindow.DispatcherQueue;
 
         UnitTestClient.Run(Environment.CommandLine);
     }
-
-    private Window? m_window;
 
     private sealed record TestInvocationResult(string? ArgumentsLabel, Exception? Error);
 
@@ -127,7 +122,9 @@ public partial class UnitTestApp : Application
 
     private async Task<TestInvocationResult> RunSingleInvocationAsync(MethodInfo method, object instance, object?[]? parameters)
     {
-        var argumentsLabel = parameters != null ? FormatArguments(parameters) : null;
+        var argumentsLabel = parameters != null
+            ? FormatArguments(parameters)
+            : null;
 
         try
         {
@@ -190,12 +187,19 @@ public partial class UnitTestApp : Application
 
     private string AppDataLogFile(string fileName)
     {
-        var logFile = string.IsNullOrEmpty(_logFilePath) ?
-            Path.Combine(
+        string logFile;
+
+        if (string.IsNullOrEmpty(fileName))
+        {
+            logFile = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "EM.Hasher.Tests",
-                fileName)
-            : Path.Combine(_logFilePath, fileName);
+                fileName);
+        }
+        else
+        {
+            logFile = Path.Combine(_logFilePath, fileName);
+        }
 
         var logDir = Path.GetDirectoryName(logFile);
 
@@ -216,11 +220,13 @@ public partial class UnitTestApp : Application
             File.Delete(logFile);
         }
 
-        var failures = 0;
+        var failed = 0;
+        var passed = 0;
+
         var assembly = typeof(UnitTestApp).Assembly;
 
         var testClasses = assembly.GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(TestClassAttribute), true).Any());
+            .Where(t => t.GetCustomAttributes(typeof(TestClassAttribute), true).Length != 0);
 
         foreach (var testClass in testClasses)
         {
@@ -240,12 +246,13 @@ public partial class UnitTestApp : Application
 
                         if (result.Error == null)
                         {
+                            passed++;
                             File.AppendAllText(logFile, $"[PASS] {testName}\n");
                             System.Diagnostics.Debug.WriteLine($"[PASS] {testName}");
                         }
                         else
                         {
-                            failures++;
+                            failed++;
                             File.AppendAllText(logFile, $"[FAIL] {testName} - {result.Error.Message}\n");
                             System.Diagnostics.Debug.WriteLine($"[FAIL] {testName} - {result.Error.Message}");
                         }
@@ -253,16 +260,16 @@ public partial class UnitTestApp : Application
                 }
                 catch (Exception ex)
                 {
-                    failures++;
+                    failed++;
                     File.AppendAllText(logFile, $"[FAIL] {testClass.Name}.{method.Name} - {ex.InnerException?.Message ?? ex.Message}\n");
                     System.Diagnostics.Debug.WriteLine($"[FAIL] {testClass.Name}.{method.Name} - {ex.InnerException?.Message ?? ex.Message}");
                 }
             }
         }
 
-        File.AppendAllText(logFile, $"Tests complete. Failures: {failures}\n");
-        System.Diagnostics.Debug.WriteLine($"Tests complete. Failures: {failures}");
+        File.AppendAllText(logFile, $"Tests complete. Passed: {passed}, Failed: {failed}\n");
+        System.Diagnostics.Debug.WriteLine($"Tests complete. Passed: {passed}, Failed: {failed}");
 
-        return failures;
+        return failed;
     }
 }
