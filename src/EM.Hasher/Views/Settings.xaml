@@ -131,6 +131,12 @@
                                     <HyperlinkButton
                                         Margin="0,0,15,0"
                                         Padding="0"
+                                        Content="Blake3.NET"
+                                        NavigateUri="https://github.com/xoofx/Blake3.NET/blob/master/license.txt" />
+
+                                    <HyperlinkButton
+                                        Margin="0,0,15,0"
+                                        Padding="0"
                                         Content="Crc32.NET"
                                         NavigateUri="https://github.com/force-net/Crc32.NET/blob/develop/LICENSE" />
 

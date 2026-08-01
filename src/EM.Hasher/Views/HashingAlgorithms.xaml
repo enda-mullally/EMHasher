@@ -30,6 +30,10 @@
         <Grid>
             <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
 
+                <controls:SettingsCard Header="BLAKE3" Style="{StaticResource CompactSettingsCardStyle}">
+                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsBlake3Enabled, Mode=TwoWay}" />
+                </controls:SettingsCard>
+                
                 <controls:SettingsCard Header="CRC-32" Style="{StaticResource CompactSettingsCardStyle}">
                     <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
                 </controls:SettingsCard>
