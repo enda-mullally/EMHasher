@@ -92,7 +92,14 @@ public partial class SettingsViewModel : ObservableObject
         get; set;
     }
 
-    public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha1Enabled && !IsSha256Enabled && !IsSha512Enabled;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsBlake3Enabled
+    {
+        get; set;
+    }
+
+    public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha1Enabled && !IsSha256Enabled && !IsSha512Enabled && !IsBlake3Enabled;
 
     public bool IsTrialMode => _settingsProvider.IsTrialMode;
 
@@ -105,6 +112,7 @@ public partial class SettingsViewModel : ObservableObject
         _settingsProvider = settingsProvider;
         _appVersion = appVersion;
 
+        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3Enabled;
         _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled;
         _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled;
         _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled;
@@ -112,6 +120,7 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled;
 
         // Init observables
+        IsBlake3Enabled = _settingsProvider.IsBlake3Enabled;
         IsCrc32Enabled = _settingsProvider.IsCrc32Enabled;
         IsMd5Enabled = _settingsProvider.IsMd5Enabled;
         IsSha1Enabled = _settingsProvider.IsSha1Enabled;
@@ -175,6 +184,11 @@ public partial class SettingsViewModel : ObservableObject
           new SettingsChangedMessage(_hashAlgorithmsEnabled, value));
 
         _settingsProvider.IsUppercaseHashValues = value;
+    }
+
+    partial void OnIsBlake3EnabledChanged(bool value)
+    {
+        OnAlgorithmEnabled();
     }
 
     partial void OnIsCrc32EnabledChanged(bool value)
@@ -253,12 +267,13 @@ public partial class SettingsViewModel : ObservableObject
             return;
         }
 
+        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3Enabled = IsBlake3Enabled;
         _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled = IsCrc32Enabled;
         _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled = IsMd5Enabled;
         _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled = IsSha1Enabled;
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled = IsSha256Enabled;
         _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled = IsSha512Enabled;
-
+        
         WeakReferenceMessenger.Default.Send(
            new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues));
     }

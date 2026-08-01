@@ -81,6 +81,11 @@ public partial class Container
 
         return
         [
+            new FileHashControlViewModel(
+                new Blake3HashCalculator(),
+                settings.IsUppercaseHashValues,
+                settings.IsBlake3Enabled),
+
              new FileHashControlViewModel(
                 new Crc32HashCalculator(),
                 settings.IsUppercaseHashValues,

@@ -30,6 +30,12 @@ public class SettingsProvider : ISettingsProvider
         _localSettings = ApplicationData.Current.LocalSettings;
     }
 
+    public bool IsBlake3Enabled
+    {
+        set => _localSettings.Values[nameof(IsBlake3Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsBlake3Enabled)] ?? false);
+    }
+
     public bool IsCrc32Enabled
     {
         set => _localSettings.Values[nameof(IsCrc32Enabled)] = value;

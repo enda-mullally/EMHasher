@@ -20,6 +20,11 @@ namespace EM.Hasher.Services.Settings;
 
 public interface ISettingsProvider
 {
+    bool IsBlake3Enabled
+    {
+        get; set;
+    }
+
     bool IsCrc32Enabled
     {
         get; set;
