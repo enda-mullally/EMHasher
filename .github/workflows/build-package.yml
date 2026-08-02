@@ -34,7 +34,7 @@ jobs:
           [xml]$manifest = Get-Content "Package.appxmanifest"
           $version = [Version]$manifest.Package.Identity.Version
           $vnext = "${{ inputs.vnext }}" -eq "true"
-          if ($nvext) {
+          if ($vnext) {
               echo "Using next Version label."
               $version = [Version]::new(
                   $version.Major,
