@@ -89,7 +89,7 @@ jobs:
       - name: Upload package bundle (.msixupload)
         uses: actions/upload-artifact@v7
         with:
-          name: EMHasher-Package-Bundle
+          name: EMHasher-Package-Bundle-${{ steps.version.outputs.version }}
           retention-days: 1
           path: |
             Package/*.msixupload
