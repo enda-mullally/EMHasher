@@ -42,7 +42,6 @@ jobs:
                   $version.Build + 1,
                   0
               )
-
               # Update the manifest file with the new version
               $manifest.Package.Identity.Version = $version.ToString()
               $manifest.Save("Package.appxmanifest")
