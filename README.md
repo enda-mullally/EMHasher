@@ -67,7 +67,7 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ## Release history
 
-### 03/Aug/2026 ### (Pending)
+### 02/Aug/2026 ###
 v1.1.75
   - Added the BLAKE3 hashing algorithm
   - Misc improvements & fix's
