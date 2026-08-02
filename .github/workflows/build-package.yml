@@ -26,7 +26,7 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Read app manifest version
+      - name: Determine app manifest version
         working-directory: "src\\EM.Hasher (Package)"
         id: version
         shell: pwsh
@@ -42,6 +42,11 @@ jobs:
                   $version.Build + 1,
                   0
               )
+
+              # Update the manifest file with the new version
+              $manifest.Package.Identity.Version = $version.ToString()
+              $manifest.Save("Package.appxmanifest")
+              Write-Host "Updated Package.appxmanifest with new version: $($version.ToString())"
           }
           # Remove the trailing .0 revision if desired
           $versionString = $version.ToString() -replace '\.0$'
