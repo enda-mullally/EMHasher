@@ -67,6 +67,11 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 
 ## Release history
 
+### 03/Aug/2026 ### (Pending)
+v1.1.75
+  - Added the BLAKE3 hashing algorithm
+  - Misc improvements & fix's
+
 ### 15/Jul/2026 ###
 v1.1.74
   - Authenticode refactor - Display Authenticode Signing Time (signed files)
