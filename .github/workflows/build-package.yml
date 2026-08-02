@@ -2,6 +2,11 @@ name: Build package
 
 on:
   workflow_dispatch:
+   inputs:
+     vnext:
+       type: boolean
+       description: Use next Version label (increment Version)
+       default: false
 
 jobs:
   build-package-bundle:
@@ -27,11 +32,26 @@ jobs:
         shell: pwsh
         run: |
           [xml]$manifest = Get-Content "Package.appxmanifest"
-          $version = $manifest.Package.Identity.Version -replace '\.0$'
-          "version=$version" >> $env:GITHUB_OUTPUT
+          $version = [Version]$manifest.Package.Identity.Version
+          $vnext = "${{ inputs.vnext }}" -eq "true"
+          if ($nvext) {
+              echo "Using next Version label."
+              $version = [Version]::new(
+                  $version.Major,
+                  $version.Minor,
+                  $version.Build + 1,
+                  0
+              )
+          }
+          # Remove the trailing .0 revision if desired
+          $versionString = $version.ToString() -replace '\.0$'
+          "version=$versionString" >> $env:GITHUB_OUTPUT
 
       - name: Display app manifest version
-        run: echo "App manifest version is ${{ steps.version.outputs.version }}"
+        run: |
+          $vnext = "${{ inputs.vnext }}" -eq "true"
+          echo "Using next Version label: $vnext"
+          echo "App manifest version is ${{ steps.version.outputs.version }}"
 
       - name: Restore EM Hasher package project
         working-directory: "src\\EM.Hasher (Package)"
