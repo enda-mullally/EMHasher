@@ -123,6 +123,12 @@ public partial class FileHashControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsTipOpen { get; private set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsHashVerificationAvailable { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial bool IsHashVerified { get; private set; } = false;
+
     private async Task<bool> StartHashCalculationAsync()
     {
         if (!_settingsIsEnabled)
@@ -154,9 +160,13 @@ public partial class FileHashControlViewModel : ObservableObject
                         ? _hashValue.ToUpperInvariant()
                         : _hashValue.ToLowerInvariant();
 
-            IsCalculationComplete = result = true;
+            IsCalculationComplete = result = true;  // TEST UI ONLY
 
-            ShowVirusTotalSearch = AlgorithmName == "SHA-256";
+            IsHashVerificationAvailable = true;
+
+            IsHashVerified = AlgorithmName == "MD5";
+
+            //ShowVirusTotalSearch = AlgorithmName == "SHA-256";
         }
         catch (Exception ex)
         {
