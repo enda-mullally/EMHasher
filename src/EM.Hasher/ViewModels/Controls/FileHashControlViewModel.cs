@@ -129,6 +129,9 @@ public partial class FileHashControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsHashVerified { get; private set; } = false;
 
+    [ObservableProperty]
+    public partial string? HashVerificationDescription { get; private set; } = string.Empty;
+
     private async Task<bool> StartHashCalculationAsync()
     {
         if (!_settingsIsEnabled)
@@ -165,6 +168,10 @@ public partial class FileHashControlViewModel : ObservableObject
             IsHashVerificationAvailable = true;
 
             IsHashVerified = AlgorithmName == "MD5";
+
+            HashVerificationDescription = IsHashVerified
+                ? "Hash verified successfully."
+                : "Hash verification failed.";
 
             //ShowVirusTotalSearch = AlgorithmName == "SHA-256";
         }

@@ -146,6 +146,7 @@
                                         <Grid
                                             Margin="0,3,15,0"
                                             VerticalAlignment="Center"
+                                            ToolTipService.ToolTip="{x:Bind HashVerificationDescription, Mode=OneWay}"
                                             Visibility="{x:Bind IsHashVerificationAvailable, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                                             <FontIcon
                                                 FontSize="18"
