@@ -10,37 +10,22 @@ namespace EM.Hasher.Tests.Services.Verification;
 [TestClass]
 public class Sha256VerificationServiceTests
 {
-    private string _testDirectory = string.Empty;
+    private const string TestFilesDir = "TestFiles";
+    private const string VerificationDir = "Verification";
+    private const string TargetFileName = "TestFile.bin";
 
     private const string CalculatedHash =
-        "9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08";
-
-    [TestInitialize]
-    public void TestInitialize()
-    {
-        _testDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-        Directory.CreateDirectory(_testDirectory);
-    }
-
-    [TestCleanup]
-    public void TestCleanup()
-    {
-        if (Directory.Exists(_testDirectory))
-        {
-            Directory.Delete(_testDirectory, recursive: true);
-        }
-    }
+        "1be90ba8e2bb29edeec06ccfbbb295740857df787501744c0c4fbda157ecb21f";
 
     private static Sha256VerificationService CreateSut()
     {
         return new Sha256VerificationService();
     }
 
-    private string CreateFile(string fileName, string? contents = null)
+    private static string GetScenarioTargetPath(string scenario)
     {
-        var filePath = Path.Combine(_testDirectory, fileName);
-        System.IO.File.WriteAllText(filePath, contents ?? string.Empty);
-        return filePath;
+        var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        return Path.Combine(currentDirectory, TestFilesDir, VerificationDir, scenario, TargetFileName);
     }
 
     [DataTestMethod]
@@ -65,7 +50,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = Path.Combine(_testDirectory, "does-not-exist", "test.bin");
+        var filePath = GetScenarioTargetPath(Path.Combine("does-not-exist", "nested"));
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -79,7 +64,8 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
+        var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        var filePath = Path.Combine(currentDirectory, TestFilesDir, TargetFileName);
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -93,8 +79,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        CreateFile("test.sha256", $"{CalculatedHash}  test.bin");
+        var filePath = GetScenarioTargetPath("Match");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -102,7 +87,7 @@ public class Sha256VerificationServiceTests
         // Assert
         result.VerificationHashFound.Should().BeTrue();
         result.IsHashMatching.Should().BeTrue();
-        result.HashVerificationDescription.Should().Contain("test.sha256");
+        result.HashVerificationDescription.Should().Contain("TestFile.sha256");
     }
 
     [TestMethod]
@@ -110,8 +95,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        CreateFile("test.sha256", $"{CalculatedHash.ToLowerInvariant()}  test.bin");
+        var filePath = GetScenarioTargetPath("CaseInsensitive");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash.ToUpperInvariant());
@@ -126,8 +110,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        CreateFile("test.sha256", $"{CalculatedHash} *test.bin");
+        var filePath = GetScenarioTargetPath("BinaryPrefix");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -142,8 +125,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        CreateFile("test.sha256", $"0000000000000000000000000000000000000000000000000000000000000000  test.bin");
+        var filePath = GetScenarioTargetPath("Mismatch");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -159,8 +141,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        CreateFile("test.sha256", $"{CalculatedHash}  other.bin");
+        var filePath = GetScenarioTargetPath("DifferentFile");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
@@ -174,12 +155,7 @@ public class Sha256VerificationServiceTests
     {
         // Arrange
         var sut = CreateSut();
-        var filePath = CreateFile("test.bin");
-        var contents =
-            Environment.NewLine +
-            "malformed-line-without-filename" + Environment.NewLine +
-            $"{CalculatedHash}  test.bin" + Environment.NewLine;
-        CreateFile("test.sha256", contents);
+        var filePath = GetScenarioTargetPath("MalformedLines");
 
         // Act
         var result = await sut.VerifyAsync(filePath, CalculatedHash);
