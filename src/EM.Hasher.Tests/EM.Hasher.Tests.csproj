@@ -66,6 +66,9 @@
     <None Update="TestFiles\TestSignedExe.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestFiles\Verification\**\*.sha256">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <!-- 

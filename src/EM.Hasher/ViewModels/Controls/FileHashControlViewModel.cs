@@ -24,6 +24,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Hashes;
+using EM.Hasher.Services.Verification;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace EM.Hasher.ViewModels.Controls;
@@ -31,6 +32,7 @@ namespace EM.Hasher.ViewModels.Controls;
 public partial class FileHashControlViewModel : ObservableObject
 {
     private readonly IHashCalculator _hashCalculator;
+    private readonly IHashVerificationService _hashVerificationService;
     private string _fileName = string.Empty;
     private string _hashValue = string.Empty;
 
@@ -39,10 +41,12 @@ public partial class FileHashControlViewModel : ObservableObject
 
     public FileHashControlViewModel(
         IHashCalculator hashCalculator,
+        IHashVerificationService hashVerificationService,
         bool isUppercaseHashValues,
         bool settingsIsEnabled)
     {
         _hashCalculator = hashCalculator;
+        _hashVerificationService = hashVerificationService;
 
         AlgorithmName = _hashCalculator.GetAlgorithmName();
 
@@ -123,6 +127,15 @@ public partial class FileHashControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsTipOpen { get; private set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsHashVerificationAvailable { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial bool IsHashVerified { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string? HashVerificationDescription { get; private set; } = string.Empty;
+
     private async Task<bool> StartHashCalculationAsync()
     {
         if (!_settingsIsEnabled)
@@ -137,6 +150,7 @@ public partial class FileHashControlViewModel : ObservableObject
             IsError = false;
             ErrorText = string.Empty;
             CalculationInProgress = true;
+            IsHashVerificationAvailable = false;
 
             WeakReferenceMessenger.Default.Send(
                 new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
@@ -156,7 +170,13 @@ public partial class FileHashControlViewModel : ObservableObject
 
             IsCalculationComplete = result = true;
 
-            ShowVirusTotalSearch = AlgorithmName == "SHA-256";
+            var verification = await _hashVerificationService.VerifyAsync(_fileName, _hashValue);
+
+            IsHashVerificationAvailable = verification.VerificationHashFound;
+            IsHashVerified = verification.IsHashMatching;
+            HashVerificationDescription = verification.HashVerificationDescription;
+
+            //ShowVirusTotalSearch = AlgorithmName == "SHA-256";
         }
         catch (Exception ex)
         {
