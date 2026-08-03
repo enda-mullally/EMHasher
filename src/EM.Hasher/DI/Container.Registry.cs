@@ -29,6 +29,7 @@ using EM.Hasher.Services.License;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Parsers;
 using EM.Hasher.Services.Settings;
+using EM.Hasher.Services.Verification;
 using EM.Hasher.ViewModels;
 using EM.Hasher.ViewModels.Controls;
 using EM.Hasher.ViewModels.UI;
@@ -83,31 +84,37 @@ public partial class Container
         [
             new FileHashControlViewModel(
                 new Blake3HashCalculator(),
+                new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsBlake3Enabled),
 
              new FileHashControlViewModel(
                 new Crc32HashCalculator(),
+                new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsCrc32Enabled),
 
             new FileHashControlViewModel(
                 new Md5HashCalculator(),
+                new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsMd5Enabled),
 
             new FileHashControlViewModel(
                 new Sha1HashCalculator(),
+                new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha1Enabled),
 
             new FileHashControlViewModel(
                 new Sha256HashCalculator(),
+                new Sha256VerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha256Enabled),
 
             new FileHashControlViewModel(
                 new Sha512HashCalculator(),
+                new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha512Enabled)
          ];
