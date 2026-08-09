@@ -9,7 +9,7 @@
   EM Hasher
 </h1>
 <p align="center">
-  Quickly calculate CRC-32/MD5/SHA-1/SHA-256/SHA-512 checksums in Windows 11.
+  Quickly calculate BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512 checksums in Windows 11.
 </p>
 
 <br />
@@ -22,11 +22,7 @@
 
 ## Overview
 
-EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
-
-## Coming soon! (No really, it is :-)
-
-Hash verification via auto detection of file hashes contained in any local .md5, .sha256 file(s) etc. If the selected file is matched to any hash validation file, a simple validation result will be shown in the UI (icon).
+EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
 
 <br />
 
@@ -53,39 +49,48 @@ Hash verification via auto detection of file hashes contained in any local .md5,
 </p>
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_06_Main_Screen_Settings_Dark.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_06_Main_Screen_Hash_Validation.png">
 </p>
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_07_Main_Screen_Settings_HashAlgorithms_Dark.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_07_Main_Screen_Settings_Dark.png">
 </p>
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_08_Main_Screen_Settings_Light.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_08_Main_Screen_Settings_HashAlgorithms_Dark.png">
+</p>
+
+<p align="center">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_09_Main_Screen_Settings_Light.png">
 </p>
 <br />
 
 ## Release history
 
+### 10/Aug/2026 ###
+v1.1.76
+  - Automatic hash validation for 'MD5' (via .md5 files) & 'SHA-256' (via .sha256 files).
+  - Misc improvements & UI fix's.
+
 ### 02/Aug/2026 ###
 v1.1.75
-  - Added the BLAKE3 hashing algorithm
-  - Misc improvements & fix's
+  - Added 'BLAKE3' hashing.
+  - Misc improvements & fix's.
 
 ### 15/Jul/2026 ###
 v1.1.74
-  - Authenticode refactor - Display Authenticode Signing Time (signed files)
-  - File properties - Display file version info (File & Product version properties)
-  - [UI] Improved scrolling (Hash Values)
+  - Authenticode refactor - Display Authenticode Signing Time (signed files).
+  - File properties - Display file version info (File & Product version properties).
+  - [UI] Improved scrolling (Hash Values).
 
 ### 14/Jun/2026 ###
 v1.1.73
-  - WinAppSdk v2.2.0 upgrade
-  - Package version info fix's
+  - WinAppSdk v2.2.0 upgrade.
+  - Package version info fix's.
 
 ### 04/Jun/2026
 v1.1.72
-  - Added SHA-1 hashing.
+  - Added 'SHA-1' hashing.
   - Misc bug fixs.
 
 ### 18/Apr/2026
@@ -154,7 +159,7 @@ v1.1.55
 
 ### 09/Jun/2025
 v1.1.54
-  - Added CRC-32 hashing.
+  - Added 'CRC-32' hashing.
 
 ### 05/Jun/2025
 v1.1.53
@@ -162,7 +167,7 @@ v1.1.53
 
 ### 16/May/2025
 v1.1.49
-  - Added SHA-512 hashing.
+  - Added 'SHA-512' hashing.
 
 ### 13/May/2025
 v1.1.48
