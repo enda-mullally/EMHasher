@@ -152,15 +152,21 @@ public partial class FileHashControlViewModel : ObservableObject
             CalculationInProgress = true;
             IsHashVerificationAvailable = false;
 
-            WeakReferenceMessenger.Default.Send(
-                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
-
-            await Task.Delay(100);
-
             _hashValue = string.Empty;
             IsCalculationComplete = false;
 
             DisplayText = $"Calculating {AlgorithmName} hash...";
+
+            WeakReferenceMessenger.Default.Send(
+                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
+
+            // Yield so the UI can render the progress bar and the "Calculating..."
+            // text before we start the (potentially fast) hash calculation. When this
+            // method is invoked as part of page navigation, the calculation can begin
+            // and complete within the same synchronous UI pass, causing the interim
+            // DisplayText update to be coalesced with the final hash value and never
+            // shown. Setting DisplayText before this yield guarantees a render pass.
+            await Task.Delay(100);
 
             _hashValue = await _hashCalculator.CalculateHashAsync(_fileName);
 
