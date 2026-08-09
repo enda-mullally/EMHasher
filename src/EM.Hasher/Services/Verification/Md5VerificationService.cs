@@ -23,9 +23,9 @@ using EM.Hasher.Models;
 
 namespace EM.Hasher.Services.Verification;
 
-public class Sha256VerificationService : IHashVerificationService
+public class Md5VerificationService : IHashVerificationService
 {
-    private const string HashFileSearchPattern = "*.sha256";
+    private const string HashFileSearchPattern = "*.md5";
 
     public async Task<HashVerificationModel> VerifyAsync(string fileName, string calculatedHash)
     {
