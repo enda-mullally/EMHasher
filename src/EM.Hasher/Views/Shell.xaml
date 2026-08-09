@@ -108,7 +108,7 @@
                 IsPaneOpen="True"
                 IsPaneToggleButtonVisible="True"
                 Loaded="NavigationView_Loaded"
-                OpenPaneLength="200"
+                OpenPaneLength="175"
                 PaneDisplayMode="Left"
                 SelectionChanged="NavigationView_SelectionChanged">
 

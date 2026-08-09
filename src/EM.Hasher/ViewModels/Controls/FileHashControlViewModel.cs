@@ -147,10 +147,13 @@ public partial class FileHashControlViewModel : ObservableObject
 
         try
         {
+            await Task.Delay(10);
+
             IsError = false;
             ErrorText = string.Empty;
             CalculationInProgress = true;
             IsHashVerificationAvailable = false;
+            ShowVirusTotalSearch = false;
 
             _hashValue = string.Empty;
             IsCalculationComplete = false;
@@ -176,13 +179,13 @@ public partial class FileHashControlViewModel : ObservableObject
 
             IsCalculationComplete = result = true;
 
+            ShowVirusTotalSearch = AlgorithmName == "SHA-256";
+
             var verification = await _hashVerificationService.VerifyAsync(_fileName, _hashValue);
 
             IsHashVerificationAvailable = verification.VerificationHashFound;
             IsHashVerified = verification.IsHashMatching;
             HashVerificationDescription = verification.HashVerificationDescription;
-
-            //ShowVirusTotalSearch = AlgorithmName == "SHA-256";
         }
         catch (Exception ex)
         {
