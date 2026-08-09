@@ -96,7 +96,7 @@ public partial class Container
 
             new FileHashControlViewModel(
                 new Md5HashCalculator(),
-                new DummyHashVerificationService(),
+                new Md5VerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsMd5Enabled),
 
