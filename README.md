@@ -68,8 +68,9 @@ EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the grou
 ## Release history
 
 ### 10/Aug/2026 ###
-v1.1.76
+v1.2.77
   - Automatic hash validation for 'MD5' (via .md5 files) & 'SHA-256' (via .sha256 files).
+  - New version label format v1.2.{build} etc
   - Misc improvements & UI fix's.
 
 ### 02/Aug/2026 ###
