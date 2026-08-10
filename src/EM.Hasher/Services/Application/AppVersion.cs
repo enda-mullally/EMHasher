@@ -22,9 +22,9 @@ public class AppVersion : IAppVersion
         }
 
 #if DEBUG
-        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}+0.0.1";
+        return $"v{version.Major}.{version.Minor}.{version.Build}++";
 #else
-        return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+        return $"v{version.Major}.{version.Minor}.{version.Build}";
 #endif
     }
 }
