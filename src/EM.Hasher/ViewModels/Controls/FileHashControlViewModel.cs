@@ -24,6 +24,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Hashes;
+using EM.Hasher.Services.Verification;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace EM.Hasher.ViewModels.Controls;
@@ -31,6 +32,7 @@ namespace EM.Hasher.ViewModels.Controls;
 public partial class FileHashControlViewModel : ObservableObject
 {
     private readonly IHashCalculator _hashCalculator;
+    private readonly IHashVerificationService _hashVerificationService;
     private string _fileName = string.Empty;
     private string _hashValue = string.Empty;
 
@@ -39,10 +41,12 @@ public partial class FileHashControlViewModel : ObservableObject
 
     public FileHashControlViewModel(
         IHashCalculator hashCalculator,
+        IHashVerificationService hashVerificationService,
         bool isUppercaseHashValues,
         bool settingsIsEnabled)
     {
         _hashCalculator = hashCalculator;
+        _hashVerificationService = hashVerificationService;
 
         AlgorithmName = _hashCalculator.GetAlgorithmName();
 
@@ -123,6 +127,15 @@ public partial class FileHashControlViewModel : ObservableObject
     [ObservableProperty]
     public partial bool IsTipOpen { get; private set; } = false;
 
+    [ObservableProperty]
+    public partial bool IsHashVerificationAvailable { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial bool IsHashVerified { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string? HashVerificationDescription { get; private set; } = string.Empty;
+
     private async Task<bool> StartHashCalculationAsync()
     {
         if (!_settingsIsEnabled)
@@ -134,19 +147,29 @@ public partial class FileHashControlViewModel : ObservableObject
 
         try
         {
+            await Task.Delay(10);
+
             IsError = false;
             ErrorText = string.Empty;
             CalculationInProgress = true;
-
-            WeakReferenceMessenger.Default.Send(
-                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
-
-            await Task.Delay(100);
+            IsHashVerificationAvailable = false;
+            ShowVirusTotalSearch = false;
 
             _hashValue = string.Empty;
             IsCalculationComplete = false;
 
             DisplayText = $"Calculating {AlgorithmName} hash...";
+
+            WeakReferenceMessenger.Default.Send(
+                new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
+
+            // Yield so the UI can render the progress bar and the "Calculating..."
+            // text before we start the (potentially fast) hash calculation. When this
+            // method is invoked as part of page navigation, the calculation can begin
+            // and complete within the same synchronous UI pass, causing the interim
+            // DisplayText update to be coalesced with the final hash value and never
+            // shown. Setting DisplayText before this yield guarantees a render pass.
+            await Task.Delay(100);
 
             _hashValue = await _hashCalculator.CalculateHashAsync(_fileName);
 
@@ -157,6 +180,12 @@ public partial class FileHashControlViewModel : ObservableObject
             IsCalculationComplete = result = true;
 
             ShowVirusTotalSearch = AlgorithmName == "SHA-256";
+
+            var verification = await _hashVerificationService.VerifyAsync(_fileName, _hashValue);
+
+            IsHashVerificationAvailable = verification.VerificationHashFound;
+            IsHashVerified = verification.IsHashMatching;
+            HashVerificationDescription = verification.HashVerificationDescription;
         }
         catch (Exception ex)
         {

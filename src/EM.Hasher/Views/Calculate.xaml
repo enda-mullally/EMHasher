@@ -138,6 +138,28 @@
                                         <localcontrols:FileHashControl ViewModel="{x:Bind Mode=OneWay}" />
                                     </controls:SettingsCard.Header>
                                     <StackPanel Orientation="Horizontal">
+
+                                        <!--
+                                            Hash Verification icon - hidden when no validation info is available,
+                                            green tick when verified, red x when failed
+                                        -->
+                                        <Grid
+                                            Margin="0,3,15,0"
+                                            VerticalAlignment="Center"
+                                            ToolTipService.ToolTip="{x:Bind HashVerificationDescription, Mode=OneWay}"
+                                            Visibility="{x:Bind IsHashVerificationAvailable, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                                            <FontIcon
+                                                FontSize="18"
+                                                Foreground="LimeGreen"
+                                                Glyph="&#xE73E;"
+                                                Visibility="{x:Bind IsHashVerified, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                                            <FontIcon
+                                                FontSize="18"
+                                                Foreground="PaleVioletRed"
+                                                Glyph="&#xE711;"
+                                                Visibility="{x:Bind IsHashVerified, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
+                                        </Grid>
+
                                         <localcontrols:HandHoverGrid>
                                             <localcontrols:IconButton
                                                 Width="40"
