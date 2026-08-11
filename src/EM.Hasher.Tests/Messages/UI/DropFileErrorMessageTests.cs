@@ -11,7 +11,7 @@ public class DropFileErrorMessageTests
     public void DropFileErrorMessage_Works()
     {
         // Act
-        var sut = new DropFileErrorMessage(true, "Failed");
+        var sut = new DropFileErrorMessage(true, "Failed!");
 
         // Assert
         sut.IsDropFileError.Should().BeTrue();
