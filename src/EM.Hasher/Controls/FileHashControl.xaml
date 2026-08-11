@@ -90,13 +90,16 @@
 
             <ProgressBar
                 Grid.Row="3"
-                Width="200"
+                Width="230"
                 Margin="0,10,0,0"
                 HorizontalAlignment="Left"
-                IsIndeterminate="True"
+                IsIndeterminate="False"
+                Maximum="100"
+                Minimum="0"
                 ShowError="False"
                 ShowPaused="False"
-                Visibility="{x:Bind ViewModel.CalculationInProgress, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                Visibility="{x:Bind ViewModel.CalculationInProgress, Converter={StaticResource BoolToVisibility}, Mode=OneWay}"
+                Value="{x:Bind ViewModel.ProgressPercentage, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

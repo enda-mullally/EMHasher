@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,6 +113,9 @@ public partial class FileHashControlViewModel : ObservableObject
     public partial bool CalculationInProgress { get; private set; } = false;
 
     [ObservableProperty]
+    public partial int ProgressPercentage { get; private set; } = 0;
+
+    [ObservableProperty]
     public partial string? AlgorithmName { get; private set; } = string.Empty;
 
     [ObservableProperty]
@@ -147,8 +150,6 @@ public partial class FileHashControlViewModel : ObservableObject
 
         try
         {
-            await Task.Delay(10);
-
             IsError = false;
             ErrorText = string.Empty;
             CalculationInProgress = true;
@@ -160,18 +161,31 @@ public partial class FileHashControlViewModel : ObservableObject
 
             DisplayText = $"Calculating {AlgorithmName} hash...";
 
+            ProgressPercentage = 0;
+
+            var progressBaseText = DisplayText;
+            var progress = new Progress<int>(percentage =>
+            {
+                // Ignore late progress callbacks that may arrive after the
+                // calculation has completed and the hash value is displayed.
+                if (!IsCalculationComplete)
+                {
+                    ProgressPercentage = percentage;
+                    DisplayText = $"{progressBaseText}  ({percentage}%)";
+                }
+            });
+
             WeakReferenceMessenger.Default.Send(
                 new CalculateFileHashStartOrEndMessage(AlgorithmName!, isStart: true));
 
-            // Yield so the UI can render the progress bar and the "Calculating..."
-            // text before we start the (potentially fast) hash calculation. When this
-            // method is invoked as part of page navigation, the calculation can begin
-            // and complete within the same synchronous UI pass, causing the interim
-            // DisplayText update to be coalesced with the final hash value and never
-            // shown. Setting DisplayText before this yield guarantees a render pass.
-            await Task.Delay(100);
-
-            _hashValue = await _hashCalculator.CalculateHashAsync(_fileName);
+            // Run the hash calculation on a background thread. The read/hash loop
+            // often completes synchronously (e.g. when the file is served from the
+            // OS cache, which is common when several algorithms hash the same file),
+            // which would otherwise run inline on the UI thread and starve the
+            // dispatcher so the queued Progress<int> callbacks never render. The
+            // Progress<int> above captured the UI SynchronizationContext, so its
+            // callbacks still marshal back to the UI thread for real-time updates.
+            _hashValue = await Task.Run(() => _hashCalculator.CalculateHashAsync(_fileName, progress));
 
             DisplayText = _settingsIsUppercaseHashValues
                         ? _hashValue.ToUpperInvariant()

@@ -15,7 +15,7 @@ public class Crc32HashCalculatorTests
     public async Task ZeroByteFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Crc32HashCalculator();
+        var sut = new Crc32HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -30,7 +30,7 @@ public class Crc32HashCalculatorTests
     public async Task TestFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Crc32HashCalculator();
+        var sut = new Crc32HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
