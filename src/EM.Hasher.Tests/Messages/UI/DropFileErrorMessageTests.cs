@@ -11,10 +11,10 @@ public class DropFileErrorMessageTests
     public void DropFileErrorMessage_Works()
     {
         // Act
-        var sut = new DropFileErrorMessage(true, "Oh no!");
+        var sut = new DropFileErrorMessage(true, "Failed");
 
         // Assert
         sut.IsDropFileError.Should().BeTrue();
-        sut.ErrorMessage.Should().BeEquivalentTo("Oh no!");
+        sut.ErrorMessage.Should().BeEquivalentTo("Failed!");
     }
 }

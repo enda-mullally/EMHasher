@@ -3,7 +3,7 @@
 
 // Tweaked version of the CopyButton control from the Windows Community Toolkit
 // https://github.com/CommunityToolkit/WindowsCommunityToolkit
-// Modified to work with AOT & trimming by Enda Mullally 2025
+// Modified to work with AOT & trimming
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.UI.Xaml;
