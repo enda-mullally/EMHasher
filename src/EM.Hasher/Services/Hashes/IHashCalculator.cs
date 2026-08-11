@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Threading.Tasks;
 
 namespace EM.Hasher.Services.Hashes;
 
 public interface IHashCalculator
 {
-    static readonly int BufferSize = 8 * 1024 * 1024; // 8MB buffer size
+    static readonly int BufferSize = 4 * 1024 * 1024; // 4MB buffer size
 
-    Task<string> CalculateHashAsync(string fileName);
+    Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null);
 
     string GetAlgorithmName();
 }

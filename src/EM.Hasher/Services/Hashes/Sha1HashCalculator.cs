@@ -25,9 +25,16 @@ namespace EM.Hasher.Services.Hashes;
 
 public class Sha1HashCalculator : IHashCalculator
 {
-    public async Task<string> CalculateHashAsync(string fileName)
+    private readonly IHashProgressCalculator _progressCalculator;
+
+    public Sha1HashCalculator(IHashProgressCalculator progressCalculator)
     {
-        using var sha1 = SHA1.Create();
+        _progressCalculator = progressCalculator;
+    }
+
+    public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
+    {
+        using var sha1 = IncrementalHash.CreateHash(HashAlgorithmName.SHA1);
 
         await using var fileStream = new FileStream(fileName,
             FileMode.Open,
@@ -38,7 +45,25 @@ public class Sha1HashCalculator : IHashCalculator
 
         using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
-        var hashBytes = await sha1.ComputeHashAsync(bufferedStream);
+        var totalBytes = fileStream.Length;
+        var processedBytes = 0L;
+
+        _progressCalculator.Reset();
+        _progressCalculator.Report(processedBytes, totalBytes, progress);
+
+        var buffer = new byte[IHashCalculator.BufferSize];
+        int bytesRead;
+
+        while ((bytesRead = await bufferedStream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
+        {
+            sha1.AppendData(buffer.AsSpan(0, bytesRead));
+
+            processedBytes += bytesRead;
+
+            _progressCalculator.Report(processedBytes, totalBytes, progress);
+        }
+
+        var hashBytes = sha1.GetHashAndReset();
 
         return Convert.ToHexStringLower(hashBytes);
     }
