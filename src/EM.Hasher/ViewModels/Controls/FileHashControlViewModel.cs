@@ -88,8 +88,8 @@ public partial class FileHashControlViewModel : ObservableObject
 
         WeakReferenceMessenger.Default.Register<CalculatePageSelectedMessage>(this, (r, m) =>
         {
-            // The Calculate page has been re-selected, so we need to
-            // check if we need to start the hash calculation again.
+            // The Calculate page has been re-selected, check
+            // if we need to start the hash calculation again.
             if (!string.IsNullOrEmpty(_fileName) &&
                 _settingsIsEnabled &&
                 !IsCalculationComplete)
