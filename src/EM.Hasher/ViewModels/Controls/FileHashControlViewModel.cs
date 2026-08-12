@@ -50,6 +50,11 @@ public partial class FileHashControlViewModel : ObservableObject
 
         AlgorithmName = _hashCalculator.GetAlgorithmName();
 
+        WeakReferenceMessenger.Default.Register<QueueAllFileHashRequestMessage>(this, (r, m) =>
+        {
+            DisplayText = "Calculation pending...";
+        });
+
         WeakReferenceMessenger.Default.Register<CalculateAllFileHashRequestMessage>(this, (r, m) =>
         {
             if (!m.OnlyCalculateIfNeeded)

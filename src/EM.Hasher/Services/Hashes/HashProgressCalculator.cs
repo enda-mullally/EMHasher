@@ -47,7 +47,7 @@ public class HashProgressCalculator : IHashProgressCalculator
 
         var percentage = (int)(processedBytes * 100 / totalBytes);
 
-        if (percentage == _lastReportedPercentage)
+        if (percentage <= _lastReportedPercentage)
         {
             return;
         }
