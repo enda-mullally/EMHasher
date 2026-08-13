@@ -78,6 +78,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial string? FileProductVersion { get; private set; } = string.Empty;
 
     [ObservableProperty]
+    public partial bool IsLoadingAuthenticodeInfo { get; private set; } = false;
+
+    [ObservableProperty]
     public partial bool HasFileProductVersion { get; private set; } = false;
 
     [ObservableProperty]
@@ -137,6 +140,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                     HasFileProductVersion = !string.IsNullOrWhiteSpace(FileProductVersion);
                 }
 
+                // Setting IsSigned here to true to ensure the authenticode loading grid is visible
+                // if the previously selected file was not signed.
+                IsLoadingAuthenticodeInfo = IsSigned = true;
                 var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
                 if (signingInfo != null)
                 {
@@ -145,7 +151,8 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
                     Issuer = signingInfo.Issuer;
                     IsTimeStamped = signingInfo.IsTimeStamped;
                     SigningTime = signingInfo.SigningTime;
-                }
+                }                
+                IsLoadingAuthenticodeInfo = false;
 
                 // A new file is selected, so force recalculation. Fire the hash
                 // fan-out last, once the metadata above has rendered.
