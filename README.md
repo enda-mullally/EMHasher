@@ -67,6 +67,9 @@ EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the grou
 
 ## Release history
 
+### Coming soon! ###
+  - SHA3-256 & SHA3-512
+
 ### 14/Aug/2026 ###
 v1.3 Build(80)
   - Added hash calculation percentage (%) and proper progress bar for large files.
