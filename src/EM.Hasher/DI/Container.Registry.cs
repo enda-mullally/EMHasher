@@ -83,37 +83,37 @@ public partial class Container
         return
         [
             new FileHashControlViewModel(
-                new Blake3HashCalculator(),
+                new Blake3HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsBlake3Enabled),
 
              new FileHashControlViewModel(
-                new Crc32HashCalculator(),
+                new Crc32HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsCrc32Enabled),
 
             new FileHashControlViewModel(
-                new Md5HashCalculator(),
+                new Md5HashCalculator(new HashProgressCalculator()),
                 new Md5VerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsMd5Enabled),
 
             new FileHashControlViewModel(
-                new Sha1HashCalculator(),
+                new Sha1HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha1Enabled),
 
             new FileHashControlViewModel(
-                new Sha256HashCalculator(),
+                new Sha256HashCalculator(new HashProgressCalculator()),
                 new Sha256VerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha256Enabled),
 
             new FileHashControlViewModel(
-                new Sha512HashCalculator(),
+                new Sha512HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
                 settings.IsSha512Enabled)

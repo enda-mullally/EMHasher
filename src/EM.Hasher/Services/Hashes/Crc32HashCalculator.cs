@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,14 @@ namespace EM.Hasher.Services.Hashes;
 
 public class Crc32HashCalculator : IHashCalculator
 {
-    public async Task<string> CalculateHashAsync(string fileName)
+    private readonly IHashProgressCalculator _progressCalculator;
+
+    public Crc32HashCalculator(IHashProgressCalculator progressCalculator)
+    {
+        _progressCalculator = progressCalculator;
+    }
+
+    public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
         using var crc32 = new Crc32Algorithm();
 
@@ -38,9 +45,27 @@ public class Crc32HashCalculator : IHashCalculator
 
         using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
-        var hashBytes = await crc32.ComputeHashAsync(bufferedStream);
+        var totalBytes = fileStream.Length;
+        var processedBytes = 0L;
 
-        return Convert.ToHexStringLower(hashBytes);
+        _progressCalculator.Reset();
+        _progressCalculator.Report(processedBytes, totalBytes, progress);
+
+        var buffer = new byte[IHashCalculator.BufferSize];
+        int bytesRead;
+
+        while ((bytesRead = await bufferedStream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
+        {
+            crc32.TransformBlock(buffer, 0, bytesRead, null, 0);
+
+            processedBytes += bytesRead;
+
+            _progressCalculator.Report(processedBytes, totalBytes, progress);
+        }
+
+        crc32.TransformFinalBlock([], 0, 0);
+
+        return Convert.ToHexStringLower(crc32.Hash!);
     }
 
     public string GetAlgorithmName()

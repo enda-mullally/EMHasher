@@ -24,7 +24,14 @@ namespace EM.Hasher.Services.Hashes;
 
 public class Blake3HashCalculator : IHashCalculator
 {
-    public async Task<string> CalculateHashAsync(string fileName)
+    private readonly IHashProgressCalculator _progressCalculator;
+
+    public Blake3HashCalculator(IHashProgressCalculator progressCalculator)
+    {
+        _progressCalculator = progressCalculator;
+    }
+
+    public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
         using var hasher = Blake3.Hasher.New();
 
@@ -37,12 +44,22 @@ public class Blake3HashCalculator : IHashCalculator
 
         using var bufferedStream = new BufferedStream(fileStream, IHashCalculator.BufferSize);
 
+        var totalBytes = fileStream.Length;
+        var processedBytes = 0L;
+
+        _progressCalculator.Reset();
+        _progressCalculator.Report(processedBytes, totalBytes, progress);
+
         var buffer = new byte[IHashCalculator.BufferSize];
         int bytesRead;
 
-        while ((bytesRead = await bufferedStream.ReadAsync(buffer)) > 0)
+        while ((bytesRead = await bufferedStream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
             hasher.Update(buffer.AsSpan(0, bytesRead));
+
+            processedBytes += bytesRead;
+
+            _progressCalculator.Report(processedBytes, totalBytes, progress);
         }
 
         var hash = hasher.Finalize();

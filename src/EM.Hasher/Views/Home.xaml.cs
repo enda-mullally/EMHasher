@@ -89,7 +89,7 @@ public sealed partial class Home : Page
 
         // Hide default drag visuals
         e.DragUIOverride.IsGlyphVisible = false;
-        e.DragUIOverride.Caption = "";                     // <-- Clear the caption
+        e.DragUIOverride.Caption = string.Empty;                     // <-- Clear the caption
         e.DragUIOverride.IsCaptionVisible = false;
         e.Handled = true;
 

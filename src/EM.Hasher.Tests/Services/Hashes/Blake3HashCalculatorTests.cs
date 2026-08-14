@@ -15,7 +15,7 @@ public class Blake3HashCalculatorTests
     public async Task ZeroByteFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Blake3HashCalculator();
+        var sut = new Blake3HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -30,7 +30,7 @@ public class Blake3HashCalculatorTests
     public async Task TestFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Blake3HashCalculator();
+        var sut = new Blake3HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
