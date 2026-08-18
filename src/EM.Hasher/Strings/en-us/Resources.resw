@@ -126,6 +126,9 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="LoadingAuthenticodeDetails" xml:space="preserve">
+    <value>Loading digital signature details...</value>
+  </data>
   <data name="Product" xml:space="preserve">
     <value>Product</value>
   </data>
