@@ -29,14 +29,52 @@
             Glyph="&#xE946;" />
 
         <!--
+            Loading grid
+        -->
+
+        <Grid
+            Grid.Column="1"
+            Margin="0,0,0,0"
+            Visibility="{x:Bind IsLoading, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--  Row 0: Loading  -->
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="0,0,20,3"
+                Text="{x:Bind LoadingText, Mode=OneWay}"
+                TextWrapping="Wrap" />
+
+            <!--  Row 1: ProgressBar  -->
+            <ProgressBar
+                Grid.Row="1"
+                Grid.Column="0"
+                Width="200"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Left"
+                IsIndeterminate="True"
+                Maximum="100"
+                Minimum="0"
+                ShowError="False"
+                ShowPaused="False" />
+        </Grid>
+
+        <!--
             Details Grid with aligned rows
-            TODO: Fix hardcoded column width (80) below and use element binding|converter to identify the widest "Auto" column in the grid
         -->
 
         <Grid
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Margin="0,0,0,0">
+            Margin="0,0,0,0"
+            Visibility="{x:Bind IsLoading, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
