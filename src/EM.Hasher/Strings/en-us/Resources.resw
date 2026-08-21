@@ -129,6 +129,9 @@
   <data name="LoadingAuthenticodeDetails" xml:space="preserve">
     <value>Loading digital signature details...</value>
   </data>
+  <data name="LoadingFileDetails" xml:space="preserve">
+    <value>Loading file details...</value>
+  </data>
   <data name="Product" xml:space="preserve">
     <value>Product</value>
   </data>

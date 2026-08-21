@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,24 @@ public sealed partial class FileInformationControl : UserControl
     {
         InitializeComponent();
     }
+
+    public bool IsLoading
+    {
+        get => (bool)GetValue(IsLoadingProperty);
+        set => SetValue(IsLoadingProperty, value);
+    }
+
+    public static readonly DependencyProperty IsLoadingProperty =
+        DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(false));
+
+    public string LoadingText
+    {
+        get => (string)GetValue(LoadingTextProperty);
+        set => SetValue(LoadingTextProperty, value);
+    }
+
+    public static readonly DependencyProperty LoadingTextProperty =
+        DependencyProperty.Register(nameof(LoadingText), typeof(string), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(""));
 
     public string FileName
     {

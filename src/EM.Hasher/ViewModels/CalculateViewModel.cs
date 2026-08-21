@@ -58,6 +58,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
+    public partial bool IsLoadingFileInfo { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string FileLoadingText { get; private set; } = string.Empty;
+
+    [ObservableProperty]
     public partial string? FileName { get; private set; } = string.Empty;
 
     [ObservableProperty]
@@ -153,9 +159,24 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
             new SetAppSubTitleMessage(appSubTitle));
     }
 
+    private void SetFileLoadingState(string loadingText)
+    {
+        FileLoadingText = loadingText;
+
+        // Setting IsSigned here to true to false to deliberately hide the
+        // autheticode laoding ui while we are loading the file info details.
+        IsSigned = false;
+        IsLoadingFileInfo = true;
+    }
+
     private async Task LoadFileInfoAsync()
     {
+        SetFileLoadingState(ResourceExtensions.GetLocalized("LoadingFileDetails"));
+
         var fileDetailsModel = await _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+
+        IsLoadingFileInfo = false; // Hide to loading state (File Details)
+
         if (fileDetailsModel != null)
         {
             UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
@@ -189,7 +210,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
         var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
 
-        IsLoadingAuthenticodeInfo = false; // Hide to loading state
+        IsLoadingAuthenticodeInfo = false; // Hide to loading state (Authenticode Info)
 
         if (signingInfo != null)
         {
