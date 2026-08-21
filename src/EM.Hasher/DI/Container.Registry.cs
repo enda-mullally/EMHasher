@@ -25,6 +25,7 @@ using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Hashes;
+using EM.Hasher.Services.Hashes.Progress;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Parsers;

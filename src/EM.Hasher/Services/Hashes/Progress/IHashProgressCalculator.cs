@@ -18,7 +18,7 @@
 
 using System;
 
-namespace EM.Hasher.Services.Hashes;
+namespace EM.Hasher.Services.Hashes.Progress;
 
 /// <summary>
 /// Calculates the completion percentage of a hash calculation and reports it,

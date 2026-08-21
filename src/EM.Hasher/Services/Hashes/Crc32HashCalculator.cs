@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using EM.Hasher.Services.Hashes.Progress;
 using Force.Crc32;
 
 namespace EM.Hasher.Services.Hashes;
