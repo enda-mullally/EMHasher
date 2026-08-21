@@ -163,8 +163,8 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     {
         FileLoadingText = loadingText;
 
-        // Setting IsSigned here to true to false to deliberately hide the
-        // autheticode laoding ui while we are loading the file info details.
+        // Setting IsSigned here to false to deliberately hide the
+        // autheticode laoding ui while we are loading file info details.
         IsSigned = false;
         IsLoadingFileInfo = true;
     }
