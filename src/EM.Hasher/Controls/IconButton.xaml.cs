@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,6 @@ public sealed partial class IconButton : Button
     }
 
     public static readonly DependencyProperty IconProperty =
-        DependencyProperty.Register("Icon", typeof(UIElement), typeof(IconButton), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(Icon), typeof(UIElement), typeof(IconButton), new PropertyMetadata(null));
 
 }

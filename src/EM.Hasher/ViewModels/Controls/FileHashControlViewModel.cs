@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Hashes;
@@ -52,7 +53,7 @@ public partial class FileHashControlViewModel : ObservableObject
 
         WeakReferenceMessenger.Default.Register<QueueAllFileHashRequestMessage>(this, (r, m) =>
         {
-            DisplayText = "Calculation pending...";
+            DisplayText = Res.GetLocalized("CalculationPending");
         });
 
         WeakReferenceMessenger.Default.Register<CalculateAllFileHashRequestMessage>(this, (r, m) =>
@@ -164,7 +165,8 @@ public partial class FileHashControlViewModel : ObservableObject
             _hashValue = string.Empty;
             IsCalculationComplete = false;
 
-            DisplayText = $"Calculating {AlgorithmName} hash...";
+            DisplayText = Res.GetLocalized("CalculatingHash")
+                             .WithPlaceholder("AlgorithmName", AlgorithmName);
 
             ProgressPercentage = 0;
 
@@ -240,6 +242,7 @@ public partial class FileHashControlViewModel : ObservableObject
                 Clipboard.SetContent(hashValuePackage);
 
                 IsTipOpen = true;
+
                 await Task.Delay(2000); // Display for 2 seconds
             }
         }

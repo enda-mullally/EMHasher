@@ -133,7 +133,7 @@ public partial class SettingsViewModel : ObservableObject
 
         VersionDescription = _appVersion.GetVersionDescription();
 
-        _ = GetTrialLicenseDescriptionAsync();
+        //_ = GetTrialLicenseDescriptionAsync();
 
         _initialized = true;
     }
@@ -144,6 +144,7 @@ public partial class SettingsViewModel : ObservableObject
         get; set;
     }
 
+    /*
     private async Task GetTrialLicenseDescriptionAsync()
     {
         var licenseModel = await _cachedStoreAppLicense.GetCachedStoreAppLicenseAsync();
@@ -163,6 +164,7 @@ public partial class SettingsViewModel : ObservableObject
             TrialLicenseDescription = string.Empty;
         }
     }
+    */
 
     partial void OnIsUppercaseHashValuesChanged(bool value)
     {
