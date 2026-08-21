@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ public sealed partial class Home : Page
                 IsDropGreen = false;
 
                 WeakReferenceMessenger.Default.Send(
-                    new DropFileErrorMessage(true, "One at a time please :-)"));
+                    new DropFileErrorMessage(true, Res.GetLocalized("OneAtATime")));
             }
         }
         finally
@@ -89,7 +89,7 @@ public sealed partial class Home : Page
 
         // Hide default drag visuals
         e.DragUIOverride.IsGlyphVisible = false;
-        e.DragUIOverride.Caption = string.Empty;                     // <-- Clear the caption
+        e.DragUIOverride.Caption = string.Empty;  // <-- Clear the caption
         e.DragUIOverride.IsCaptionVisible = false;
         e.Handled = true;
 
@@ -126,7 +126,7 @@ public sealed partial class Home : Page
                     else
                     {
                         WeakReferenceMessenger.Default.Send(
-                            new DropFileErrorMessage(true, "Please drop a valid file! Special links are not supported."));
+                            new DropFileErrorMessage(true, Res.GetLocalized("InvalidDropFile")));
                     }
                 }
             }

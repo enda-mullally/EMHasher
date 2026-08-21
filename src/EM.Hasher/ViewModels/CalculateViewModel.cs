@@ -24,7 +24,6 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using EM.Hasher.Helpers;
 using EM.Hasher.Messages;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Authenticode;
@@ -171,7 +170,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     private async Task LoadFileInfoAsync()
     {
-        SetFileLoadingState(ResourceExtensions.GetLocalized("LoadingFileDetails"));
+        SetFileLoadingState(Res.GetLocalized("LoadingFileDetails"));
 
         var fileDetailsModel = await _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
 
@@ -206,7 +205,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     private async Task LoadAuthenticodeInfoAsync()
     {
-        SetAuthenticodeLoadingState(ResourceExtensions.GetLocalized("LoadingAuthenticodeDetails"));
+        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
 
         var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
 

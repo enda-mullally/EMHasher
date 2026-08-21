@@ -123,8 +123,20 @@
   <data name="bytes" xml:space="preserve">
     <value>bytes</value>
   </data>
+  <data name="CalculatingHash" xml:space="preserve">
+    <value>Calculating {AlgorithmName} hash...</value>
+  </data>
+  <data name="CalculationPending" xml:space="preserve">
+    <value>Calculation pending...</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="HashingAlgorithms" xml:space="preserve">
+    <value>Hashing Algorithms</value>
+  </data>
+  <data name="InvalidDropFile" xml:space="preserve">
+    <value>Please drop a valid file! Special links are not supported.</value>
   </data>
   <data name="LoadingAuthenticodeDetails" xml:space="preserve">
     <value>Loading digital signature details...</value>
@@ -132,11 +144,19 @@
   <data name="LoadingFileDetails" xml:space="preserve">
     <value>Loading file details...</value>
   </data>
+  <data name="OneAtATime" xml:space="preserve">
+    <value>One at a time please :-)</value>
+  </data>
   <data name="Product" xml:space="preserve">
     <value>Product</value>
   </data>
   <data name="SettingsAboutAppDisplayName.Header" xml:space="preserve">
     <value>EM Hasher</value>
-    <comment>`</comment>
+  </data>
+  <data name="VerificationFailed" xml:space="preserve">
+    <value>Verification failed! The hash found in '{hashFileName}' does not match.</value>
+  </data>
+  <data name="VerificationPassed" xml:space="preserve">
+    <value>Verification passed. Matching hash found in '{hashFileName}'</value>
   </data>
 </root>

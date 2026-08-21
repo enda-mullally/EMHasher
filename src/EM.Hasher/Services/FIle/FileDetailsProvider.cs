@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using EM.Hasher.Helpers;
 using EM.Hasher.Models;
 using Humanizer;
 
@@ -39,8 +37,8 @@ public class FileDetailsProvider : IFileDetailsProvider
                 var (FileVersion, ProductVersion) = GetFileVersionAndFileProductVersion(fileName);
 
                 var unit = selectedFileInfo.Length == 1
-                    ? ResourceExtensions.GetLocalized("byte")
-                    : ResourceExtensions.GetLocalized("bytes");
+                    ? Res.GetLocalized("byte")
+                    : Res.GetLocalized("bytes");
 
                 return new FileDetailsModel()
                 {
@@ -75,13 +73,13 @@ public class FileDetailsProvider : IFileDetailsProvider
             var fileVersion = versionInfo.FileVersion;
             if (!string.IsNullOrWhiteSpace(fileVersion))
             {
-                fileVersionResult = ResourceExtensions.GetLocalized("File") + ": " + fileVersion;
+                fileVersionResult = Res.GetLocalized("File") + ": " + fileVersion;
             }
 
             var productVersion = versionInfo.ProductVersion;
             if (!string.IsNullOrWhiteSpace(productVersion))
             {
-                productVersionResult = ResourceExtensions.GetLocalized("Product") + ": " + productVersion;
+                productVersionResult = Res.GetLocalized("Product") + ": " + productVersion;
             }
 
             return (fileVersionResult, productVersionResult);
