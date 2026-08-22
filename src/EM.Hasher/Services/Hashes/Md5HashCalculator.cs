@@ -24,15 +24,8 @@ using EM.Hasher.Services.Hashes.Progress;
 
 namespace EM.Hasher.Services.Hashes;
 
-public class Md5HashCalculator : IHashCalculator
+public class Md5HashCalculator(IHashProgressCalculator progressCalculator) : IHashCalculator
 {
-    private readonly IHashProgressCalculator _progressCalculator;
-
-    public Md5HashCalculator(IHashProgressCalculator progressCalculator)
-    {
-        _progressCalculator = progressCalculator;
-    }
-
     public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
         using var md5 = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
@@ -49,8 +42,8 @@ public class Md5HashCalculator : IHashCalculator
         var totalBytes = fileStream.Length;
         var processedBytes = 0L;
 
-        _progressCalculator.Reset();
-        _progressCalculator.Report(processedBytes, totalBytes, progress);
+        progressCalculator.Reset();
+        progressCalculator.Report(processedBytes, totalBytes, progress);
 
         var buffer = new byte[IHashCalculator.BufferSize];
         int bytesRead;
@@ -61,7 +54,7 @@ public class Md5HashCalculator : IHashCalculator
 
             processedBytes += bytesRead;
 
-            _progressCalculator.Report(processedBytes, totalBytes, progress);
+            progressCalculator.Report(processedBytes, totalBytes, progress);
         }
 
         var hashBytes = md5.GetHashAndReset();

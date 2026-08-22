@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Application;
+using EM.Hasher.Services.Hashes;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
 using Microsoft.UI.Xaml;
@@ -32,7 +32,6 @@ namespace EM.Hasher.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
-    private readonly ICachedStoreAppLicense _cachedStoreAppLicense;
     private readonly ISettingsProvider _settingsProvider;
     private readonly IAppVersion _appVersion;
     private readonly WindowEx _currentWindow = null!;
@@ -46,13 +45,14 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    public partial string? TrialLicenseDescription
+    public partial bool IsUppercaseHashValues
     {
-        get; private set;
+        get; set;
     }
 
     [ObservableProperty]
-    public partial bool IsUppercaseHashValues
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsBlake3Enabled
     {
         get; set;
     }
@@ -94,46 +94,55 @@ public partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
-    public partial bool IsBlake3Enabled
+    public partial bool IsSha3_256Enabled
     {
         get; set;
     }
-
-    public bool IsAlgorithmSelectionInvalid => !IsCrc32Enabled && !IsMd5Enabled && !IsSha1Enabled && !IsSha256Enabled && !IsSha512Enabled && !IsBlake3Enabled;
-
-    public bool IsTrialMode => _settingsProvider.IsTrialMode;
+        
+    public bool IsAlgorithmSelectionInvalid =>
+        !IsBlake3Enabled &&
+        !IsCrc32Enabled &&
+        !IsMd5Enabled &&
+        !IsSha1Enabled &&
+        !IsSha256Enabled &&
+        !IsSha512Enabled &&
+        !IsSha3_256Enabled;
 
     public SettingsViewModel(
         ICachedStoreAppLicense cachedStoreAppLicenseModel,
         ISettingsProvider settingsProvider,
         IAppVersion appVersion)
     {
-        _cachedStoreAppLicense = cachedStoreAppLicenseModel;
+        //_cachedStoreAppLicense = cachedStoreAppLicenseModel;
         _settingsProvider = settingsProvider;
         _appVersion = appVersion;
 
-        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3Enabled;
-        _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled;
-        _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled;
-        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled;
-        _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled;
-        _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled;
+        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3_Enabled;
+        _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32_Enabled;
+        _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5_Enabled;
+        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1_Enabled;
+        _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256_Enabled;
+        _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512_Enabled;
+        _hashAlgorithmsEnabled["SHA3-256"] = Sha3_256HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_256_Enabled
+            : false;
 
         // Init observables
-        IsBlake3Enabled = _settingsProvider.IsBlake3Enabled;
-        IsCrc32Enabled = _settingsProvider.IsCrc32Enabled;
-        IsMd5Enabled = _settingsProvider.IsMd5Enabled;
-        IsSha1Enabled = _settingsProvider.IsSha1Enabled;
-        IsSha256Enabled = _settingsProvider.IsSha256Enabled;
-        IsSha512Enabled = _settingsProvider.IsSha512Enabled;
+        IsBlake3Enabled = _settingsProvider.IsBlake3_Enabled;
+        IsCrc32Enabled = _settingsProvider.IsCrc32_Enabled;
+        IsMd5Enabled = _settingsProvider.IsMd5_Enabled;
+        IsSha1Enabled = _settingsProvider.IsSha1_Enabled;
+        IsSha256Enabled = _settingsProvider.IsSha256_Enabled;
+        IsSha512Enabled = _settingsProvider.IsSha512_Enabled;
+        IsSha3_256Enabled = Sha3_256HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_256_Enabled
+            : false;
         IsUppercaseHashValues = _settingsProvider.IsUppercaseHashValues;
         ThemeSelectedIndex = _settingsProvider.SelectedTheme;
 
         _currentWindow = App.MainWindow!;
 
         VersionDescription = _appVersion.GetVersionDescription();
-
-        //_ = GetTrialLicenseDescriptionAsync();
 
         _initialized = true;
     }
@@ -144,27 +153,7 @@ public partial class SettingsViewModel : ObservableObject
         get; set;
     }
 
-    /*
-    private async Task GetTrialLicenseDescriptionAsync()
-    {
-        var licenseModel = await _cachedStoreAppLicense.GetCachedStoreAppLicenseAsync();
-
-        if (licenseModel != null)
-        {
-            if (licenseModel.IsActive && licenseModel.IsTrial)
-            {
-                TrialLicenseDescription = $"{Environment.NewLine}{Environment.NewLine}Trial Version: Some features are disabled.";
-            }
-        }
-        else
-        {
-            // I've seen this happen on accounts which have just redeemed a code to download the app,
-            // don't worry, it's licensed, as windows handles this, but the store api hasn't updated
-            // the license yet
-            TrialLicenseDescription = string.Empty;
-        }
-    }
-    */
+    public bool IsSha3_256_Available => Sha3_256HashCalculator.IsAvailable;
 
     partial void OnIsUppercaseHashValuesChanged(bool value)
     {
@@ -214,6 +203,11 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     partial void OnIsSha512EnabledChanged(bool value)
+    {
+        OnAlgorithmEnabled();
+    }
+
+    partial void OnIsSha3_256EnabledChanged(bool value)
     {
         OnAlgorithmEnabled();
     }
@@ -269,12 +263,16 @@ public partial class SettingsViewModel : ObservableObject
             return;
         }
 
-        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3Enabled = IsBlake3Enabled;
-        _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32Enabled = IsCrc32Enabled;
-        _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5Enabled = IsMd5Enabled;
-        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1Enabled = IsSha1Enabled;
-        _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256Enabled = IsSha256Enabled;
-        _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512Enabled = IsSha512Enabled;
+        _hashAlgorithmsEnabled["BLAKE3"] = _settingsProvider.IsBlake3_Enabled = IsBlake3Enabled;
+        _hashAlgorithmsEnabled["CRC-32"] = _settingsProvider.IsCrc32_Enabled = IsCrc32Enabled;
+        _hashAlgorithmsEnabled["MD5"] = _settingsProvider.IsMd5_Enabled = IsMd5Enabled;
+        _hashAlgorithmsEnabled["SHA-1"] = _settingsProvider.IsSha1_Enabled = IsSha1Enabled;
+        _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256_Enabled = IsSha256Enabled;
+        _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512_Enabled = IsSha512Enabled;
+        _hashAlgorithmsEnabled["SHA3-256"] =
+            Sha3_256HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_256_Enabled = IsSha3_256Enabled
+            : false;
         
         WeakReferenceMessenger.Default.Send(
            new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues));

@@ -18,7 +18,7 @@
 
 namespace EM.Hasher.Services.Verification;
 
-public class Sha256VerificationService : BaseHashVerificationService
+public class Sha_256VerificationService : BaseHashVerificationService
 {
     protected override string HashFileSearchPattern => "*.sha256";
 }

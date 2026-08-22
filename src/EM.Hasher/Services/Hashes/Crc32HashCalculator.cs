@@ -24,14 +24,9 @@ using Force.Crc32;
 
 namespace EM.Hasher.Services.Hashes;
 
-public class Crc32HashCalculator : IHashCalculator
+public class Crc32HashCalculator(IHashProgressCalculator progressCalculator) : IHashCalculator
 {
-    private readonly IHashProgressCalculator _progressCalculator;
-
-    public Crc32HashCalculator(IHashProgressCalculator progressCalculator)
-    {
-        _progressCalculator = progressCalculator;
-    }
+    private readonly IHashProgressCalculator _progressCalculator = progressCalculator;
 
     public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
@@ -74,5 +69,3 @@ public class Crc32HashCalculator : IHashCalculator
         return "CRC-32";
     }
 }
-
-

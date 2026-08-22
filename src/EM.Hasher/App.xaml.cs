@@ -100,11 +100,6 @@ public partial class App : Application
             // Set the MainWindow Content.
             if (MainWindow.Content != null)
             {
-                if (!license!.IsActive || (license!.IsTrial))
-                {
-                    settingsProvider.IsTrialMode = true;
-                }
-
                 var shell = App.GetService<Shell>();
 
                 MainWindow.Content = shell;

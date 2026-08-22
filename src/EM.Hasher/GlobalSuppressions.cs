@@ -12,3 +12,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:EM.Hasher.Services.Application.AppVersion.GetVersionDescription~System.String")]
 [assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:EM.Hasher.ViewModels.Pages.CalculateViewModel.LoadSelectedFileAsync(System.String)~System.Threading.Tasks.Task")]
 [assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:EM.Hasher.ViewModels.UI.UIStateViewModel.#ctor")]
+[assembly: SuppressMessage("Style", "IDE0025:Use expression body for property", Justification = "<Pending>", Scope = "member", Target = "~P:EM.Hasher.Services.Hashes.Sha3_256HashCalculator.IsAvailable")]
