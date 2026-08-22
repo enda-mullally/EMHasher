@@ -16,7 +16,7 @@ public class Sha512HashCalculatorTests
     public async Task ZeroByteFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Sha512HashCalculator(new HashProgressCalculator());
+        var sut = new Sha_512HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -31,7 +31,7 @@ public class Sha512HashCalculatorTests
     public async Task TestFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Sha512HashCalculator(new HashProgressCalculator());
+        var sut = new Sha_512HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;

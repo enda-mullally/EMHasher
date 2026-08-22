@@ -20,32 +20,37 @@ namespace EM.Hasher.Services.Settings;
 
 public interface ISettingsProvider
 {
-    bool IsBlake3Enabled
+    bool IsBlake3_Enabled
     {
         get; set;
     }
 
-    bool IsCrc32Enabled
+    bool IsCrc32_Enabled
     {
         get; set;
     }
 
-    bool IsMd5Enabled
+    bool IsMd5_Enabled
     {
         get; set;
     }
 
-    bool IsSha1Enabled
+    bool IsSha1_Enabled
     {
         get; set;
     }
 
-    bool IsSha256Enabled
+    bool IsSha256_Enabled
     {
         get; set;
     }
 
-    bool IsSha512Enabled
+    bool IsSha512_Enabled
+    {
+        get; set;
+    }
+
+    bool IsSha3_256_Enabled
     {
         get; set;
     }
@@ -56,11 +61,6 @@ public interface ISettingsProvider
     }
 
     public bool IsUppercaseHashValues
-    {
-        get; set;
-    }
-
-    public bool IsTrialMode
     {
         get; set;
     }

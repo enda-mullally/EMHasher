@@ -13,13 +13,15 @@ public class SettingsProviderTests
     {
         var settingsProvider = new SettingsProvider
         {
-            IsMd5Enabled = true,
-            IsSha256Enabled = true,
+            IsMd5_Enabled = true,
+            IsSha256_Enabled = true,
+            IsSha3_256_Enabled = true,
             IsUppercaseHashValues = true
         };
 
-        settingsProvider.IsMd5Enabled.Should().BeTrue();
-        settingsProvider.IsSha256Enabled.Should().BeTrue();
+        settingsProvider.IsMd5_Enabled.Should().BeTrue();
+        settingsProvider.IsSha256_Enabled.Should().BeTrue();
+        settingsProvider.IsSha3_256_Enabled.Should().BeTrue();
         settingsProvider.IsUppercaseHashValues.Should().BeTrue();
     }
 
@@ -29,13 +31,15 @@ public class SettingsProviderTests
     {
         var settingsProvider = new SettingsProvider
         {
-            IsMd5Enabled = false,
-            IsSha256Enabled = false,
+            IsMd5_Enabled = false,
+            IsSha256_Enabled = false,
+            IsSha3_256_Enabled = false,
             IsUppercaseHashValues = false
         };
 
-        settingsProvider.IsMd5Enabled.Should().BeFalse();
-        settingsProvider.IsSha256Enabled.Should().BeFalse();
+        settingsProvider.IsMd5_Enabled.Should().BeFalse();
+        settingsProvider.IsSha256_Enabled.Should().BeFalse();
+        settingsProvider.IsSha3_256_Enabled.Should().BeFalse();
         settingsProvider.IsUppercaseHashValues.Should().BeFalse();
     }
 
