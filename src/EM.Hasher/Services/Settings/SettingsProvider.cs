@@ -71,6 +71,12 @@ public class SettingsProvider : ISettingsProvider
         get => (bool)(_localSettings.Values[nameof(IsSha3_256_Enabled)] ?? false);
     }
 
+    public bool IsSha3_512_Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha3_512_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha3_512_Enabled)] ?? false);
+    }
+
     public int SelectedTheme
     {
         set => _localSettings.Values[nameof(SelectedTheme)] = (int)value;

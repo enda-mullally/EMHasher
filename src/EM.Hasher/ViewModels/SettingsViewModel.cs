@@ -98,7 +98,14 @@ public partial class SettingsViewModel : ObservableObject
     {
         get; set;
     }
-        
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
+    public partial bool IsSha3_512Enabled
+    {
+        get; set;
+    }
+
     public bool IsAlgorithmSelectionInvalid =>
         !IsBlake3Enabled &&
         !IsCrc32Enabled &&
@@ -106,14 +113,14 @@ public partial class SettingsViewModel : ObservableObject
         !IsSha1Enabled &&
         !IsSha256Enabled &&
         !IsSha512Enabled &&
-        !IsSha3_256Enabled;
+        !IsSha3_256Enabled &&
+        !IsSha3_512Enabled;
 
     public SettingsViewModel(
         ICachedStoreAppLicense cachedStoreAppLicenseModel,
         ISettingsProvider settingsProvider,
         IAppVersion appVersion)
     {
-        //_cachedStoreAppLicense = cachedStoreAppLicenseModel;
         _settingsProvider = settingsProvider;
         _appVersion = appVersion;
 
@@ -126,6 +133,9 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["SHA3-256"] = Sha3_256HashCalculator.IsAvailable
             ? _settingsProvider.IsSha3_256_Enabled
             : false;
+        _hashAlgorithmsEnabled["SHA3-512"] = Sha3_512HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_512_Enabled
+            : false;
 
         // Init observables
         IsBlake3Enabled = _settingsProvider.IsBlake3_Enabled;
@@ -137,13 +147,14 @@ public partial class SettingsViewModel : ObservableObject
         IsSha3_256Enabled = Sha3_256HashCalculator.IsAvailable
             ? _settingsProvider.IsSha3_256_Enabled
             : false;
+        IsSha3_512Enabled = Sha3_512HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_512_Enabled
+            : false;
         IsUppercaseHashValues = _settingsProvider.IsUppercaseHashValues;
         ThemeSelectedIndex = _settingsProvider.SelectedTheme;
 
         _currentWindow = App.MainWindow!;
-
         VersionDescription = _appVersion.GetVersionDescription();
-
         _initialized = true;
     }
 
@@ -154,6 +165,8 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     public bool IsSha3_256_Available => Sha3_256HashCalculator.IsAvailable;
+
+    public bool IsSha3_512_Available => Sha3_512HashCalculator.IsAvailable;
 
     partial void OnIsUppercaseHashValuesChanged(bool value)
     {
@@ -208,6 +221,11 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     partial void OnIsSha3_256EnabledChanged(bool value)
+    {
+        OnAlgorithmEnabled();
+    }
+
+    partial void OnIsSha3_512EnabledChanged(bool value)
     {
         OnAlgorithmEnabled();
     }
@@ -272,6 +290,10 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["SHA3-256"] =
             Sha3_256HashCalculator.IsAvailable
             ? _settingsProvider.IsSha3_256_Enabled = IsSha3_256Enabled
+            : false;
+        _hashAlgorithmsEnabled["SHA3-512"] =
+            Sha3_512HashCalculator.IsAvailable
+            ? _settingsProvider.IsSha3_512_Enabled = IsSha3_512Enabled
             : false;
         
         WeakReferenceMessenger.Default.Send(

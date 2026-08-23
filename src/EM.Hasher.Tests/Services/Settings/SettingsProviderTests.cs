@@ -16,12 +16,14 @@ public class SettingsProviderTests
             IsMd5_Enabled = true,
             IsSha256_Enabled = true,
             IsSha3_256_Enabled = true,
+            IsSha3_512_Enabled = true,
             IsUppercaseHashValues = true
         };
 
         settingsProvider.IsMd5_Enabled.Should().BeTrue();
         settingsProvider.IsSha256_Enabled.Should().BeTrue();
         settingsProvider.IsSha3_256_Enabled.Should().BeTrue();
+        settingsProvider.IsSha3_512_Enabled.Should().BeTrue();
         settingsProvider.IsUppercaseHashValues.Should().BeTrue();
     }
 
@@ -34,12 +36,14 @@ public class SettingsProviderTests
             IsMd5_Enabled = false,
             IsSha256_Enabled = false,
             IsSha3_256_Enabled = false,
+            IsSha3_512_Enabled = false,
             IsUppercaseHashValues = false
         };
 
         settingsProvider.IsMd5_Enabled.Should().BeFalse();
         settingsProvider.IsSha256_Enabled.Should().BeFalse();
         settingsProvider.IsSha3_256_Enabled.Should().BeFalse();
+        settingsProvider.IsSha3_512_Enabled.Should().BeFalse();
         settingsProvider.IsUppercaseHashValues.Should().BeFalse();
     }
 
