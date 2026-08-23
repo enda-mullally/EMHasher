@@ -74,12 +74,40 @@
                                 VerticalAlignment="Center"
                                 FontSize="{Binding ElementName=sha3256HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
                                 Foreground="{ThemeResource TextFillColorTertiary}"
-                                Text="(Only available on Windows 11 24H2 or higher)"
+                                Text="(Only available on Windows 11, 24H2 or later)"
                                 Visibility="{x:Bind ViewModel.IsSha3_256_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
                         </Grid>
                     </controls:SettingsCard.Header>
 
                     <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_256_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_256Enabled, Mode=TwoWay}" />
+                </controls:SettingsCard>
+
+                <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
+                    <controls:SettingsCard.Header>
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                x:Name="sha3512HeaderTextBlock"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="SHA3-512" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontSize="{Binding ElementName=sha3512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                                Foreground="{ThemeResource TextFillColorTertiary}"
+                                Text="(Only available on Windows 11, 24H2 or later)"
+                                Visibility="{x:Bind ViewModel.IsSha3_512_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
+                        </Grid>
+                    </controls:SettingsCard.Header>
+
+                    <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_512_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_512Enabled, Mode=TwoWay}" />
                 </controls:SettingsCard>
 
                 <controls:SettingsCard Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">

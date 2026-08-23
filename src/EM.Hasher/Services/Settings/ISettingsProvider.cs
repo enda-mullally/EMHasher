@@ -55,6 +55,11 @@ public interface ISettingsProvider
         get; set;
     }
 
+    bool IsSha3_512_Enabled
+    {
+        get; set;
+    }
+
     public int SelectedTheme
     {
         get; set;

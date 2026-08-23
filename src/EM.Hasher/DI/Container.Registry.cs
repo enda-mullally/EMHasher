@@ -123,7 +123,13 @@ public partial class Container
                 new Sha3_256HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
-                Sha3_256HashCalculator.IsAvailable && settings.IsSha3_256_Enabled)
+                Sha3_256HashCalculator.IsAvailable && settings.IsSha3_256_Enabled),
+
+            new FileHashControlViewModel(
+                new Sha3_512HashCalculator(new HashProgressCalculator()),
+                new DummyHashVerificationService(),
+                settings.IsUppercaseHashValues,
+                Sha3_512HashCalculator.IsAvailable && settings.IsSha3_512_Enabled)
          ];
     }
 
