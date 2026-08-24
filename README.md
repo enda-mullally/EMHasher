@@ -22,7 +22,7 @@
 
 ## Overview
 
-EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) x64/ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
+EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) x64/ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512/SHA3-256/SHA3-512. What would you like to see next?
 
 <br />
 
