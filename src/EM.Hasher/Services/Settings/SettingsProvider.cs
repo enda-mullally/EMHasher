@@ -23,63 +23,58 @@ namespace EM.Hasher.Services.Settings;
 public class SettingsProvider : ISettingsProvider
 {
     private readonly ApplicationDataContainer _localSettings;
-    private bool _isTrialMode = false;
 
     public SettingsProvider()
     {
         _localSettings = ApplicationData.Current.LocalSettings;
     }
 
-    public bool IsBlake3Enabled
+    public bool IsBlake3_Enabled
     {
-        set => _localSettings.Values[nameof(IsBlake3Enabled)] = value;
-        get => (bool)(_localSettings.Values[nameof(IsBlake3Enabled)] ?? false);
+        set => _localSettings.Values[nameof(IsBlake3_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsBlake3_Enabled)] ?? false);
     }
 
-    public bool IsCrc32Enabled
+    public bool IsCrc32_Enabled
     {
-        set => _localSettings.Values[nameof(IsCrc32Enabled)] = value;
-        get => (bool)(_localSettings.Values[nameof(IsCrc32Enabled)] ?? false);
+        set => _localSettings.Values[nameof(IsCrc32_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsCrc32_Enabled)] ?? false);
     }
 
-    public bool IsMd5Enabled
+    public bool IsMd5_Enabled
     {
-        set => _localSettings.Values[nameof(IsMd5Enabled)] = value;
-        get => (bool)(_localSettings.Values[nameof(IsMd5Enabled)] ?? true);
+        set => _localSettings.Values[nameof(IsMd5_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsMd5_Enabled)] ?? true);
     }
 
-    public bool IsSha1Enabled
+    public bool IsSha1_Enabled
     {
-        set => _localSettings.Values[nameof(IsSha1Enabled)] = value;
-        get => (bool)(_localSettings.Values[nameof(IsSha1Enabled)] ?? false);
+        set => _localSettings.Values[nameof(IsSha1_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha1_Enabled)] ?? false);
     }
 
-    public bool IsSha256Enabled
+    public bool IsSha256_Enabled
     {
-        set => _localSettings.Values[nameof(IsSha256Enabled)] = value;
-        get
-        {
-            if (_isTrialMode)
-            {
-                return false; // In trial mode, SHA-256 is disabled
-            }
-
-            return (bool)(_localSettings.Values[nameof(IsSha256Enabled)] ?? true);
-        }
+        set => _localSettings.Values[nameof(IsSha256_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha256_Enabled)] ?? false);
     }
 
-    public bool IsSha512Enabled
+    public bool IsSha512_Enabled
     {
-        set => _localSettings.Values[nameof(IsSha512Enabled)] = value;
-        get
-        {
-            if (_isTrialMode)
-            {
-                return false; // In trial mode, SHA-512 is disabled
-            }
+        set => _localSettings.Values[nameof(IsSha512_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha512_Enabled)] ?? false);
+    }
 
-            return (bool)(_localSettings.Values[nameof(IsSha512Enabled)] ?? false);
-        }
+    public bool IsSha3_256_Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha3_256_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha3_256_Enabled)] ?? false);
+    }
+
+    public bool IsSha3_512_Enabled
+    {
+        set => _localSettings.Values[nameof(IsSha3_512_Enabled)] = value;
+        get => (bool)(_localSettings.Values[nameof(IsSha3_512_Enabled)] ?? false);
     }
 
     public int SelectedTheme
@@ -92,14 +87,6 @@ public class SettingsProvider : ISettingsProvider
     {
         set => _localSettings.Values[nameof(IsUppercaseHashValues)] = value;
         get => (bool)(_localSettings.Values[nameof(IsUppercaseHashValues)] ?? false);
-    }
-
-    // Note: This property is not persisted; it's set at runtime based on license status.
-    // Note: No longer used as the app is now open source/free. Keeping for reference.
-    public bool IsTrialMode
-    {
-        get => _isTrialMode;
-        set => _isTrialMode = value;
     }
 
     public bool IsNavigationPaneOpen

@@ -1,6 +1,6 @@
 /*
  * EM Hasher
- * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright Â© 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+namespace EM.Hasher.Services.Verification;
 
-namespace EM.Hasher.Controls;
-
-public sealed partial class IconButton : Button
+public class Sha_256VerificationService : BaseHashVerificationService
 {
-    public IconButton()
-    {
-        InitializeComponent();
-    }
-
-    public UIElement Icon
-    {
-        get => (UIElement)GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
-    }
-
-    public static readonly DependencyProperty IconProperty =
-        DependencyProperty.Register(nameof(Icon), typeof(UIElement), typeof(IconButton), new PropertyMetadata(null));
-
+    protected override string HashFileSearchPattern => "*.sha256";
 }

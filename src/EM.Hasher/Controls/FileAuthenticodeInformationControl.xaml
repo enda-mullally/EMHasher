@@ -48,7 +48,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Margin="0,0,20,3"
-                Text="Loading digital signature details..."
+                Text="{x:Bind LoadingText, Mode=OneWay}"
                 TextWrapping="Wrap" />
 
             <!--  Row 1: ProgressBar  -->

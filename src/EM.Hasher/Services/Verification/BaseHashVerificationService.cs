@@ -19,13 +19,17 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using EM.Hasher.Helpers;
 using EM.Hasher.Models;
 
 namespace EM.Hasher.Services.Verification;
 
-public class Sha256VerificationService : IHashVerificationService
+public abstract class BaseHashVerificationService : IHashVerificationService
 {
-    private const string HashFileSearchPattern = "*.sha256";
+    /// <summary>
+    /// Gets the search pattern for hash files (e.g., "*.sha256" or "*.md5").
+    /// </summary>
+    protected abstract string HashFileSearchPattern { get; }
 
     public async Task<HashVerificationModel> VerifyAsync(string fileName, string calculatedHash)
     {
@@ -93,7 +97,8 @@ public class Sha256VerificationService : IHashVerificationService
                         VerificationHashFound = true,
                         IsHashMatching = true,
                         HashVerificationDescription =
-                            $"Verification passed. Matching hash found in '{hashFileName}'"
+                            Res.GetLocalized("VerificationPassed")
+                               .WithPlaceholder("hashFileName", hashFileName)
                     };
                 }
                 else
@@ -103,7 +108,8 @@ public class Sha256VerificationService : IHashVerificationService
                         VerificationHashFound = true,
                         IsHashMatching = false,
                         HashVerificationDescription =
-                            $"Verification failed! The hash found in '{hashFileName}' does not match."
+                            Res.GetLocalized("VerificationFailed")
+                               .WithPlaceholder("hashFileName", hashFileName)
                     };
                 }
             }

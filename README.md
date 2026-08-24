@@ -22,7 +22,7 @@
 
 ## Overview
 
-EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the ground up for Windows 11. Native and fast (AOT) X64|ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
+EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the ground up for Windows 11. Native and fast (AOT) x64/ARM64. Quickly and easily calculate file hashes directly in Windows Explorer or on your Desktop. Choose your preferred hashing algorithms, including BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512. What would you like to see next?
 
 <br />
 
@@ -67,8 +67,13 @@ EM Hasher is a modern, simple hash calculating app (WinUI/3) built from the grou
 
 ## Release history
 
-### Coming soon! ###
-  - SHA3-256 & SHA3-512
+### 24/Aug/2026 ###
+v1.4 Build(82)
+  - Added SHA3-256 and SHA3-512 hashing.
+  - Other UI improvements.
+
+Note: SHA3-256 and SHA3-512 both require Windows 11, 24H2 or higher and will be disabled on earlier versions of Windows 11.
+See: https://learn.microsoft.com/en-us/windows/whats-new/whats-new-windows-11-version-24h2#sha-3-support
 
 ### 14/Aug/2026 ###
 v1.3 Build(80)
@@ -80,12 +85,12 @@ v1.3 Build(80)
 v1.2 Build(77)
   - Automatic hash validation for 'MD5' (via .md5 files) & 'SHA-256' (via .sha256 files).
   - New version label format v1.2.{build} etc
-  - Misc improvements & UI fix's.
+  - Misc improvements & UI fixes.
 
 ### 02/Aug/2026 ###
 v1.1.75
   - Added 'BLAKE3' hashing.
-  - Misc improvements & fix's.
+  - Misc improvements & fixes.
 
 ### 15/Jul/2026 ###
 v1.1.74
@@ -96,18 +101,18 @@ v1.1.74
 ### 14/Jun/2026 ###
 v1.1.73
   - WinAppSdk v2.2.0 upgrade.
-  - Package version info fix's.
+  - Package version info fixes.
 
 ### 04/Jun/2026
 v1.1.72
   - Added 'SHA-1' hashing.
-  - Misc bug fixs.
+  - Misc bug fixes.
 
 ### 18/Apr/2026
 v1.1.71
-  - [UI] Renamed nav bar tab pages 'Select File' and 'Hash Values' and added better Icons.
+  - [UI] Renamed nav bar tab pages 'Select File' and 'Hash Values' and added better icons.
   - [UI] Settings -> Hash Algorithms -> Breadcrumb style navigation (enabling new Algorithms).
-  - [UI] Re-instated compact mode.
+  - [UI] Reinstated compact mode.
 
 ### 25/Mar/2026
 v1.1.70
@@ -185,4 +190,4 @@ v1.1.48
 
 ### 08/May/2025
 v1.1.47
-  - First public release. Native (AOT) compiled app, targeting X64 and ARM64.
+  - First public release. Native (AOT) compiled app, targeting x64 and ARM64.

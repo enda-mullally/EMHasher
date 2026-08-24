@@ -80,7 +80,9 @@
                         FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
                         FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
                         HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
-                        HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}" />
+                        HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}"
+                        IsLoading="{x:Bind ViewModel.IsLoadingFileInfo, Mode=OneWay}"
+                        LoadingText="{x:Bind ViewModel.FileLoadingText, Mode=OneWay}" />
                 </controls:SettingsCard.Header>
                 <localcontrols:HandHoverGrid>
                     <localcontrols:IconButton
@@ -89,7 +91,8 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
-                        ToolTipService.ToolTip="Open file location">
+                        ToolTipService.ToolTip="Open file location"
+                        Visibility="{x:Bind ViewModel.IsLoadingFileInfo, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
                         <localcontrols:IconButton.Icon>
                             <FontIcon Glyph="&#xE8E5;" />
                             <!--  Open file icon  -->
@@ -113,6 +116,7 @@
                         IsLoading="{x:Bind ViewModel.IsLoadingAuthenticodeInfo, Mode=OneWay}"
                         IsTimeStamped="{x:Bind ViewModel.IsTimeStamped, Mode=OneWay}"
                         Issuer="{x:Bind ViewModel.Issuer, Mode=OneWay}"
+                        LoadingText="{x:Bind ViewModel.AuthenticodeLoadingText, Mode=OneWay}"
                         Signer="{x:Bind ViewModel.Signer, Mode=OneWay}"
                         SigningTime="{x:Bind ViewModel.SigningTime, Mode=OneWay}" />
                 </controls:SettingsCard.Header>

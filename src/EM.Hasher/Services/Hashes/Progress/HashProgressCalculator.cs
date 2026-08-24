@@ -18,7 +18,7 @@
 
 using System;
 
-namespace EM.Hasher.Services.Hashes;
+namespace EM.Hasher.Services.Hashes.Progress;
 
 public class HashProgressCalculator : IHashProgressCalculator
 {

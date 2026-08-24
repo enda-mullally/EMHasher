@@ -60,7 +60,7 @@ public sealed partial class SettingsShell : Page
         else if (e.SourcePageType == typeof(HashingAlgorithms))
         {
             UiStateViewModel.IsSettingsSubPageVisible = true;
-            UiStateViewModel.SettingsSubPageTitle = "Hashing Algorithms";
+            UiStateViewModel.SettingsSubPageTitle = Res.GetLocalized("HashingAlgorithms");
         }
     }
 }

@@ -17,9 +17,9 @@ public class Sha256VerificationServiceTests
     private const string CalculatedHash =
         "1be90ba8e2bb29edeec06ccfbbb295740857df787501744c0c4fbda157ecb21f";
 
-    private static Sha256VerificationService CreateSut()
+    private static Sha_256VerificationService CreateSut()
     {
-        return new Sha256VerificationService();
+        return new Sha_256VerificationService();
     }
 
     private static string GetScenarioTargetPath(string scenario)

@@ -1,6 +1,6 @@
-/*
+﻿/*
  * EM Hasher
- * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,17 @@
 
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using EM.Hasher.Services.Hashes.Progress;
 
 namespace EM.Hasher.Services.Hashes;
 
-public class Blake3HashCalculator(IHashProgressCalculator progressCalculator) : IHashCalculator
+public class Sha_256HashCalculator(IHashProgressCalculator progressCalculator) : IHashCalculator
 {
     public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
-        using var hasher = Blake3.Hasher.New();
+        using var sha256 = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
 
         await using var fileStream = new FileStream(fileName,
             FileMode.Open,
@@ -49,20 +50,20 @@ public class Blake3HashCalculator(IHashProgressCalculator progressCalculator) : 
 
         while ((bytesRead = await bufferedStream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
-            hasher.Update(buffer.AsSpan(0, bytesRead));
+            sha256.AppendData(buffer.AsSpan(0, bytesRead));
 
             processedBytes += bytesRead;
 
             progressCalculator.Report(processedBytes, totalBytes, progress);
         }
 
-        var hash = hasher.Finalize();
+        var hashBytes = sha256.GetHashAndReset();
 
-        return Convert.ToHexStringLower(hash.AsSpan());
+        return Convert.ToHexStringLower(hashBytes);
     }
 
     public string GetAlgorithmName()
     {
-        return "BLAKE3";
+        return "SHA-256";
     }
 }

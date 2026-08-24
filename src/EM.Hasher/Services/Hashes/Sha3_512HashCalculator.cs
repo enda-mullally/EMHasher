@@ -1,6 +1,6 @@
-﻿/*
+/*
  * EM Hasher
- * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,21 +20,27 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using EM.Hasher.Services.Hashes.Progress;
 
 namespace EM.Hasher.Services.Hashes;
 
-public class Sha256HashCalculator : IHashCalculator
+public class Sha3_512HashCalculator(IHashProgressCalculator progressCalculator) : IHashCalculator
 {
-    private readonly IHashProgressCalculator _progressCalculator;
-
-    public Sha256HashCalculator(IHashProgressCalculator progressCalculator)
+    public static bool IsAvailable
     {
-        _progressCalculator = progressCalculator;
+        get
+        {
+#if DEBUG
+            return false;
+#else
+            return SHA3_512.IsSupported;
+#endif
+        }
     }
 
     public async Task<string> CalculateHashAsync(string fileName, IProgress<int>? progress = null)
     {
-        using var sha256 = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        using var sha3 = IncrementalHash.CreateHash(HashAlgorithmName.SHA3_512);
 
         await using var fileStream = new FileStream(fileName,
             FileMode.Open,
@@ -48,28 +54,28 @@ public class Sha256HashCalculator : IHashCalculator
         var totalBytes = fileStream.Length;
         var processedBytes = 0L;
 
-        _progressCalculator.Reset();
-        _progressCalculator.Report(processedBytes, totalBytes, progress);
+        progressCalculator.Reset();
+        progressCalculator.Report(processedBytes, totalBytes, progress);
 
         var buffer = new byte[IHashCalculator.BufferSize];
         int bytesRead;
 
         while ((bytesRead = await bufferedStream.ReadAsync(buffer).ConfigureAwait(false)) > 0)
         {
-            sha256.AppendData(buffer.AsSpan(0, bytesRead));
+            sha3.AppendData(buffer.AsSpan(0, bytesRead));
 
             processedBytes += bytesRead;
 
-            _progressCalculator.Report(processedBytes, totalBytes, progress);
+            progressCalculator.Report(processedBytes, totalBytes, progress);
         }
 
-        var hashBytes = sha256.GetHashAndReset();
+        var hashBytes = sha3.GetHashAndReset();
 
         return Convert.ToHexStringLower(hashBytes);
     }
 
     public string GetAlgorithmName()
     {
-        return "SHA-256";
+        return "SHA3-512";
     }
 }

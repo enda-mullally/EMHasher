@@ -37,6 +37,15 @@ public sealed partial class FileAuthenticodeInformationControl : UserControl
     public static readonly DependencyProperty IsLoadingProperty =
         DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(false));
 
+    public string LoadingText
+    {
+        get => (string)GetValue(LoadingTextProperty);
+        set => SetValue(LoadingTextProperty, value);
+    }
+
+    public static readonly DependencyProperty LoadingTextProperty =
+        DependencyProperty.Register(nameof(LoadingText), typeof(string), typeof(FileAuthenticodeInformationControl), new PropertyMetadata(""));
+
     public string Signer
     {
         get => (string)GetValue(SignerProperty);

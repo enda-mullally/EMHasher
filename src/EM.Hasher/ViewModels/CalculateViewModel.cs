@@ -57,6 +57,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     }
 
     [ObservableProperty]
+    public partial bool IsLoadingFileInfo { get; private set; } = false;
+
+    [ObservableProperty]
+    public partial string FileLoadingText { get; private set; } = string.Empty;
+
+    [ObservableProperty]
     public partial string? FileName { get; private set; } = string.Empty;
 
     [ObservableProperty]
@@ -81,6 +87,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial bool IsLoadingAuthenticodeInfo { get; private set; } = false;
 
     [ObservableProperty]
+    public partial string AuthenticodeLoadingText { get; private set; } = string.Empty;
+
+    [ObservableProperty]
     public partial bool HasFileProductVersion { get; private set; } = false;
 
     [ObservableProperty]
@@ -100,72 +109,33 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
+        if (!itsNew)
+        {
+            return;
+        }
+
+        _selectedFileName = selectedFileName;
+
+        WeakReferenceMessenger.Default.Send(
+            new HomeFileSelectedMessage(true));
+
+        WeakReferenceMessenger.Default.Send(
+            new QueueAllFileHashRequestMessage());
+
         try
         {
-            if (!itsNew)
-            {
-                return;
-            }
+            await LoadFileInfoAsync();
 
-            _selectedFileName = selectedFileName;
+            await LoadAuthenticodeInfoAsync();
 
+            // A new file is selected, so force recalculation. Fire the hash
+            // fan-out last, once the metadata above has rendered.
             WeakReferenceMessenger.Default.Send(
-                new HomeFileSelectedMessage(true));
-
-            WeakReferenceMessenger.Default.Send(
-                new QueueAllFileHashRequestMessage());
-
-            try
-            {
-                // Load the lightweight metadata (file details and Authenticode
-                // signing info) and render it BEFORE starting the heavy hash
-                // fan-out. Awaiting these first guarantees the details and signing
-                // info appear immediately and are never starved by the six
-                // concurrent, long-running hash calculations competing for the
-                // ThreadPool and disk.
-                var fileDetailsModel = await _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
-                if (fileDetailsModel != null)
-                {
-                    UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
-
-                    FileName = fileDetailsModel.FileName;
-                    FileSize = fileDetailsModel.FileSize;
-                    FileCreated = fileDetailsModel.FileCreated;
-                    FileModified = fileDetailsModel.FileModified;
-
-                    FileVersion = fileDetailsModel.FileVersion;
-                    HasFileVersion = !string.IsNullOrWhiteSpace(FileVersion);
-
-                    FileProductVersion = fileDetailsModel.FileProductVersion;
-                    HasFileProductVersion = !string.IsNullOrWhiteSpace(FileProductVersion);
-                }
-
-                // Setting IsSigned here to true to ensure the authenticode loading grid is visible
-                // if the previously selected file was not signed.
-                IsLoadingAuthenticodeInfo = IsSigned = true;
-                var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
-                if (signingInfo != null)
-                {
-                    IsSigned = signingInfo.IsSigned;
-                    Signer = signingInfo.Signer;
-                    Issuer = signingInfo.Issuer;
-                    IsTimeStamped = signingInfo.IsTimeStamped;
-                    SigningTime = signingInfo.SigningTime;
-                }                
-                IsLoadingAuthenticodeInfo = false;
-
-                // A new file is selected, so force recalculation. Fire the hash
-                // fan-out last, once the metadata above has rendered.
-                WeakReferenceMessenger.Default.Send(
-                    new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false));
-            }
-            catch (Exception)
-            {
-                // ignore
-            }
+                new CalculateAllFileHashRequestMessage(_selectedFileName, onlyCalculateIfNeeded: false));
         }
-        finally
+        catch (Exception)
         {
+            // ignore
         }
     }
 
@@ -182,10 +152,73 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         }
     }
 
-    public void UpdateAppSubTitle(string appSubTitle)
+    private void UpdateAppSubTitle(string appSubTitle)
     {
         WeakReferenceMessenger.Default.Send(
             new SetAppSubTitleMessage(appSubTitle));
+    }
+
+    private void SetFileLoadingState(string loadingText)
+    {
+        FileLoadingText = loadingText;
+
+        // Setting IsSigned here to false to deliberately hide the
+        // autheticode laoding ui while we are loading file info details.
+        IsSigned = false;
+        IsLoadingFileInfo = true;
+    }
+
+    private async Task LoadFileInfoAsync()
+    {
+        SetFileLoadingState(Res.GetLocalized("LoadingFileDetails"));
+
+        var fileDetailsModel = await _fileDetailsProvider.GetFileDetailsAsync(_selectedFileName);
+
+        IsLoadingFileInfo = false; // Hide to loading state (File Details)
+
+        if (fileDetailsModel != null)
+        {
+            UpdateAppSubTitle($"[{fileDetailsModel.FileName}]");
+
+            FileName = fileDetailsModel.FileName;
+            FileSize = fileDetailsModel.FileSize;
+            FileCreated = fileDetailsModel.FileCreated;
+            FileModified = fileDetailsModel.FileModified;
+
+            FileVersion = fileDetailsModel.FileVersion;
+            HasFileVersion = !string.IsNullOrWhiteSpace(FileVersion);
+
+            FileProductVersion = fileDetailsModel.FileProductVersion;
+            HasFileProductVersion = !string.IsNullOrWhiteSpace(FileProductVersion);
+        }
+    }
+
+    private void SetAuthenticodeLoadingState(string loadingText)
+    {
+        AuthenticodeLoadingText = loadingText;
+
+        // Setting IsSigned here to true to ensure the authenticode
+        // loading grid is visible, if the previously selected file
+        // was not signed.
+        IsLoadingAuthenticodeInfo = IsSigned = true;
+    }
+
+    private async Task LoadAuthenticodeInfoAsync()
+    {
+        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
+
+        var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
+
+        IsLoadingAuthenticodeInfo = false; // Hide to loading state (Authenticode Info)
+
+        if (signingInfo != null)
+        {
+            IsSigned = signingInfo.IsSigned;
+            Signer = signingInfo.Signer;
+            Issuer = signingInfo.Issuer;
+            IsTimeStamped = signingInfo.IsTimeStamped;
+            SigningTime = signingInfo.SigningTime;
+        }
     }
 
     [RelayCommand]

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using EM.Hasher.Services.Hashes;
+using EM.Hasher.Services.Hashes.Progress;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

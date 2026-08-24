@@ -8,15 +8,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace EM.Hasher.Tests.Services.Hashes;
 
 [TestClass]
-public class Blake3HashCalculatorTests
+public class Sha3_512HashCalculatorTests
 {
     private const string TestFilesDir = "TestFiles";
+
+    [TestMethod]
+    public void GetAlgorithmName_Works()
+    {
+        // Arrange
+        var sut = new Sha3_512HashCalculator(new HashProgressCalculator());
+
+        // Assert
+        sut.GetAlgorithmName().Should().Be("SHA3-512");
+    }
 
     [TestMethod]
     public async Task ZeroByteFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Blake3HashCalculator(new HashProgressCalculator());
+        var sut = new Sha3_512HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -24,14 +34,14 @@ public class Blake3HashCalculatorTests
         var hash = await sut.CalculateHashAsync(filePath);
 
         // Assert
-        hash.Should().Be("af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262");
+        hash.Should().Be("a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26");
     }
 
     [TestMethod]
     public async Task TestFileHash_WorksAsync()
     {
         // Arrange
-        var sut = new Blake3HashCalculator(new HashProgressCalculator());
+        var sut = new Sha3_512HashCalculator(new HashProgressCalculator());
 
         // Act
         var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -39,6 +49,6 @@ public class Blake3HashCalculatorTests
         var hash = await sut.CalculateHashAsync(filePath);
 
         // Assert
-        hash.Should().Be("723ad76374913c8580267a7937b4d7434e00453ae1b2665984667e144920a386");
+        hash.Should().Be("a91a1f971305ac13f7f6e3834e6537b553f2938e00b5ea294e0b079dc8a66286dcac97179fc83f62f143574cbc43d66905ae3b3722b4ab0fa67d90885d52de56");
     }
 }

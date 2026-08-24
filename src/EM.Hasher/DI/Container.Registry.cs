@@ -25,6 +25,7 @@ using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Hashes;
+using EM.Hasher.Services.Hashes.Progress;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Parsers;
@@ -86,37 +87,49 @@ public partial class Container
                 new Blake3HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsBlake3Enabled),
+                settings.IsBlake3_Enabled),
 
              new FileHashControlViewModel(
                 new Crc32HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsCrc32Enabled),
+                settings.IsCrc32_Enabled),
 
             new FileHashControlViewModel(
                 new Md5HashCalculator(new HashProgressCalculator()),
                 new Md5VerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsMd5Enabled),
+                settings.IsMd5_Enabled),
 
             new FileHashControlViewModel(
-                new Sha1HashCalculator(new HashProgressCalculator()),
+                new Sha1_HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsSha1Enabled),
+                settings.IsSha1_Enabled),
 
             new FileHashControlViewModel(
-                new Sha256HashCalculator(new HashProgressCalculator()),
-                new Sha256VerificationService(),
+                new Sha_256HashCalculator(new HashProgressCalculator()),
+                new Sha_256VerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsSha256Enabled),
+                settings.IsSha256_Enabled),
 
             new FileHashControlViewModel(
-                new Sha512HashCalculator(new HashProgressCalculator()),
+                new Sha_512HashCalculator(new HashProgressCalculator()),
                 new DummyHashVerificationService(),
                 settings.IsUppercaseHashValues,
-                settings.IsSha512Enabled)
+                settings.IsSha512_Enabled),
+
+            new FileHashControlViewModel(
+                new Sha3_256HashCalculator(new HashProgressCalculator()),
+                new DummyHashVerificationService(),
+                settings.IsUppercaseHashValues,
+                Sha3_256HashCalculator.IsAvailable && settings.IsSha3_256_Enabled),
+
+            new FileHashControlViewModel(
+                new Sha3_512HashCalculator(new HashProgressCalculator()),
+                new DummyHashVerificationService(),
+                settings.IsUppercaseHashValues,
+                Sha3_512HashCalculator.IsAvailable && settings.IsSha3_512_Enabled)
          ];
     }
 
