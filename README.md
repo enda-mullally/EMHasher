@@ -9,7 +9,7 @@
   EM Hasher
 </h1>
 <p align="center">
-  Quickly calculate BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512 checksums in Windows 11.
+  Quickly calculate BLAKE3/CRC-32/MD5/SHA-1/SHA-256/SHA-512/SHA3-256/SHA3-512 checksums in Windows 11.
 </p>
 
 <br />
