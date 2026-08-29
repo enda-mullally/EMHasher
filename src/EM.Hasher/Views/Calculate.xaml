@@ -70,36 +70,45 @@
                 Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                 Text="File Details" />
 
-            <controls:SettingsCard Grid.Row="1" Margin="0,0,0,4">
-                <controls:SettingsCard.Header>
-                    <localcontrols:FileInformationControl
-                        FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
-                        FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
-                        FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
-                        FileProductVersion="{x:Bind ViewModel.FileProductVersion, Mode=OneWay}"
-                        FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
-                        FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
-                        HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
-                        HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}"
-                        IsLoading="{x:Bind ViewModel.IsLoadingFileInfo, Mode=OneWay}"
-                        LoadingText="{x:Bind ViewModel.FileLoadingText, Mode=OneWay}" />
-                </controls:SettingsCard.Header>
-                <localcontrols:HandHoverGrid>
-                    <localcontrols:IconButton
-                        Width="40"
-                        Height="40"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
-                        ToolTipService.ToolTip="Open file location"
-                        Visibility="{x:Bind ViewModel.IsLoadingFileInfo, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
-                        <localcontrols:IconButton.Icon>
-                            <FontIcon Glyph="&#xE8E5;" />
-                            <!--  Open file icon  -->
-                        </localcontrols:IconButton.Icon>
-                    </localcontrols:IconButton>
-                </localcontrols:HandHoverGrid>
-            </controls:SettingsCard>
+            <StackPanel Grid.Row="1">
+                <InfoBar
+                    x:Uid="SlowFilePerformance"
+                    Margin="0,0,0,5"
+                    IsClosable="True"
+                    IsOpen="{x:Bind ViewModel.ShowSlowFilePerformanceInfoBar, Mode=OneWay}"
+                    Severity="Warning" />
+
+                <controls:SettingsCard Margin="0,0,0,4">
+                    <controls:SettingsCard.Header>
+                        <localcontrols:FileInformationControl
+                            FileCreated="{x:Bind ViewModel.FileCreated, Mode=OneWay}"
+                            FileModified="{x:Bind ViewModel.FileModified, Mode=OneWay}"
+                            FileName="{x:Bind ViewModel.FileName, Mode=OneWay}"
+                            FileProductVersion="{x:Bind ViewModel.FileProductVersion, Mode=OneWay}"
+                            FileSize="{x:Bind ViewModel.FileSize, Mode=OneWay}"
+                            FileVersion="{x:Bind ViewModel.FileVersion, Mode=OneWay}"
+                            HasFileProductVersion="{x:Bind ViewModel.HasFileProductVersion, Mode=OneWay}"
+                            HasFileVersion="{x:Bind ViewModel.HasFileVersion, Mode=OneWay}"
+                            IsLoading="{x:Bind ViewModel.IsLoadingFileInfo, Mode=OneWay}"
+                            LoadingText="{x:Bind ViewModel.FileLoadingText, Mode=OneWay}" />
+                    </controls:SettingsCard.Header>
+                    <localcontrols:HandHoverGrid>
+                        <localcontrols:IconButton
+                            Width="40"
+                            Height="40"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{x:Bind ViewModel.OpenFileLocationCommand, Mode=OneWay}"
+                            ToolTipService.ToolTip="Open file location"
+                            Visibility="{x:Bind ViewModel.IsLoadingFileInfo, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}">
+                            <localcontrols:IconButton.Icon>
+                                <FontIcon Glyph="&#xE8E5;" />
+                                <!--  Open file icon  -->
+                            </localcontrols:IconButton.Icon>
+                        </localcontrols:IconButton>
+                    </localcontrols:HandHoverGrid>
+                </controls:SettingsCard>
+            </StackPanel>
 
             <TextBlock
                 Grid.Row="2"

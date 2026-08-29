@@ -41,6 +41,10 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
     private string _selectedFileName = string.Empty;
 
+    // Small files hash quickly even over a network, so only warn about
+    // remote files once they are large enough for transfer latency to matter.
+    private const long SlowFilePerformanceThresholdBytes = 100L * 1024 * 1024; // 100 MB
+
     public ObservableCollection<FileHashControlViewModel> FileHashControlViewModels { get; init; } = [];
 
     public CalculateViewModel(
@@ -107,6 +111,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     [ObservableProperty]
     public partial string? SigningTime { get; private set; } = string.Empty;
 
+    [ObservableProperty]
+    public partial bool ShowSlowFilePerformanceInfoBar { get; private set; } = false;
+
     private async Task LoadSelectedFileAsync(string selectedFileName, bool itsNew)
     {
         if (!itsNew)
@@ -115,6 +122,8 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         }
 
         _selectedFileName = selectedFileName;
+
+        ShowSlowFilePerformanceInfoBar = ShouldWarnSlowFilePerformance(_selectedFileName);
 
         WeakReferenceMessenger.Default.Send(
             new HomeFileSelectedMessage(true));
@@ -149,6 +158,53 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         if (parameter is FilePickedMessage filePickedMessage)
         {
             await LoadSelectedFileAsync(filePickedMessage.FileName, filePickedMessage.ItsNew);
+        }
+    }
+
+    private static bool ShouldWarnSlowFilePerformance(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath) || IsOnLocalDrive(filePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            // Only warn about remote files large enough for transfer
+            // latency to noticeably impact hashing performance.
+            return fileInfo.Exists && fileInfo.Length > SlowFilePerformanceThresholdBytes;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool IsOnLocalDrive(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            var root = Path.GetPathRoot(filePath);
+
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return false;
+            }
+
+            var driveInfo = new DriveInfo(root);
+
+            return driveInfo.DriveType == DriveType.Fixed;
+        }
+        catch
+        {
+            return false;
         }
     }
 
