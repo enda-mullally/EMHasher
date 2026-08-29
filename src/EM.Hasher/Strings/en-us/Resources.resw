@@ -136,7 +136,7 @@
     <value>Hashing Algorithms</value>
   </data>
   <data name="InvalidDropFile" xml:space="preserve">
-    <value>Please drop a valid file! Special links are not supported.</value>
+    <value>Please drop a valid file! Folders or special links are not supported.</value>
   </data>
   <data name="LoadingAuthenticodeDetails" xml:space="preserve">
     <value>Loading digital signature details...</value>

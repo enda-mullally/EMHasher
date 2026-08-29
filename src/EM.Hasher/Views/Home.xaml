@@ -47,54 +47,51 @@
         </Style>
 
     </Page.Resources>
-    <ScrollViewer>
 
-        <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
-            <win:StackPanel.ChildrenTransitions>
-                <win:EntranceThemeTransition FromVerticalOffset="50" />
-                <win:RepositionThemeTransition IsStaggeringEnabled="False" />
-            </win:StackPanel.ChildrenTransitions>
+    <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
+        <win:StackPanel.ChildrenTransitions>
+            <win:EntranceThemeTransition FromVerticalOffset="50" />
+            <win:RepositionThemeTransition IsStaggeringEnabled="False" />
+        </win:StackPanel.ChildrenTransitions>
 
-            <!--
+        <!--
                 <TextBlock
                     Foreground="#8bb7f0"
                     Style="{StaticResource SettingsSectionHeaderTextCaptionStyle}"
                     Text="Welcome to EM Hasher" />
-            -->
+        -->
 
-            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Select File" />
+        <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Select File" />
 
-            <localcontrols:HandHoverGrid>
-                <controls:SettingsCard
-                    x:Name="uxFileInfo"
-                    ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
-                    ActionIconToolTip="Browse for a file"
-                    Command="{x:Bind ViewModel.PickFileCommand}"
-                    Description="Click here to browse for a file"
-                    Header="Select a file"
-                    HeaderIcon="{ui:FontIcon Glyph=&#xEC50;}"
-                    IsClickEnabled="True"
-                    IsEnabled="True" />
-            </localcontrols:HandHoverGrid>
+        <localcontrols:HandHoverGrid>
+            <controls:SettingsCard
+                x:Name="uxFileInfo"
+                ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
+                ActionIconToolTip="Browse for a file"
+                Command="{x:Bind ViewModel.PickFileCommand}"
+                Description="Click here to browse for a file"
+                Header="Select a file"
+                HeaderIcon="{ui:FontIcon Glyph=&#xEC50;}"
+                IsClickEnabled="True"
+                IsEnabled="True" />
+        </localcontrols:HandHoverGrid>
 
-            <controls:SettingsCard ContentAlignment="Left">
-                <localcontrols:DropFileControl
-                    x:Name="uxDropFileControl"
-                    AllowDrop="True"
-                    DashColor="{x:Bind IsDropGreen, Converter={StaticResource DropColorBool}, Mode=OneWay}"
-                    DragLeave="uxDropFileControl_DragLeave"
-                    DragOver="uxDropFileControl_DragOver"
-                    Drop="uxDropFileControl_Drop"
-                    IsHitTestVisible="True" />
-            </controls:SettingsCard>
+        <controls:SettingsCard ContentAlignment="Left">
+            <localcontrols:DropFileControl
+                x:Name="uxDropFileControl"
+                AllowDrop="True"
+                DashColor="{x:Bind IsDropGreen, Converter={StaticResource DropColorBool}, Mode=OneWay}"
+                DragLeave="uxDropFileControl_DragLeave"
+                DragOver="uxDropFileControl_DragOver"
+                Drop="uxDropFileControl_Drop"
+                IsHitTestVisible="True" />
+        </controls:SettingsCard>
 
-            <controls:SettingsCard Visibility="{x:Bind ViewModel.IsDropFileError, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
-                <controls:SettingsCard.Description>
-                    <TextBlock Foreground="PaleVioletRed" Text="{x:Bind ViewModel.DropFileErrorMessage, Mode=OneWay}" />
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
+        <InfoBar
+            IsClosable="False"
+            IsOpen="{x:Bind ViewModel.IsDropFileError, Mode=OneWay}"
+            Message="{x:Bind ViewModel.DropFileErrorMessage, Mode=OneWay}"
+            Severity="Error" />
 
-        </StackPanel>
-
-    </ScrollViewer>
+    </StackPanel>
 </Page>
