@@ -40,32 +40,13 @@ EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the grou
   <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_03_Main_Screen_Results.png">
 </p>
 
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_04_Main_Screen_Results_Compact.png">
-</p>
-
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_05_Main_Screen_Signed_Results.png">
-</p>
-
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_06_Main_Screen_Hash_Validation.png">
-</p>
-
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_07_Main_Screen_Settings_Dark.png">
-</p>
-
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_08_Main_Screen_Settings_HashAlgorithms_Dark.png">
-</p>
-
-<p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_09_Main_Screen_Settings_Light.png">
-</p>
 <br />
 
 ## Release history
+
+### 30/Aug/2026 ###
+v1.4 Build(84)
+  - Mini release - UI improvements - Improved warning messages and use of Infobars. 
 
 ### 24/Aug/2026 ###
 v1.4 Build(82)
