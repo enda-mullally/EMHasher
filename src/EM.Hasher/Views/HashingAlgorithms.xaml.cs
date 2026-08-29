@@ -17,6 +17,7 @@
  */
 
 using EM.Hasher.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace EM.Hasher.Views;
@@ -33,5 +34,30 @@ public sealed partial class HashingAlgorithms : Page
         ViewModel = App.GetService<SettingsViewModel>();
 
         InitializeComponent();
+
+        if (App.MainWindow?.Content is FrameworkElement root)
+        {
+            root.ActualThemeChanged += OnActualThemeChanged;
+        }
+    }
+
+    private void OnActualThemeChanged(FrameworkElement sender, object args) =>
+        RefreshInfoBarTheme();
+
+    private void AlgorithmSelectionInfoBar_Loaded(object sender, RoutedEventArgs e) =>
+        RefreshInfoBarTheme();
+
+    private void RefreshInfoBarTheme()
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            var severity = AlgorithmSelectionInfoBar.Severity;
+
+            AlgorithmSelectionInfoBar.Severity = severity == InfoBarSeverity.Informational
+                ? InfoBarSeverity.Success
+                : InfoBarSeverity.Informational;
+
+            AlgorithmSelectionInfoBar.Severity = severity;
+        });
     }
 }
