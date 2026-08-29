@@ -17,9 +17,9 @@
  */
 
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using EM.Hasher.Helpers;
 using EM.Hasher.Messages.UI;
 using EM.Hasher.Services.Application;
 using EM.Hasher.Services.Hashes;
@@ -131,11 +131,9 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256_Enabled;
         _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512_Enabled;
         _hashAlgorithmsEnabled["SHA3-256"] = Sha3_256HashCalculator.IsAvailable
-            ? _settingsProvider.IsSha3_256_Enabled
-            : false;
+            && _settingsProvider.IsSha3_256_Enabled;
         _hashAlgorithmsEnabled["SHA3-512"] = Sha3_512HashCalculator.IsAvailable
-            ? _settingsProvider.IsSha3_512_Enabled
-            : false;
+            && _settingsProvider.IsSha3_512_Enabled;
 
         // Init observables
         IsBlake3Enabled = _settingsProvider.IsBlake3_Enabled;
@@ -241,28 +239,27 @@ public partial class SettingsViewModel : ObservableObject
         WeakReferenceMessenger.Default.Send(
             new SettingsSelectionMessage(!IsAlgorithmSelectionInvalid));
 
-        if (IsAlgorithmSelectionInvalid)
+        if (_settingsProvider.SelectedTheme == value)
         {
             return;
         }
 
-        if (_settingsProvider.SelectedTheme != value)
+        _settingsProvider.SelectedTheme = value;
+
+        if (_currentWindow?.Content is not FrameworkElement content)
         {
-            _settingsProvider.SelectedTheme = value;
-
-            // Apply the new theme
-            if (_currentWindow is null || _currentWindow.Content is not FrameworkElement)
-            {
-                return;
-            }
-
-            ((FrameworkElement)_currentWindow.Content).RequestedTheme = value switch
-            {
-                1 => ElementTheme.Dark,
-                2 => ElementTheme.Light,
-                _ => ElementTheme.Default
-            };
+            return;
         }
+
+        var theme = value switch
+        {
+            1 => ElementTheme.Dark,
+            2 => ElementTheme.Light,
+            _ => ElementTheme.Default
+        };
+
+        content.RequestedTheme = theme;
+        TitleBarHelper.ApplySystemThemeToCaptionButtons(theme);
     }
 
     private void OnAlgorithmEnabled()
@@ -288,13 +285,9 @@ public partial class SettingsViewModel : ObservableObject
         _hashAlgorithmsEnabled["SHA-256"] = _settingsProvider.IsSha256_Enabled = IsSha256Enabled;
         _hashAlgorithmsEnabled["SHA-512"] = _settingsProvider.IsSha512_Enabled = IsSha512Enabled;
         _hashAlgorithmsEnabled["SHA3-256"] =
-            Sha3_256HashCalculator.IsAvailable
-            ? _settingsProvider.IsSha3_256_Enabled = IsSha3_256Enabled
-            : false;
+            Sha3_256HashCalculator.IsAvailable && (_settingsProvider.IsSha3_256_Enabled = IsSha3_256Enabled);
         _hashAlgorithmsEnabled["SHA3-512"] =
-            Sha3_512HashCalculator.IsAvailable
-            ? _settingsProvider.IsSha3_512_Enabled = IsSha3_512Enabled
-            : false;
+            Sha3_512HashCalculator.IsAvailable && (_settingsProvider.IsSha3_512_Enabled = IsSha3_512Enabled);
         
         WeakReferenceMessenger.Default.Send(
            new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues));

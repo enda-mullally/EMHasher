@@ -26,96 +26,100 @@
             </Style.Setters>
         </Style>
     </Page.Resources>
-    <ScrollViewer>
-        <Grid>
-            <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
 
-                <controls:SettingsCard Header="BLAKE3" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsBlake3Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+    <Grid>
+        <StackPanel HorizontalAlignment="Stretch" Spacing="{StaticResource SettingsCardSpacing}">
 
-                <controls:SettingsCard Header="CRC-32" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+            <controls:SettingsCard Header="BLAKE3" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsBlake3Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                <controls:SettingsCard Header="MD5" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsMd5Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+            <controls:SettingsCard Header="CRC-32" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsCrc32Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                <controls:SettingsCard Header="SHA-1" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha1Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+            <controls:SettingsCard Header="MD5" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsMd5Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                <controls:SettingsCard Header="SHA-256" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha256Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+            <controls:SettingsCard Header="SHA-1" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha1Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                <controls:SettingsCard Header="SHA-512" Style="{StaticResource CompactSettingsCardStyle}">
-                    <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha512Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+            <controls:SettingsCard Header="SHA-256" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha256Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
-                    <controls:SettingsCard.Header>
-                        <Grid VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+            <controls:SettingsCard Header="SHA-512" Style="{StaticResource CompactSettingsCardStyle}">
+                <ToggleSwitch IsOn="{x:Bind ViewModel.IsSha512Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                            <TextBlock
-                                x:Name="sha3256HeaderTextBlock"
-                                Grid.Column="0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="SHA3-256" />
-                            <TextBlock
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="{Binding ElementName=sha3256HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
-                                Foreground="{ThemeResource TextFillColorTertiary}"
-                                Text="(Only available on Windows 11, 24H2 or later)"
-                                Visibility="{x:Bind ViewModel.IsSha3_256_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
-                        </Grid>
-                    </controls:SettingsCard.Header>
+            <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
+                <controls:SettingsCard.Header>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_256_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_256Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+                        <TextBlock
+                            x:Name="sha3256HeaderTextBlock"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Text="SHA3-256" />
+                        <TextBlock
+                            x:Name="sha3256UnavailableText"
+                            x:Uid="Sha3256UnavailableText"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding ElementName=sha3256HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                            Foreground="{ThemeResource TextFillColorTertiary}"
+                            Visibility="{x:Bind ViewModel.IsSha3_256_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
+                    </Grid>
+                </controls:SettingsCard.Header>
 
-                <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
-                    <controls:SettingsCard.Header>
-                        <Grid VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="75" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_256_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_256Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
 
-                            <TextBlock
-                                x:Name="sha3512HeaderTextBlock"
-                                Grid.Column="0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Text="SHA3-512" />
-                            <TextBlock
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                FontSize="{Binding ElementName=sha3512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
-                                Foreground="{ThemeResource TextFillColorTertiary}"
-                                Text="(Only available on Windows 11, 24H2 or later)"
-                                Visibility="{x:Bind ViewModel.IsSha3_512_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
-                        </Grid>
-                    </controls:SettingsCard.Header>
+            <controls:SettingsCard Style="{StaticResource CompactSettingsCardStyle}">
+                <controls:SettingsCard.Header>
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                    <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_512_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_512Enabled, Mode=TwoWay}" />
-                </controls:SettingsCard>
+                        <TextBlock
+                            x:Name="sha3512HeaderTextBlock"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Text="SHA3-512" />
+                        <TextBlock
+                            x:Name="sha3512UnavailableText"
+                            x:Uid="Sha3512UnavailableText"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="{Binding ElementName=sha3512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                            Foreground="{ThemeResource TextFillColorTertiary}"
+                            Visibility="{x:Bind ViewModel.IsSha3_512_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
+                    </Grid>
+                </controls:SettingsCard.Header>
 
-                <controls:SettingsCard Visibility="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
-                    <controls:SettingsCard.Description>
-                        <TextBlock Foreground="PaleVioletRed" Text="Please select at least one hash algorithm" />
-                    </controls:SettingsCard.Description>
-                </controls:SettingsCard>
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+                <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsSha3_512_Available, Mode=OneWay}" IsOn="{x:Bind ViewModel.IsSha3_512Enabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
+
+            <InfoBar
+                x:Name="AlgorithmSelectionInfoBar"
+                x:Uid="AlgorithmSelectionRequired"
+                IsClosable="False"
+                IsOpen="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Mode=OneWay}"
+                Loaded="AlgorithmSelectionInfoBar_Loaded"
+                Severity="Error" />
+
+        </StackPanel>
+    </Grid>
 </Page>
