@@ -62,13 +62,21 @@ public sealed partial class Home : Page
                 WeakReferenceMessenger.Default.Send(
                     new DropFileErrorMessage(false, string.Empty));
             }
-            else
+            else if (items != null && items.Count > 1 && items[0] is StorageFile)
             {
                 e.AcceptedOperation = DataPackageOperation.None;
                 IsDropGreen = false;
 
                 WeakReferenceMessenger.Default.Send(
                     new DropFileErrorMessage(true, Res.GetLocalized("OneAtATime")));
+            }
+            else
+            {
+                e.AcceptedOperation = DataPackageOperation.None;
+                IsDropGreen = false;
+
+                WeakReferenceMessenger.Default.Send(
+                    new DropFileErrorMessage(true, Res.GetLocalized("InvalidDropFile")));
             }
         }
         finally

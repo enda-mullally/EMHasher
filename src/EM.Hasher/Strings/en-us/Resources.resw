@@ -136,7 +136,7 @@
     <value>Hashing Algorithms</value>
   </data>
   <data name="InvalidDropFile" xml:space="preserve">
-    <value>Please drop a valid file! Special links are not supported.</value>
+    <value>Please drop a valid file! Folders or special links are not supported.</value>
   </data>
   <data name="LoadingAuthenticodeDetails" xml:space="preserve">
     <value>Loading digital signature details...</value>
@@ -158,5 +158,17 @@
   </data>
   <data name="VerificationPassed" xml:space="preserve">
     <value>Verification passed. Matching hash found in '{hashFileName}'</value>
+  </data>
+  <data name="AlgorithmSelectionRequired.Message" xml:space="preserve">
+    <value>Please select at least one hash algorithm.</value>
+  </data>
+  <data name="Sha3256UnavailableText.Text" xml:space="preserve">
+    <value>(Only available on Windows 11, 24H2 or later)</value>
+  </data>
+  <data name="Sha3512UnavailableText.Text" xml:space="preserve">
+    <value>(Only available on Windows 11, 24H2 or later)</value>
+  </data>
+  <data name="SlowFilePerformance.Message" xml:space="preserve">
+    <value>Consider moving large files to local storage for better performance!</value>
   </data>
 </root>
