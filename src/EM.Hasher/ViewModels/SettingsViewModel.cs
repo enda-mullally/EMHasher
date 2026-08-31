@@ -51,6 +51,12 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [ObservableProperty]
+    public partial bool LoadCodeSignCert
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAlgorithmSelectionInvalid))]
     public partial bool IsBlake3Enabled
     {
@@ -150,6 +156,7 @@ public partial class SettingsViewModel : ObservableObject
             : false;
         IsUppercaseHashValues = _settingsProvider.IsUppercaseHashValues;
         ThemeSelectedIndex = _settingsProvider.SelectedTheme;
+        LoadCodeSignCert = _settingsProvider.LoadCodeSignCert;
 
         _currentWindow = App.MainWindow!;
         VersionDescription = _appVersion.GetVersionDescription();
@@ -183,7 +190,7 @@ public partial class SettingsViewModel : ObservableObject
         }
 
         WeakReferenceMessenger.Default.Send(
-          new SettingsChangedMessage(_hashAlgorithmsEnabled, value));
+          new SettingsChangedMessage(_hashAlgorithmsEnabled, value, _settingsProvider.LoadCodeSignCert));
 
         _settingsProvider.IsUppercaseHashValues = value;
     }
@@ -290,6 +297,19 @@ public partial class SettingsViewModel : ObservableObject
             Sha3_512HashCalculator.IsAvailable && (_settingsProvider.IsSha3_512_Enabled = IsSha3_512Enabled);
         
         WeakReferenceMessenger.Default.Send(
-           new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues));
+           new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues, _settingsProvider.LoadCodeSignCert));
+    }
+
+    partial void OnLoadCodeSignCertChanged(bool value)
+    {
+        if (!_initialized)
+        {
+            // We don't want to send messages until the ViewModel is fully initialized
+            return;
+        }
+        _settingsProvider.LoadCodeSignCert = value;
+
+        WeakReferenceMessenger.Default.Send(
+           new SettingsChangedMessage(_hashAlgorithmsEnabled, IsUppercaseHashValues, _settingsProvider.LoadCodeSignCert));
     }
 }

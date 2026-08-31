@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,8 +31,8 @@ using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
+using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels.Controls;
-
 namespace EM.Hasher.ViewModels;
 
 public partial class CalculateViewModel : ObservableObject, INavigationAware
@@ -39,6 +40,7 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     private readonly IFileDetailsProvider _fileDetailsProvider;
     private readonly IAuthenticodeInfoProvider _authenticodeInfoProvider;
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
+    private readonly ISettingsProvider _settingsProvider;
     private string _selectedFileName = string.Empty;
 
     // Small files hash quickly even over a network, so only warn about
@@ -51,13 +53,22 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         IFileDetailsProvider fileDetailsProvider,
         IAuthenticodeInfoProvider authenticodeInfoProvider,
         IExplorerFileSelectorService explorerFileSelectorService,
-        IList<FileHashControlViewModel> fileHashControlViewModels)
+        IList<FileHashControlViewModel> fileHashControlViewModels,
+        ISettingsProvider settingsProvider)
     {
         _fileDetailsProvider = fileDetailsProvider;
         _authenticodeInfoProvider = authenticodeInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
+        _settingsProvider = settingsProvider;
 
         FileHashControlViewModels = [with(fileHashControlViewModels)];
+
+        ShowAuthenticodeSetting = _settingsProvider.LoadCodeSignCert;
+
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (r, m) =>
+        {
+            ShowAuthenticodeSetting = m.LoadCodeSignCert;
+        });
     }
 
     [ObservableProperty]
@@ -103,7 +114,14 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial string? Issuer { get; private set; } = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowAuthenticode))]
     public partial bool IsSigned { get; private set; } = false;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowAuthenticode))]
+    public partial bool ShowAuthenticodeSetting { get; private set; } = false;
+
+    public bool ShowAuthenticode => ShowAuthenticodeSetting && IsSigned;
 
     [ObservableProperty]
     public partial bool IsTimeStamped { get; private set; } = false;

@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,14 @@ using System.Collections.Generic;
 
 namespace EM.Hasher.Messages.UI;
 
-public class SettingsChangedMessage(Dictionary<string, bool> hashAlgorithmsEnabled, bool isUppercaseHashValues)
+public class SettingsChangedMessage(
+    Dictionary<string, bool> hashAlgorithmsEnabled,
+    bool isUppercaseHashValues,
+    bool loadCodeSignCert)
 {
     public Dictionary<string, bool> HashAlgorithmsEnabled { get; init; } = hashAlgorithmsEnabled;
 
     public bool IsUppercaseHashValues { get; init; } = isUppercaseHashValues;
+
+    public bool LoadCodeSignCert { get; init; } = loadCodeSignCert;
 }

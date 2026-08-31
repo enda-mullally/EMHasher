@@ -94,4 +94,10 @@ public class SettingsProvider : ISettingsProvider
         set => _localSettings.Values[nameof(IsNavigationPaneOpen)] = value;
         get => (bool)(_localSettings.Values[nameof(IsNavigationPaneOpen)] ?? true);
     }
+
+    public bool LoadCodeSignCert
+    {
+        set => _localSettings.Values[nameof(LoadCodeSignCert)] = value;
+        get => (bool)(_localSettings.Values[nameof(LoadCodeSignCert)] ?? true);
+    }
 }
