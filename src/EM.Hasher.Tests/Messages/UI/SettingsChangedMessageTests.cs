@@ -18,6 +18,7 @@ public class SettingsChangedMessageTests
                 { "SHA-256", true },
                 { "SHA-512", true },
             },
+            true,
             true);
 
         // Assert
@@ -25,5 +26,6 @@ public class SettingsChangedMessageTests
         sut.HashAlgorithmsEnabled["SHA-256"].Should().BeTrue();
         sut.HashAlgorithmsEnabled["SHA-512"].Should().BeTrue();
         sut.IsUppercaseHashValues.Should().BeTrue();
+        sut.LoadCodeSignCert.Should().BeTrue();
     }
 }

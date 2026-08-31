@@ -43,6 +43,11 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     private readonly ISettingsProvider _settingsProvider;
     private string _selectedFileName = string.Empty;
 
+    // Tracks whether the authenticode info has already been loaded for the
+    // currently selected file, so toggling the setting off/on does not
+    // trigger an unnecessary reload.
+    private bool _authenticodeInfoLoaded = false;
+
     // Small files hash quickly even over a network, so only warn about
     // remote files once they are large enough for transfer latency to matter.
     private const long SlowFilePerformanceThresholdBytes = 100L * 1024 * 1024; // 100 MB
@@ -140,9 +145,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         }
 
         _selectedFileName = selectedFileName;
+        _authenticodeInfoLoaded = false;
 
         ShowSlowFilePerformanceInfoBar = ShouldWarnSlowFilePerformance(_selectedFileName);
-
         WeakReferenceMessenger.Default.Send(
             new HomeFileSelectedMessage(true));
 
@@ -151,6 +156,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
         try
         {
+            WeakReferenceMessenger.Default.Send(
+                    new IsUiBusyMessage(true));
+
             await LoadFileInfoAsync();
 
             await LoadAuthenticodeInfoAsync();
@@ -168,15 +176,12 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     public async Task OnNavigatedToAsync(object parameter)
     {
-        if (parameter == null)
-        {
-            return;
-        }
-
         if (parameter is FilePickedMessage filePickedMessage)
         {
             await LoadSelectedFileAsync(filePickedMessage.FileName, filePickedMessage.ItsNew);
         }
+
+        await LoadAuthenticodeInfoIfNeededAsync();
     }
 
     private static bool ShouldWarnSlowFilePerformance(string filePath)
@@ -277,13 +282,36 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         IsLoadingAuthenticodeInfo = IsSigned = true;
     }
 
+    private async Task LoadAuthenticodeInfoIfNeededAsync()
+    {
+        try
+        {
+            await LoadAuthenticodeInfoAsync();
+        }
+        catch (Exception)
+        {
+            // ignore
+        }
+    }
+
     private async Task LoadAuthenticodeInfoAsync()
     {
-        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
+        if (!ShowAuthenticodeSetting ||
+            _authenticodeInfoLoaded ||
+            string.IsNullOrWhiteSpace(_selectedFileName))
+        {
+            return;
+        }
 
+        WeakReferenceMessenger.Default.Send(
+            new IsUiBusyMessage(true));
+
+        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
         var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
 
         IsLoadingAuthenticodeInfo = false; // Hide to loading state (Authenticode Info)
+
+        _authenticodeInfoLoaded = true;
 
         if (signingInfo != null)
         {
@@ -293,6 +321,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
             IsTimeStamped = signingInfo.IsTimeStamped;
             SigningTime = signingInfo.SigningTime;
         }
+
+        WeakReferenceMessenger.Default.Send(
+            new IsUiBusyMessage(false));
     }
 
     [RelayCommand]
