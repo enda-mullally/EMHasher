@@ -92,7 +92,7 @@ public partial class FileHashControlViewModel : ObservableObject
             }
         });
 
-        WeakReferenceMessenger.Default.Register<CalculatePageSelectedMessage>(this, (r, m) =>
+        WeakReferenceMessenger.Default.Register<CalculatePageSelectedMessage>(this, async (r, m) =>
         {
             // The Calculate page has been re-selected, check
             // if we need to start the hash calculation again.

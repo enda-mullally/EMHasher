@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -33,6 +32,7 @@ using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
 using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels.Controls;
+
 namespace EM.Hasher.ViewModels;
 
 public partial class CalculateViewModel : ObservableObject, INavigationAware
@@ -141,13 +141,26 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     {
         if (!itsNew)
         {
+            // If we navigate back to the Calculate page, trigger Loading of auth info 1st
+            // and then any new calculations for any hash calculation controls that might
+            // now be enabled.
+            await LoadAuthenticodeInfoIfNeededAsync();
+
+            // Let the Hash calculation controls know that the Calculate page has
+            // been selected, so they can calculate hashes if needed (Settings changed).
+            WeakReferenceMessenger.Default.Send(
+                new CalculatePageSelectedMessage());
+
             return;
         }
+
+        // A new file has been selected, so reset and reload everything in sequence.
 
         _selectedFileName = selectedFileName;
         _authenticodeInfoLoaded = false;
 
         ShowSlowFilePerformanceInfoBar = ShouldWarnSlowFilePerformance(_selectedFileName);
+
         WeakReferenceMessenger.Default.Send(
             new HomeFileSelectedMessage(true));
 
@@ -180,8 +193,13 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         {
             await LoadSelectedFileAsync(filePickedMessage.FileName, filePickedMessage.ItsNew);
         }
-
-        await LoadAuthenticodeInfoIfNeededAsync();
+        else
+        {
+            // The calculate page is being navigated back to without a
+            // new file being selected. If authenticode info needs to be loaded or
+            // new hashs are enabled based on new settings, then do it.
+            await LoadSelectedFileAsync(_selectedFileName, false);
+        }
     }
 
     private static bool ShouldWarnSlowFilePerformance(string filePath)
