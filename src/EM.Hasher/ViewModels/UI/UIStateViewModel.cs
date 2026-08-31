@@ -50,6 +50,11 @@ public partial class UIStateViewModel : ObservableObject
 
             IsUiBusy = _calculationNameInProgress.Any(c => c.Value == true);
         });
+
+        WeakReferenceMessenger.Default.Register<IsUiBusyMessage>(this, (r, m) =>
+        {
+            IsUiBusy = m.IsBusy;
+        });
     }
 
     [ObservableProperty]

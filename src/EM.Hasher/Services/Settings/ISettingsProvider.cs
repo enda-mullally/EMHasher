@@ -74,4 +74,9 @@ public interface ISettingsProvider
     {
         get; set;
     }
+
+    public bool LoadCodeSignCert
+    {
+        get; set;
+    }
 }

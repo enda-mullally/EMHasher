@@ -30,6 +30,7 @@ using EM.Hasher.Services.Authenticode;
 using EM.Hasher.Services.Explorer;
 using EM.Hasher.Services.File;
 using EM.Hasher.Services.Navigation;
+using EM.Hasher.Services.Settings;
 using EM.Hasher.ViewModels.Controls;
 
 namespace EM.Hasher.ViewModels;
@@ -39,7 +40,13 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     private readonly IFileDetailsProvider _fileDetailsProvider;
     private readonly IAuthenticodeInfoProvider _authenticodeInfoProvider;
     private readonly IExplorerFileSelectorService _explorerFileSelectorService;
+    private readonly ISettingsProvider _settingsProvider;
     private string _selectedFileName = string.Empty;
+
+    // Tracks whether the authenticode info has already been loaded for the
+    // currently selected file, so toggling the setting off/on does not
+    // trigger an unnecessary reload.
+    private bool _authenticodeInfoLoaded = false;
 
     // Small files hash quickly even over a network, so only warn about
     // remote files once they are large enough for transfer latency to matter.
@@ -51,13 +58,22 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         IFileDetailsProvider fileDetailsProvider,
         IAuthenticodeInfoProvider authenticodeInfoProvider,
         IExplorerFileSelectorService explorerFileSelectorService,
-        IList<FileHashControlViewModel> fileHashControlViewModels)
+        IList<FileHashControlViewModel> fileHashControlViewModels,
+        ISettingsProvider settingsProvider)
     {
         _fileDetailsProvider = fileDetailsProvider;
         _authenticodeInfoProvider = authenticodeInfoProvider;
         _explorerFileSelectorService = explorerFileSelectorService;
+        _settingsProvider = settingsProvider;
 
         FileHashControlViewModels = [with(fileHashControlViewModels)];
+
+        ShowAuthenticodeSetting = _settingsProvider.LoadCodeSignCert;
+
+        WeakReferenceMessenger.Default.Register<SettingsChangedMessage>(this, (r, m) =>
+        {
+            ShowAuthenticodeSetting = m.LoadCodeSignCert;
+        });
     }
 
     [ObservableProperty]
@@ -103,7 +119,14 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     public partial string? Issuer { get; private set; } = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowAuthenticode))]
     public partial bool IsSigned { get; private set; } = false;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowAuthenticode))]
+    public partial bool ShowAuthenticodeSetting { get; private set; } = false;
+
+    public bool ShowAuthenticode => ShowAuthenticodeSetting && IsSigned;
 
     [ObservableProperty]
     public partial bool IsTimeStamped { get; private set; } = false;
@@ -118,10 +141,23 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
     {
         if (!itsNew)
         {
+            // If we navigate back to the Calculate page, trigger Loading of auth info 1st
+            // and then any new calculations for any hash calculation controls that might
+            // now be enabled.
+            await LoadAuthenticodeInfoIfNeededAsync();
+
+            // Let the Hash calculation controls know that the Calculate page has
+            // been selected, so they can calculate hashes if needed (Settings changed).
+            WeakReferenceMessenger.Default.Send(
+                new CalculatePageSelectedMessage());
+
             return;
         }
 
+        // A new file has been selected, so reset and reload everything in sequence.
+
         _selectedFileName = selectedFileName;
+        _authenticodeInfoLoaded = false;
 
         ShowSlowFilePerformanceInfoBar = ShouldWarnSlowFilePerformance(_selectedFileName);
 
@@ -133,6 +169,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
         try
         {
+            WeakReferenceMessenger.Default.Send(
+                    new IsUiBusyMessage(true));
+
             await LoadFileInfoAsync();
 
             await LoadAuthenticodeInfoAsync();
@@ -150,14 +189,16 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
 
     public async Task OnNavigatedToAsync(object parameter)
     {
-        if (parameter == null)
-        {
-            return;
-        }
-
         if (parameter is FilePickedMessage filePickedMessage)
         {
             await LoadSelectedFileAsync(filePickedMessage.FileName, filePickedMessage.ItsNew);
+        }
+        else
+        {
+            // The calculate page is being navigated back to without a
+            // new file being selected. If authenticode info needs to be loaded or
+            // new hashs are enabled based on new settings, then do it.
+            await LoadSelectedFileAsync(_selectedFileName, false);
         }
     }
 
@@ -259,13 +300,36 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
         IsLoadingAuthenticodeInfo = IsSigned = true;
     }
 
+    private async Task LoadAuthenticodeInfoIfNeededAsync()
+    {
+        try
+        {
+            await LoadAuthenticodeInfoAsync();
+        }
+        catch (Exception)
+        {
+            // ignore
+        }
+    }
+
     private async Task LoadAuthenticodeInfoAsync()
     {
-        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
+        if (!ShowAuthenticodeSetting ||
+            _authenticodeInfoLoaded ||
+            string.IsNullOrWhiteSpace(_selectedFileName))
+        {
+            return;
+        }
 
+        WeakReferenceMessenger.Default.Send(
+            new IsUiBusyMessage(true));
+
+        SetAuthenticodeLoadingState(Res.GetLocalized("LoadingAuthenticodeDetails"));
         var signingInfo = await _authenticodeInfoProvider.GetAuthenticodeInfoAsync(_selectedFileName);
 
         IsLoadingAuthenticodeInfo = false; // Hide to loading state (Authenticode Info)
+
+        _authenticodeInfoLoaded = true;
 
         if (signingInfo != null)
         {
@@ -275,6 +339,9 @@ public partial class CalculateViewModel : ObservableObject, INavigationAware
             IsTimeStamped = signingInfo.IsTimeStamped;
             SigningTime = signingInfo.SigningTime;
         }
+
+        WeakReferenceMessenger.Default.Send(
+            new IsUiBusyMessage(false));
     }
 
     [RelayCommand]

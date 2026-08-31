@@ -26,7 +26,10 @@
             Margin="5,0,0,0"
             Orientation="Horizontal">
             <TextBlock
+                x:Name="SettingsBreadcrumbTitle"
                 Margin="1,8,0,7"
+                PointerEntered="OnSettingsBreadcrumbPointerEntered"
+                PointerExited="OnSettingsBreadcrumbPointerExited"
                 Style="{StaticResource BodyStrongTextBlockStyle}"
                 Tapped="OnSettingsBreadcrumbTapped"
                 Text="Settings" />
