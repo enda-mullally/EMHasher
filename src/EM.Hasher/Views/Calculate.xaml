@@ -114,12 +114,12 @@
                 Grid.Row="2"
                 Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                 Text="Digital Signature"
-                Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
+                Visibility="{x:Bind ViewModel.ShowAuthenticode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" />
 
             <controls:SettingsCard
                 Grid.Row="3"
                 Margin="0,0,0,4"
-                Visibility="{x:Bind ViewModel.IsSigned, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
+                Visibility="{x:Bind ViewModel.ShowAuthenticode, Converter={StaticResource BoolToVisibility}, Mode=OneWay}">
                 <controls:SettingsCard.Header>
                     <localcontrols:FileAuthenticodeInformationControl
                         IsLoading="{x:Bind ViewModel.IsLoadingAuthenticodeInfo, Mode=OneWay}"

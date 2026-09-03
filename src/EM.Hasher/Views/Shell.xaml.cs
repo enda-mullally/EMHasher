@@ -132,16 +132,7 @@ public sealed partial class Shell : Page
                         // If we navigate away from Home, clear any FileDrop error messages
                         WeakReferenceMessenger.Default.Send(
                             new DropFileErrorMessage(false, string.Empty));
-                    }
-
-                    if (pageType == typeof(Calculate))
-                    {
-                        // If we navigate to the Calculate page, trigger hash calculation for any hash
-                        // calculation controls that might now be enabled, which are listening for this
-                        // message.
-                        WeakReferenceMessenger.Default.Send(
-                            new CalculatePageSelectedMessage());
-                    }
+                    }                    
 
                     contentFrame.Navigate(pageType);
                 }

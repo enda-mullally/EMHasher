@@ -82,6 +82,13 @@
                 </ComboBox>
             </controls:SettingsCard>
 
+            <controls:SettingsCard
+                Description="Show digital signature information for signed files"
+                Header="Show digital signature"
+                HeaderIcon="{ui:FontIcon Glyph=&#xEB95;}">
+                <ToggleSwitch IsEnabled="{x:Bind ViewModel.IsAlgorithmSelectionInvalid, Converter={StaticResource BoolNegation}, Mode=OneWay}" IsOn="{x:Bind ViewModel.LoadCodeSignCert, Mode=TwoWay}" />
+            </controls:SettingsCard>
+
             <!--  'About' section RC tag hardcoded for now  -->
             <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
 
