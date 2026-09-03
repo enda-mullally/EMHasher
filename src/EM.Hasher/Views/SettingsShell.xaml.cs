@@ -49,6 +49,24 @@ public sealed partial class SettingsShell : Page
         }
     }
 
+    private void OnSettingsBreadcrumbPointerEntered(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        if (UiStateViewModel.IsSettingsSubPageVisible)
+        {
+            // UI: If a settings sub page is visible show a hand hover cursor to indicate the
+            // breadcrumb is clickable to navigate back to the main Settings page
+            ProtectedCursor =
+                Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Hand);
+        }
+    }
+
+    private void OnSettingsBreadcrumbPointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+        // UI: If a settings sub page is not visible show an ordinary cursor again.
+        ProtectedCursor =
+            Microsoft.UI.Input.InputSystemCursor.Create(Microsoft.UI.Input.InputSystemCursorShape.Arrow);
+    }
+
     private void SettingsFrame_Navigated(object sender, NavigationEventArgs e)
     {
         // Update breadcrumb state based on current page

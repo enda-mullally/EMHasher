@@ -44,6 +44,12 @@ EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the grou
 
 ## Release history
 
+### 03/Sep/2026 ###
+v1.4 Build(85)
+  - Mini release
+  - UI - Settings -> Added 'Show Digital Signature' option
+  - UI - Settings -> Improved page navigation
+
 ### 30/Aug/2026 ###
 v1.4 Build(84)
   - Mini release - UI improvements - Improved warning messages and use of Infobars. 
