@@ -16,16 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EM.Hasher.Services.Activation;
 
-public class ActivationService(MainWindow mainWindow) : IActivationService
+public class ActivationService(
+    MainWindow mainWindow,
+    IEnumerable<IActivationHandler> activationHandlers,
+    DefaultActivationHandler defaultActivationHandler) : IActivationService
 {
-    public Task ActivateAsync(object activationArgs)
+    public async Task ActivateAsync(object activationArgs)
     {
         App.MainWindow = mainWindow;
+
         App.MainWindow!.Activate();
-        return Task.CompletedTask;
+
+        await HandleActivationAsync(activationArgs);
+    }
+
+    private async Task HandleActivationAsync(object activationArgs)
+    {
+        var handler = activationHandlers.FirstOrDefault(h => h.CanHandle(activationArgs));
+
+        if (handler is not null)
+        {
+            await handler.HandleAsync(activationArgs);
+        }
+        else if (defaultActivationHandler.CanHandle(activationArgs))
+        {
+            await defaultActivationHandler.HandleAsync(activationArgs);
+        }
     }
 }

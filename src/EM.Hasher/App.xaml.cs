@@ -21,15 +21,11 @@ using EM.Hasher.DI;
 using EM.Hasher.Helpers;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Activation;
-using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
-using EM.Hasher.ViewModels;
 using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
 using WinUIEx;
 
 namespace EM.Hasher;
@@ -111,12 +107,6 @@ public partial class App : Application
     {
         try
         {
-            var licseService = GetService<ICachedStoreAppLicense>();
-
-            var license =
-               await licseService
-                .GetCachedStoreAppLicenseAsync();
-
             var settingsProvider = GetService<ISettingsProvider>();
 
             MainWindow = GetService<MainWindow>();
@@ -145,50 +135,15 @@ public partial class App : Application
         }
         finally
         {
-            await GetService<IActivationService>().ActivateAsync(MainWindow!);
-
-            // Handle the activation that launched this instance (e.g. a
-            // "Hash with EM Hasher" context-menu / emhasher:// protocol launch).
-            HandleActivation(AppInstance.GetCurrent().GetActivatedEventArgs());
-        }
-    }
-
-    private static void HandleActivation(AppActivationArguments args)
-    {
-        if (args.Kind == ExtendedActivationKind.Protocol &&
-            args.Data is IProtocolActivatedEventArgs protocolArgs)
-        {
-            var filePath = ParseFileFromUri(protocolArgs.Uri);
-
-            if (!string.IsNullOrWhiteSpace(filePath))
-            {
-                if (IsShellReady)
-                {
-                    // The Shell (and its NavigationView) is already loaded, so
-                    // route the file through the normal Calculate flow now.
-                    _ = GetService<HomeViewModel>().SelectFileAsync(filePath!);
-                }
-                else
-                {
-                    // Cold start: defer until the Shell has performed its default
-                    // navigation, otherwise it would override us back to Home.
-                    PendingActivationFilePath = filePath;
-                }
-            }
-        }
-    }
-
-    private static string? ParseFileFromUri(Uri uri)
-    {
-        try
-        {
-            // Expected form: emhasher://hash?file=<url-encoded-path>
-            var decoder = new WwwFormUrlDecoder(uri.Query);
-            return decoder.GetFirstValueByName("file");
-        }
-        catch
-        {
-            return null;
+            // Select and run the appropriate activator based on how this
+            // instance was launched (normal launch vs emhasher:// protocol).
+            // This activates the window and is kept as light as possible so the
+            // first frame renders immediately (no black screen).
+            await GetService<IActivationService>()
+                .ActivateAsync(
+                    AppInstance
+                        .GetCurrent()
+                        .GetActivatedEventArgs());
         }
     }
 }
