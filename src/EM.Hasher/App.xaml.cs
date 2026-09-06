@@ -23,9 +23,13 @@ using EM.Hasher.Services;
 using EM.Hasher.Services.Activation;
 using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
+using EM.Hasher.ViewModels;
 using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
 using WinUIEx;
 
 namespace EM.Hasher;
@@ -60,6 +64,26 @@ public partial class App : Application
     }
 
     /// <summary>
+    /// Set to true once the Shell's NavigationView has loaded and performed its
+    /// default navigation. Until then, any protocol activation must be deferred
+    /// (see <see cref="PendingActivationFilePath"/>) so the default Home
+    /// navigation does not override it.
+    /// </summary>
+    public static bool IsShellReady
+    {
+        get; set;
+    }
+
+    /// <summary>
+    /// A file supplied via protocol/context-menu activation during a cold start,
+    /// to be processed by the Shell once its NavigationView has loaded.
+    /// </summary>
+    public static string? PendingActivationFilePath
+    {
+        get; set;
+    }
+
+    /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
@@ -83,7 +107,7 @@ public partial class App : Application
     /// Invoked when the application is launched.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         try
         {
@@ -122,6 +146,49 @@ public partial class App : Application
         finally
         {
             await GetService<IActivationService>().ActivateAsync(MainWindow!);
+
+            // Handle the activation that launched this instance (e.g. a
+            // "Hash with EM Hasher" context-menu / emhasher:// protocol launch).
+            HandleActivation(AppInstance.GetCurrent().GetActivatedEventArgs());
+        }
+    }
+
+    private static void HandleActivation(AppActivationArguments args)
+    {
+        if (args.Kind == ExtendedActivationKind.Protocol &&
+            args.Data is IProtocolActivatedEventArgs protocolArgs)
+        {
+            var filePath = ParseFileFromUri(protocolArgs.Uri);
+
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                if (IsShellReady)
+                {
+                    // The Shell (and its NavigationView) is already loaded, so
+                    // route the file through the normal Calculate flow now.
+                    _ = GetService<HomeViewModel>().SelectFileAsync(filePath!);
+                }
+                else
+                {
+                    // Cold start: defer until the Shell has performed its default
+                    // navigation, otherwise it would override us back to Home.
+                    PendingActivationFilePath = filePath;
+                }
+            }
+        }
+    }
+
+    private static string? ParseFileFromUri(Uri uri)
+    {
+        try
+        {
+            // Expected form: emhasher://hash?file=<url-encoded-path>
+            var decoder = new WwwFormUrlDecoder(uri.Query);
+            return decoder.GetFirstValueByName("file");
+        }
+        catch
+        {
+            return null;
         }
     }
 }

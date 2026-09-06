@@ -2,7 +2,6 @@
   <Configurations>
     <Platform Name="arm64" />
     <Platform Name="x64" />
-    <Platform Name="x86" />
   </Configurations>
   <Project Path="EM.Hasher (Package)/EM.Hasher (Package).wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5">
     <Deploy />
@@ -10,12 +9,14 @@
   <Project Path="EM.Hasher.Tests/EM.Hasher.Tests.csproj">
     <Platform Solution="*|arm64" Project="arm64" />
     <Platform Solution="*|x64" Project="x64" />
-    <Platform Solution="*|x86" Project="x86" />
     <Deploy />
   </Project>
   <Project Path="EM.Hasher/EM.Hasher.csproj">
     <Platform Solution="*|arm64" Project="arm64" />
     <Platform Solution="*|x64" Project="x64" />
-    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="EM.Hasher.ShellExtension/EM.Hasher.ShellExtension.vcxproj">
+    <Platform Solution="*|arm64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
   </Project>
 </Solution>

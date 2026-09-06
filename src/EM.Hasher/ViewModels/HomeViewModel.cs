@@ -122,4 +122,25 @@ public partial class HomeViewModel : ObservableObject
                 ItsNew = itsNew
             });
     }
+
+    /// <summary>
+    /// Selects a file provided externally (e.g. via the Windows Explorer
+    /// "Hash with EM Hasher" context menu / emhasher:// protocol activation)
+    /// and routes it through the normal Calculate flow on the UI thread.
+    /// </summary>
+    public async Task SelectFileAsync(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            return;
+        }
+
+        WeakReferenceMessenger.Default.Send(
+            new DropFileErrorMessage(false, string.Empty));
+
+        await App.MainWindow!.DispatcherQueue.EnqueueAsync(() =>
+        {
+            SelectNewFile(fileName);
+        });
+    }
 }
