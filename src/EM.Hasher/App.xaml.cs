@@ -21,11 +21,11 @@ using EM.Hasher.DI;
 using EM.Hasher.Helpers;
 using EM.Hasher.Services;
 using EM.Hasher.Services.Activation;
-using EM.Hasher.Services.License;
 using EM.Hasher.Services.Settings;
 using EM.Hasher.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 using WinUIEx;
 
 namespace EM.Hasher;
@@ -60,6 +60,26 @@ public partial class App : Application
     }
 
     /// <summary>
+    /// Set to true once the Shell's NavigationView has loaded and performed its
+    /// default navigation. Until then, any protocol activation must be deferred
+    /// (see <see cref="PendingActivationFilePath"/>) so the default Home
+    /// navigation does not override it.
+    /// </summary>
+    public static bool IsShellReady
+    {
+        get; set;
+    }
+
+    /// <summary>
+    /// A file supplied via protocol/context-menu activation during a cold start,
+    /// to be processed by the Shell once its NavigationView has loaded.
+    /// </summary>
+    public static string? PendingActivationFilePath
+    {
+        get; set;
+    }
+
+    /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
     /// executed, and as such is the logical equivalent of main() or WinMain().
     /// </summary>
@@ -83,16 +103,10 @@ public partial class App : Application
     /// Invoked when the application is launched.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected async override void OnLaunched(LaunchActivatedEventArgs args)
+    protected async override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         try
         {
-            var licseService = GetService<ICachedStoreAppLicense>();
-
-            var license =
-               await licseService
-                .GetCachedStoreAppLicenseAsync();
-
             var settingsProvider = GetService<ISettingsProvider>();
 
             MainWindow = GetService<MainWindow>();
@@ -121,7 +135,15 @@ public partial class App : Application
         }
         finally
         {
-            await GetService<IActivationService>().ActivateAsync(MainWindow!);
+            // Select and run the appropriate activator based on how this
+            // instance was launched (normal launch vs emhasher:// protocol).
+            // This activates the window and is kept as light as possible so the
+            // first frame renders immediately (no black screen).
+            await GetService<IActivationService>()
+                .ActivateAsync(
+                    AppInstance
+                        .GetCurrent()
+                        .GetActivatedEventArgs());
         }
     }
 }
