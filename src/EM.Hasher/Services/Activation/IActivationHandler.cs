@@ -20,20 +20,11 @@ using System.Threading.Tasks;
 
 namespace EM.Hasher.Services.Activation;
 
-/// <summary>
-/// Represents a handler capable of processing a specific mode of application
-/// activation (e.g. a normal launch or an emhasher:// protocol activation).
-/// </summary>
 public interface IActivationHandler
 {
-    /// <summary>
-    /// Returns true when this handler is able to process the supplied
-    /// activation arguments.
-    /// </summary>
     bool CanHandle(object activationArgs);
 
-    /// <summary>
-    /// Processes the supplied activation arguments.
-    /// </summary>
+    ActivationVerificationResult Verify(object activationArgs);
+
     Task HandleAsync(object activationArgs);
 }

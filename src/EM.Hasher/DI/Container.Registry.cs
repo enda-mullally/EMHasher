@@ -49,7 +49,6 @@ public partial class Container
         _container.AddSingleton<WindowEx>(sp => sp.GetRequiredService<MainWindow>());
         _container.AddSingleton<IActivationService, ActivationService>();
         _container.AddSingleton<IActivationHandler, ProtocolActivationHandler>();
-        _container.AddSingleton<DefaultActivationHandler>();
         _container.AddSingleton<ISettingsProvider, SettingsProvider>();
         _container.AddSingleton<INavigationService, NavigationService>();
         _container.AddSingleton<ICachedStoreAppLicense, CachedStoreAppLicenseProvider>();

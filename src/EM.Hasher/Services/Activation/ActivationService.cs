@@ -16,37 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace EM.Hasher.Services.Activation;
 
 public class ActivationService(
     MainWindow mainWindow,
-    IEnumerable<IActivationHandler> activationHandlers,
-    DefaultActivationHandler defaultActivationHandler) : IActivationService
+    IEnumerable<IActivationHandler> activationHandlers) : IActivationService
 {
+    private const uint MB_OK = 0x00000000;
+    private const uint MB_ICONERROR = 0x00000010;
+
     public async Task ActivateAsync(object activationArgs)
     {
         App.MainWindow = mainWindow;
 
-        App.MainWindow!.Activate();
-
-        await HandleActivationAsync(activationArgs);
-    }
-
-    private async Task HandleActivationAsync(object activationArgs)
-    {
         var handler = activationHandlers.FirstOrDefault(h => h.CanHandle(activationArgs));
 
         if (handler is not null)
         {
+            var verification = handler.Verify(activationArgs);
+
+            if (!verification.IsValid)
+            {
+                MessageBox(IntPtr.Zero,
+                        verification.ErrorMessage!,
+                        "EM Hasher",
+                        MB_OK | MB_ICONERROR);
+
+                Microsoft.UI.Xaml.Application.Current.Exit();
+
+                return;
+            }
+
             await handler.HandleAsync(activationArgs);
         }
-        else if (defaultActivationHandler.CanHandle(activationArgs))
-        {
-            await defaultActivationHandler.HandleAsync(activationArgs);
-        }
+
+        // Activation is valid, so show the main window.
+        App.MainWindow!.Activate();
     }
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, EntryPoint = "MessageBoxW")]
+    private static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 }

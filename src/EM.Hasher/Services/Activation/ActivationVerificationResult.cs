@@ -16,19 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System.Threading.Tasks;
-using Microsoft.Windows.AppLifecycle;
-
 namespace EM.Hasher.Services.Activation;
 
-/// <summary>
-/// Fallback handler used when no other handler can process the activation
-/// (e.g. a normal launch). The main window activation itself is performed by
-/// the <see cref="ActivationService"/>, so there is nothing extra to do here.
-/// </summary>
-public class DefaultActivationHandler : ActivationHandler<AppActivationArguments>
+public sealed class ActivationVerificationResult
 {
-    protected override bool CanHandleInternal(AppActivationArguments args) => true;
+    private ActivationVerificationResult(bool isValid, string? errorMessage)
+    {
+        IsValid = isValid;
+        ErrorMessage = errorMessage;
+    }
 
-    protected override Task HandleInternalAsync(AppActivationArguments args) => Task.CompletedTask;
+    public bool IsValid { get; }
+
+    public string? ErrorMessage { get; }
+
+    public static ActivationVerificationResult Valid { get; } = new(true, null);
+
+    public static ActivationVerificationResult Invalid(string errorMessage) =>
+        new(false, errorMessage);
 }

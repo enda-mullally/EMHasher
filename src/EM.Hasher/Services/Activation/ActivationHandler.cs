@@ -28,10 +28,16 @@ public abstract class ActivationHandler<T> : IActivationHandler where T : class
 {
     protected abstract bool CanHandleInternal(T args);
 
+    protected virtual ActivationVerificationResult VerifyInternal(T args) =>
+        ActivationVerificationResult.Valid;
+
     protected abstract Task HandleInternalAsync(T args);
 
     public bool CanHandle(object activationArgs) =>
         activationArgs is T args && CanHandleInternal(args);
+
+    public ActivationVerificationResult Verify(object activationArgs) =>
+        VerifyInternal((T)activationArgs);
 
     public Task HandleAsync(object activationArgs) =>
         HandleInternalAsync((T)activationArgs);
