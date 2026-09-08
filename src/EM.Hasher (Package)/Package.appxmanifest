@@ -5,7 +5,10 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
+  IgnorableNamespaces="uap rescap com desktop4 desktop5">
 
   <!-- Create a local test certificate like below CN=:em.apps@outlook.ie and trust on you local system. -->
   <!-- To create a test certificate use the visual studio publish menu: Create certificate, later use Trust certificate. -->
@@ -15,7 +18,7 @@
   <Identity
     Name="26772EndaMullally.EMHasher"
     Publisher="CN=3828CB90-B2F7-46C6-8B9B-6DDEBE9CBF4F"
-    Version="1.4.85.0" />
+    Version="1.5.87.0" />
   
   <!-- Above is [Major].[Minor].[Build].[Revision]  -->
   <!-- Will display in app as v[Major].[Minor] Build([Build]) i.e "v1.1 (Build 28)" -->
@@ -52,6 +55,27 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="emhasher">
+            <uap:DisplayName>EM Hasher</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:SurrogateServer DisplayName="Hash with EM Hasher">
+              <com:Class Id="AB3F812D-6B1D-40E8-B040-B4CCC9ACB1D2" Path="EM.Hasher.ShellExtension\EM.Hasher.ShellExtension.dll" ThreadingModel="STA" />
+            </com:SurrogateServer>
+          </com:ComServer>
+        </com:Extension>
+        <desktop4:Extension Category="windows.fileExplorerContextMenus">
+          <desktop4:FileExplorerContextMenus>
+            <desktop5:ItemType Type="*">
+              <desktop5:Verb Id="EMHasherHash" Clsid="AB3F812D-6B1D-40E8-B040-B4CCC9ACB1D2" />
+            </desktop5:ItemType>
+          </desktop4:FileExplorerContextMenus>
+        </desktop4:Extension>
+      </Extensions>
     </Application>
 	
   </Applications>
