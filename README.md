@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/github/v/release/enda-mullally/EMHasher)
 #
 <p align="center">
-  <img width="80" align="center" src="docs/images/AppLogo80x80.png">
+  <img width="80" align="center" src="docs/assets/AppLogo80x80.png">
 </p>
 <h1 align="center">
   EM Hasher
