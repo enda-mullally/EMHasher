@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,5 +121,26 @@ public partial class HomeViewModel : ObservableObject
                 FileName = fileName,
                 ItsNew = itsNew
             });
+    }
+
+    /// <summary>
+    /// Selects a file provided externally (e.g. via the Windows Explorer
+    /// "Hash with EM Hasher" context menu / emhasher:// protocol activation)
+    /// and routes it through the normal Calculate flow on the UI thread.
+    /// </summary>
+    public async Task SelectFileAsync(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            return;
+        }
+
+        WeakReferenceMessenger.Default.Send(
+            new DropFileErrorMessage(false, string.Empty));
+
+        await App.MainWindow!.DispatcherQueue.EnqueueAsync(() =>
+        {
+            SelectNewFile(fileName);
+        });
     }
 }

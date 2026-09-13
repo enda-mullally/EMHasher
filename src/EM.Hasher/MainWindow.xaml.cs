@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using WinUIEx;
 
@@ -29,8 +30,14 @@ public sealed partial class MainWindow : WindowEx
 {
     public MainWindow()
     {
+        // Show a Mica backdrop immediately so the window does not flash a black
+        // background during the brief gap between activation and the first XAML
+        // frame render. Falls back gracefully where Mica is unsupported.
+        SystemBackdrop = new MicaBackdrop();
+
         InitializeComponent();
 
+        
         AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
         AppWindow.TitleBar.ButtonBackgroundColor = Microsoft.UI.Colors.Transparent;
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Microsoft.UI.Colors.Transparent;

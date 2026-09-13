@@ -145,6 +145,18 @@ public sealed partial class Shell : Page
     {
         navigationView.IsPaneOpen = _settingsProvider.IsNavigationPaneOpen;
         navigationView.SelectedItem = navigationView.MenuItems[0];
+
+        // The NavigationView has now performed its default Home navigation, so
+        // it is safe to process any protocol/context-menu activation that was
+        // deferred during a cold start (see App.HandleActivation).
+        App.IsShellReady = true;
+
+        var pendingFile = App.PendingActivationFilePath;
+        if (!string.IsNullOrWhiteSpace(pendingFile))
+        {
+            App.PendingActivationFilePath = null;
+            _ = App.GetService<HomeViewModel>().SelectFileAsync(pendingFile!);
+        }
     }
 
     private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

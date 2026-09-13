@@ -29,20 +29,28 @@ EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the grou
 #### Screenshots
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_01_Main_Screen_Drop.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/assets/Store_01_Main_Screen_Drop.png">
 </p>
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_02_Main_Screen.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/assets/Store_02_Main_Screen.png">
 </p>
 
 <p align="center">
-  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/images/Store_03_Main_Screen_Results.png">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/assets/Store_03_Main_Screen_Results.png">
+</p>
+
+<p align="center">
+  <img align="center" style="border-radius: 8px; width: 100%; height: 100%;" src="docs/assets/Win11-Context-Menu.gif">
 </p>
 
 <br />
 
 ## Release history
+
+### 13/Sep/2026 ###
+v1.5 Build(88)
+  - Win 11 context menu integration. Right click any file in Windows explorer or on your Desktop and select 'Hash with EM Hasher'.
 
 ### 03/Sep/2026 ###
 v1.4 Build(85)
