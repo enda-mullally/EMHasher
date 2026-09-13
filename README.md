@@ -50,7 +50,7 @@ EM Hasher is a modern, simple hash calculating app (WinUI 3) built from the grou
 
 ### 13/Sep/2026 ###
 v1.5 Build(88)
-  - Win 11 context menu integration. Right click any file in Windows explorer or on your Desktop and select 'Hash with EM Hasher'.
+  - Win 11 context menu integration. Right click any file in Windows explorer or your Desktop and select 'Hash with EM Hasher'.
 
 ### 03/Sep/2026 ###
 v1.4 Build(85)
