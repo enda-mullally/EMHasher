@@ -53,8 +53,6 @@
                 IsClickEnabled="True"
                 Tapped="OnHashingAlgorithmsCardTapped" />
 
-            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Preferences" />
-
             <controls:SettingsCard
                 Description="Select which app theme to display"
                 Header="App theme"

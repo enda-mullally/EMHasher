@@ -32,7 +32,7 @@
             <TextBlock
                 FontSize="16"
                 Foreground="{ThemeResource TextFillColorPrimary}"
-                Text="Drop file here" />
+                Text="or drop a file here" />
         </StackPanel>
     </Grid>
 </UserControl>
