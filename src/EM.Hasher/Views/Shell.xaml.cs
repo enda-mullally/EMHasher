@@ -27,6 +27,7 @@ using EM.Hasher.ViewModels.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace EM.Hasher.Views;
 
@@ -157,6 +158,27 @@ public sealed partial class Shell : Page
             App.PendingActivationFilePath = null;
             _ = App.GetService<HomeViewModel>().SelectFileAsync(pendingFile!);
         }
+    }
+
+    private void ContentFrame_DragOver(object sender, DragEventArgs e)
+    {
+        if (contentFrame.SourcePageType == typeof(Home) ||
+            !UiStateViewModel.IsHomeTabEnabled ||
+            !e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            return;
+        }
+
+        // Keep the drag operation alive while we switch to the Home page,
+        // the Home page drop control will take over once it is loaded.
+        e.AcceptedOperation = DataPackageOperation.Copy;
+        e.DragUIOverride.IsCaptionVisible = false;
+        e.DragUIOverride.IsGlyphVisible = false;
+
+        WeakReferenceMessenger.Default.Send(
+            new DropFileErrorMessage(false, string.Empty));
+
+        contentFrame.Navigate(typeof(Home));
     }
 
     private void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
