@@ -132,7 +132,10 @@
                     x:Name="contentFrame"
                     Margin="0,0,0,0"
                     Padding="10"
+                    AllowDrop="True"
                     Background="Transparent"
+                    DragEnter="ContentFrame_DragOver"
+                    DragOver="ContentFrame_DragOver"
                     Navigated="ContentFrame_Navigated" />
             </NavigationView>
         </Grid>
