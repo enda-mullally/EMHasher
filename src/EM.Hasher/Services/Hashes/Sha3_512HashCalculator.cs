@@ -30,11 +30,7 @@ public class Sha3_512HashCalculator(IHashProgressCalculator progressCalculator) 
     {
         get
         {
-#if DEBUG
-            return false;
-#else
             return SHA3_512.IsSupported;
-#endif
         }
     }
 
