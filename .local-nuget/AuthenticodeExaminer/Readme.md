@@ -12,8 +12,13 @@ https://github.com/enda-mullally/AuthenticodeExaminer
 
 This fork includes the following important security fixes:
 
-* `System.Security.Cryptography.Pkcs` 8.0.1 → 10.0.9
-* `System.Security.Cryptography.Xml` 8.0.1 → 10.0.9
+* `System.Security.Cryptography.Pkcs` 8.0.1 → 10.0.12
+* `System.Security.Cryptography.Xml` 8.0.1 → 10.0.12
+
+The following issues were also fixed (07/Oct/2026)
+
+https://github.com/vcsjones/AuthenticodeExaminer/issues/23
+Special thanks to: [jhennessey](https://github.com/jhennessey) for this fix.
 
 Additionally, it includes miscellaneous package upgrades and a manual GitHub Actions workflow to build the NuGet package using Visual Studio 2018.
 
@@ -28,10 +33,10 @@ I changed the package ID from `AuthenticodeExaminer` to `Forked-AuthenticodeExam
 
 # **Verification:**
 
-https://github.com/enda-mullally/AuthenticodeExaminer/actions/runs/28903026509
+https://github.com/enda-mullally/AuthenticodeExaminer/actions/runs/37656757933
 
 Artifact : AuthenticodeExaminer-Nuget-Package (zipped)
-Digest	 : sha256:33add0e9490892312758d9cd488f173a1be6404e6a234bcbaec518cd3262bbe1
+Digest	 : sha256:sha256:9f086584f5f5c305116b459f25bcf599d0b1f0c7875d3a6b492df34d2cb293ca
 
 -> Forked-AuthenticodeExaminer.0.4.0.nupkg
-   sha256:b8b255e0dc943413b06625bb7a5d30e6a96ce00272eaf5226ad935d0379acb7b
+   sha256:355f8285ba8f54b222dfb1ea20e20a0f5cf058563ffab83531434d9d4fc7bdc2
