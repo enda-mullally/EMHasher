@@ -17,7 +17,6 @@
     <Page.Resources>
         <toolkitConverters:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
-        <localConverters:FontSizeReductionConverter x:Key="FontSizeReducer" />
         <localConverters:AppThemeSettingConverter x:Key="AppThemeSetting" />
         <localConverters:CasingSettingConverter x:Key="CasingSetting" />
 
