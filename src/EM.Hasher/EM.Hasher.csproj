@@ -33,7 +33,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.2.251219" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.2.251219" />
 	<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.251219" />
-	<PackageReference Include="Crc32.NET" Version="2.0.0" />
+	<PackageReference Include="Crc32.NET" Version="2.1.0" />
 	<PackageReference Include="Forked-AuthenticodeExaminer" Version="0.4.0" />
 	<PackageReference Include="Humanizer.Core" Version="3.0.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
