@@ -19,6 +19,7 @@
         <toolkitConverters:BoolNegationConverter x:Key="BoolNegation" />
         <localConverters:AppThemeSettingConverter x:Key="AppThemeSetting" />
         <localConverters:CasingSettingConverter x:Key="CasingSetting" />
+        <localConverters:FontSizeResizeConverter x:Key="FontSizeResizer" />
 
         <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
 

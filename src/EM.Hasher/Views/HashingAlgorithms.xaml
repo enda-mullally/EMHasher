@@ -103,7 +103,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            FontSize="{Binding ElementName=sha3512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeReducer}, ConverterParameter='-3'}"
+                            FontSize="{Binding ElementName=sha3512HeaderTextBlock, Path=FontSize, Converter={StaticResource FontSizeResizer}, ConverterParameter='-3'}"
                             Foreground="{ThemeResource TextFillColorTertiary}"
                             Visibility="{x:Bind ViewModel.IsSha3_512_Available, Converter={StaticResource BoolToVisibility}, ConverterParameter=True, Mode=OneWay}" />
                     </Grid>

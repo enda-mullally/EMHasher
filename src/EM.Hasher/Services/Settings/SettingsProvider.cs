@@ -56,7 +56,7 @@ public class SettingsProvider : ISettingsProvider
     public bool IsSha256_Enabled
     {
         set => _localSettings.Values[nameof(IsSha256_Enabled)] = value;
-        get => (bool)(_localSettings.Values[nameof(IsSha256_Enabled)] ?? false);
+        get => (bool)(_localSettings.Values[nameof(IsSha256_Enabled)] ?? true);
     }
 
     public bool IsSha512_Enabled
