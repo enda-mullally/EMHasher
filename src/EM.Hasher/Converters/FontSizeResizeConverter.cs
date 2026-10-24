@@ -1,6 +1,6 @@
 ﻿/*
  * EM Hasher
- * Copyright © 2025 Enda Mullally (em.apps@outlook.ie)
+ * Copyright © 2025-2026 Enda Mullally (em.apps@outlook.ie)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace EM.Hasher.Converters;
 
-public partial class FontSizeReductionConverter : IValueConverter
+public partial class FontSizeResizeConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
