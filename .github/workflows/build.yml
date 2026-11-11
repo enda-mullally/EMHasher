@@ -11,7 +11,7 @@ on:
           default: false
 
 env:
-  TargetMinWinVersion: net10.0-windows10.0.22621.0
+  TargetFrameworkVersion: net11.0-windows10.0.22621.0
   FullBuild: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.event.inputs.fullbuild == 'true' }}
 
 jobs:
@@ -67,7 +67,7 @@ jobs:
         
     - name: Register the EM.Hasher.Tests Appx
       if: (env.FullBuild == 'true')
-      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetMinWinVersion}}
+      working-directory: src/EM.Hasher.Tests/bin/x64/Debug/${{env.TargetFrameworkVersion}}
       shell: powershell
       run: |
         powershell -NoProfile -ExecutionPolicy Bypass -Command "Add-AppxPackage -Register (Resolve-Path .\AppxManifest.xml) -ForceUpdateFromAnyVersion"
