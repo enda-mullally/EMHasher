@@ -132,9 +132,6 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="HashingAlgorithms" xml:space="preserve">
-    <value>Hashing Algorithms</value>
-  </data>
   <data name="InvalidDropFile" xml:space="preserve">
     <value>Please drop a valid file! Folders or special links are not supported.</value>
   </data>
@@ -170,5 +167,8 @@
   </data>
   <data name="SlowFilePerformance.Message" xml:space="preserve">
     <value>Consider moving large files to local storage for better performance!</value>
+  </data>
+  <data name="HashingAlgorithmsCard.Header" xml:space="preserve">
+    <value>Hashing algorithms</value>
   </data>
 </root>

@@ -47,8 +47,8 @@
 
             <controls:SettingsCard
                 x:Name="uxHashingAlgorithmsCard"
+                x:Uid="HashingAlgorithmsCard"
                 Description="Select your preferred hasing algorithms"
-                Header="Hashing Algorithms"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE8EF;}"
                 IsClickEnabled="True"
                 Tapped="OnHashingAlgorithmsCardTapped" />
