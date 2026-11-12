@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+    <TargetFramework>net11.0-windows10.0.22621.0</TargetFramework>
 	<TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
     <RootNamespace>EM.Hasher</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -36,12 +36,12 @@
 	<PackageReference Include="Crc32.NET" Version="2.1.0" />
 	<PackageReference Include="Forked-AuthenticodeExaminer" Version="0.4.0" />
 	<PackageReference Include="Humanizer.Core" Version="3.0.10" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
 	<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
 	<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
-    <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.14" />
-    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.14" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="11.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="11.0.0" />
     <PackageReference Include="WinUIEx" Version="2.9.3" />
   </ItemGroup>
 
