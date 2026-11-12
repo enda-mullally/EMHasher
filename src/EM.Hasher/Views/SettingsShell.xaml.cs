@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using EM.Hasher.Helpers;
 using EM.Hasher.ViewModels.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -29,6 +30,7 @@ public sealed partial class SettingsShell : Page
     public SettingsShell()
     {
         UiStateViewModel = App.GetService<UIStateViewModel>();
+
         InitializeComponent();
     }
 
@@ -78,7 +80,7 @@ public sealed partial class SettingsShell : Page
         else if (e.SourcePageType == typeof(HashingAlgorithms))
         {
             UiStateViewModel.IsSettingsSubPageVisible = true;
-            UiStateViewModel.SettingsSubPageTitle = Res.GetLocalized("HashingAlgorithms");
+            UiStateViewModel.SettingsSubPageTitle = "HashingAlgorithmsCard/Header".GetLocalized();
         }
     }
 }
