@@ -46,7 +46,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="7.2.2" />
+    <PackageReference Include="FluentAssertions" Version="8.11.0" />
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="18.11.0" />  
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
